@@ -102,9 +102,14 @@ class ExprScanner(GenericScanner):
         pass
 
     # Recognize operators: +, -, *, and /
-    def t_op(self, s):
-        r'[+-/*]'
-        t = Token(type='op', attr=s)
+    def t_add_op(self, s):
+        r'[+-]'
+        t = Token(type='add_op', attr=s)
+        self.rv.append(t)
+
+    def t_mult(self, s):
+        r'[/*]'
+        t = Token(type='mult_op', attr=s)
         self.rv.append(t)
 
     # Recognize integers
@@ -123,24 +128,24 @@ class ExprParser(GenericParser):
 
 
     def p_expr_1(self, args):
-        ' expr ::= expr + term '
-        return AST(type=args[1], left=args[0], right=args[2])
+        ' expr ::= expr add_op term '
+        return AST('add_op', [args[0], args[2]])
 
     def p_expr_2(self, args):
         ' expr ::= term '
         return args[0]
 
     def p_term_1(self, args):
-        ' term ::= term * factor '
-        return AST(type=args[1], left=args[0], right=args[2])
+        ' term ::= term mult_op factor '
+        return AST('mult_op', [args[0], args[2]])
 
     def p_term_2(self, args):
         ' term ::= factor '
         return args[0]
 
     def p_factor_1(self, args):
-        ' factor ::= number '
-        return AST(type=args[0])
+        ' factor ::= integer '
+        return AST('integer', args)
 
 def scan_expression(filename):
     """
@@ -160,5 +165,4 @@ if __name__ == '__main__':
     else:
         tokens = scan_expression(sys.argv[1])
     print(tokens)
-    # Not working yet
-    # print(parse_expression(tokens))
+    print(parse_expression(tokens))
