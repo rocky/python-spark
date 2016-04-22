@@ -700,7 +700,8 @@ class GenericASTTraversal:
         raise GenericASTTraversalPruningException
 
     def preorder(self, node=None):
-        """Walk the tree. For each node with typestring name *name* if the
+        """Walk the tree in preorder.
+        For each node with typestring name *name* if the
         node has a method called n_*name*, call that before walking
         children. If there is no method define, call a
         self.default(node) instead. Subclasses of GenericASTTtraversal
@@ -725,6 +726,45 @@ class GenericASTTraversal:
 
         for kid in node:
             self.preorder(kid)
+
+        name = name + '_exit'
+        if hasattr(self, name):
+            func = getattr(self, name)
+            func(node)
+
+    def postorder(self, node=None):
+        """Walk the tree in postorder.
+        For each node with typestring name *name* if the
+        node has a method called n_*name*, call that before walking
+        children. If there is no method define, call a
+        self.default(node) instead. Subclasses of GenericASTTtraversal
+        ill probably want to override this method.
+
+        If the node has a method called *name*_exit, that is called
+        after all children have been called.  So in this sense this
+        function is both preorder and postorder combined.
+        """
+        if node is None:
+            node = self.ast
+
+        try:
+            first = iter(node)
+        except TypeError, te:
+            first = None
+
+        if first:
+            for kid in node:
+                self.postorder(kid)
+
+        try:
+            name = 'n_' + self.typestring(node)
+            if hasattr(self, name):
+                func = getattr(self, name)
+                func(node)
+            else:
+                self.default(node)
+        except GenericASTTraversalPruningException:
+            return
 
         name = name + '_exit'
         if hasattr(self, name):

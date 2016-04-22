@@ -3,7 +3,7 @@
 SPARK example to parse simple arithmetic expressions
 """
 import re, sys
-from spark import AST, GenericParser
+from spark import AST, GenericParser, GenericASTTraversal
 
 ######## The below can go into a generic util package
 
@@ -73,7 +73,7 @@ class GenericScanner:
             pos = m.end()
 
     def t_default(self, s):
-        r'( . | \n )+'
+        r'( \n )+'
         pass
 
 ######## End of generic part
@@ -118,42 +118,75 @@ class ExprScanner(GenericScanner):
         t = Token(type='integer', attr=s)
         self.rv.append(t)
 
+# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
+# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
+DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
+
 class ExprParser(GenericParser):
     """A simple expression parser for numbers and arithmetic operators: +, *
     """
 
-    def __init__(self, start='expr'):
-        debug = {'rules': True, 'transition': True, 'reduce' : True}
+    def __init__(self, start='expr', debug=DEFAULT_DEBUG):
         GenericParser.__init__(self, start, debug)
-
 
     def p_expr_1(self, args):
         ' expr ::= expr add_op term '
-        return AST('add_op', [args[0], args[2]])
+        op = 'add' if args[1].attr ==  '+' else 'subtract'
+        return AST(op, [args[0], args[2]])
 
     def p_expr_2(self, args):
         ' expr ::= term '
-        return args[0]
+        return AST('single', [args[0]])
 
     def p_term_1(self, args):
         ' term ::= term mult_op factor '
-        return AST('mult_op', [args[0], args[2]])
+        op = 'multiply' if args[1].attr ==  '*' else 'divide'
+        return AST(op, [args[0], args[2]])
 
     def p_term_2(self, args):
         ' term ::= factor '
-        return args[0]
+        return AST('single', [args[0]])
 
     def p_factor_1(self, args):
         ' factor ::= integer '
-        return AST('integer', args)
+        return AST('single', [args[0]])
+
+class Interpret(GenericASTTraversal):
+    def __init__(self, ast):
+        GenericASTTraversal.__init__(self, ast)
+        self.postorder(ast)
+        self.value = ast.value
+
+
+    def n_integer(self, node):
+        node.value = int(node.attr)
+
+    def n_single(self, node):
+        node.value = node.data[0].value
+
+    def n_multiply(self, node):
+        node.value = node[0].value * node[1].value
+
+    def n_divide(self, node):
+        node.value = node[0].value / node[1].value
+
+    def n_add(self, node):
+        node.value = node[0].value + node[1].value
+
+    def n_subtract(self, node):
+        node.value = node[0].value - node[1].value
+
+    def default(self, node):
+        pass
 
 def scan_expression(filename):
     """
     Tokenize *filename* into integers, numbers, and operators
     """
-    input = open(filename).read()
+    file_data = open(filename).read()
+    print(file_data)
     scanner = ExprScanner()
-    return scanner.tokenize(input)
+    return scanner.tokenize(file_data)
 
 def parse_expression(tokens):
     parser = ExprParser()
@@ -165,4 +198,7 @@ if __name__ == '__main__':
     else:
         tokens = scan_expression(sys.argv[1])
     print(tokens)
-    print(parse_expression(tokens))
+    tree = parse_expression(tokens)
+    print(tree)
+    i = Interpret(tree)
+    print("Final value is: %d" % i.value)
