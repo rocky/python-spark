@@ -1,3 +1,5 @@
+|buildstatus|
+
 SPARK
 =====
 
@@ -28,5 +30,5 @@ See Also
 * https://pypi.python.org/pypi/uncompyle6/
 
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
-.. |buildstatus| image:: https://travis-ci.org/rocky/python-uspark.svg
+.. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
 		 :target: https://travis-ci.org/rocky/python-spark
