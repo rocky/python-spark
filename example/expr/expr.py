@@ -4,77 +4,9 @@ SPARK example to parse simple arithmetic expressions
 """
 import re, sys
 from spark import AST, GenericParser, GenericASTTraversal
+from spark import GenericScanner, GenericToken
 
 ######## The below can go into a generic util package
-
-def _namelist(instance):
-    namelist, namedict, classlist = [], {}, [instance.__class__]
-    for c in classlist:
-        for b in c.__bases__:
-            classlist.append(b)
-        for name in list(c.__dict__.keys()):
-            if name not in namedict:
-                namelist.append(name)
-                namedict[name] = 1
-    return namelist
-
-class Token:
-    def __init__(self, type, attr=' '):
-		self.type = type
-		self.attr = attr
-
-    def __cmp__(self, o):
-		return cmp(self.type, o)
-
-    def __repr__(self):
-		return self.attr or self.type
-
-class GenericScanner:
-    """A class which can be used subclass off of to make
-    specific sets of scanners.
-    """
-    def __init__(self):
-        pattern = self.reflect()
-        self.re = re.compile(pattern, re.VERBOSE)
-
-        self.index2func = {}
-        for name, number in self.re.groupindex.items():
-            self.index2func[number-1] = getattr(self, 't_' + name)
-
-    def makeRE(self, name):
-        doc = getattr(self, name).__doc__
-        rv = '(?P<%s>%s)' % (name[2:], doc)
-        return rv
-
-    def reflect(self):
-        rv = []
-        for name in list(_namelist(self)):
-            if name[:2] == 't_' and name != 't_default':
-                rv.append(self.makeRE(name))
-        rv.append(self.makeRE('t_default'))
-        return '|'.join(rv)
-
-    def error(self, s, pos):
-        print("Lexical error at position %s" % pos)
-        raise SystemExit
-
-    def tokenize(self, s):
-        pos = 0
-        n = len(s)
-        while pos < n:
-            m = self.re.match(s, pos)
-            if m is None:
-                self.error(s, pos)
-
-            groups = m.groups()
-            for i in range(len(groups)):
-                if groups[i] and self.index2func.has_key(i):
-                    self.index2func[i](groups[i])
-            pos = m.end()
-
-    def t_default(self, s):
-        r'( \n )+'
-        pass
 
 ######## End of generic part
 
@@ -104,18 +36,18 @@ class ExprScanner(GenericScanner):
     # Recognize operators: +, -, *, and /
     def t_add_op(self, s):
         r'[+-]'
-        t = Token(type='add_op', attr=s)
+        t = GenericToken(type='add_op', attr=s)
         self.rv.append(t)
 
     def t_mult(self, s):
         r'[/*]'
-        t = Token(type='mult_op', attr=s)
+        t = GenericToken(type='mult_op', attr=s)
         self.rv.append(t)
 
     # Recognize integers
     def t_integer(self, s):
         r'\d+'
-        t = Token(type='integer', attr=s)
+        t = GenericToken(type='integer', attr=s)
         self.rv.append(t)
 
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
@@ -124,6 +56,8 @@ DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
 
 class ExprParser(GenericParser):
     """A simple expression parser for numbers and arithmetic operators: +, *
+
+    Note: methods that begin p_ have docstrings that are grammar rules.
     """
 
     def __init__(self, start='expr', debug=DEFAULT_DEBUG):
@@ -179,24 +113,32 @@ class Interpret(GenericASTTraversal):
     def default(self, node):
         pass
 
-def scan_expression(filename):
+def scan_expression(data):
     """
     Tokenize *filename* into integers, numbers, and operators
     """
-    file_data = open(filename).read()
-    print(file_data)
     scanner = ExprScanner()
-    return scanner.tokenize(file_data)
+    return scanner.tokenize(data)
 
 def parse_expression(tokens):
     parser = ExprParser()
     return parser.parse(tokens)
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        tokens = scan_expression('expr1.txt')
+    if len(sys.argv) == 1:
+        filename = 'expr1.txt'
+        data = open(filename).read()
+    elif len(sys.argv) == 2:
+        if sys.argv[1] in ['-h', '--help']:
+            print(""""usage: %s [filename | expression ]""" %
+                      sys.argv[0])
+            sys.exit(1)
+        filename = sys.argv[1]
+        data = open(filename).read()
     else:
-        tokens = scan_expression(sys.argv[1])
+        data = ' '.join(sys.argv[1:])
+    print(data)
+    tokens = scan_expression(data)
     print(tokens)
     tree = parse_expression(tokens)
     print(tree)
