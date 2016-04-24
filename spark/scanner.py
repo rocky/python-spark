@@ -19,14 +19,14 @@ def _namelist(instance):
 class GenericToken:
     """A sample Token class that can be used in scanning"""
     def __init__(self, type, attr=' '):
-		self.type = type
-		self.attr = attr
+        self.type = type
+        self.attr = attr
 
     def __cmp__(self, o):
-		return cmp(self.type, o)
+        return cmp(self.type, o)
 
     def __repr__(self):
-		return self.attr or self.type
+        return self.attr or self.type
 
 class GenericScanner:
     """A class which can be used subclass off of to make
@@ -76,7 +76,7 @@ class GenericScanner:
 
             groups = m.groups()
             for i in range(len(groups)):
-                if groups[i] and self.index2func.has_key(i):
+                if groups[i] and i in self.index2func:
                     self.index2func[i](groups[i])
             pos = m.end()
 

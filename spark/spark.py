@@ -749,7 +749,7 @@ class GenericASTTraversal:
 
         try:
             first = iter(node)
-        except TypeError, te:
+        except TypeError:
             first = None
 
         if first:

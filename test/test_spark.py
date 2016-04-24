@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 """
-SPARK example to parse simple arithmetic expressions
+SPARK unit test via parsing simple arithmetic expressions
 """
-import re, sys
-from spark import AST, GenericParser, GenericASTTraversal
-from spark import GenericScanner, GenericToken
+import re, sys, unittest
+
+from spark.spark import GenericParser, GenericASTTraversal
+from spark import AST
+from spark.scanner import GenericScanner, GenericToken
 
 class ExprScanner(GenericScanner):
 
@@ -31,12 +33,12 @@ class ExprScanner(GenericScanner):
 
     # Recognize operators: +, -, *, and /
     def t_add_op(self, s):
-        r'[+-]'
+        r'[+]'
         t = GenericToken(type='add_op', attr=s)
         self.rv.append(t)
 
-    def t_mult(self, s):
-        r'[/*]'
+    def t_mult_op(self, s):
+        r'[*]'
         t = GenericToken(type='mult_op', attr=s)
         self.rv.append(t)
 
@@ -61,59 +63,25 @@ class ExprParser(GenericParser):
     def __init__(self, start='expr', debug=DEFAULT_DEBUG):
         GenericParser.__init__(self, start, debug)
 
-    # Below are methods for the grammar rules and the AST tree-building
-    # action to take
-
     def p_expr_add_term(self, args):
         ' expr ::= expr add_op term '
-        op = 'add' if args[1].attr ==  '+' else 'subtract'
-        return AST(op, [args[0], args[2]])
+        return AST('add', [args[0], args[2]])
 
-    def p_expr2term2(self, args):
+    def p_expr2term(self, args):
         ' expr ::= term '
         return AST('single', [args[0]])
 
     def p_term_mult_factor(self, args):
         ' term ::= term mult_op factor '
-        op = 'multiply' if args[1].attr ==  '*' else 'divide'
-        return AST(op, [args[0], args[2]])
+        return AST('multiply', [args[0], args[2]])
 
-    def p_term2single(self, args):
+    def p_term2factor(self, args):
         ' term ::= factor '
         return AST('single', [args[0]])
 
     def p_factor2integer(self, args):
         ' factor ::= integer '
         return AST('single', [args[0]])
-
-class Interpret(GenericASTTraversal):
-
-    def __init__(self, ast):
-        GenericASTTraversal.__init__(self, ast)
-        self.postorder(ast)
-        self.value = ast.value
-
-    # Rules for interpreting nodes based on their AST node type
-    def n_integer(self, node):
-        node.value = int(node.attr)
-
-    def n_single(self, node):
-        node.value = node.data[0].value
-
-    def n_multiply(self, node):
-        node.value = node[0].value * node[1].value
-
-    def n_divide(self, node):
-        node.value = node[0].value / node[1].value
-
-    def n_add(self, node):
-        node.value = node[0].value + node[1].value
-
-    def n_subtract(self, node):
-        node.value = node[0].value - node[1].value
-
-    def default(self, node):
-        pass
 
 def scan_expression(data):
     """
@@ -126,23 +94,39 @@ def parse_expression(tokens):
     parser = ExprParser()
     return parser.parse(tokens)
 
+class TestSpark(unittest.TestCase):
+
+    def test_exprs(self):
+
+        # Build up some AST trees to use in tetsting
+        test_factor_to_integer1 = AST('single', [GenericToken('integer', '1')])
+        test_factor_to_integer2 = AST('single', [GenericToken('integer', '2')])
+        test_factor_to_integer3 = AST('single', [GenericToken('integer', '3')])
+
+        test_term_to_factor1 = AST('single', [test_factor_to_integer1])
+        test_term_to_factor2 = AST('single', [test_factor_to_integer2])
+
+        test_expr_to_term1 = AST('single', [test_term_to_factor1])
+
+        test_expr3 = AST('add', [test_expr_to_term1, test_term_to_factor2])
+
+        test_term6 = AST('multiply', [test_term_to_factor2, test_factor_to_integer3])
+        test_expr7 = AST('add', [test_expr_to_term1, test_term6])
+
+        for data, expect in [
+                ['1', test_expr_to_term1],
+                ['1+2', test_expr3],
+                ['1+2*3', test_expr7],
+                ]:
+            # print(data)
+            tokens = scan_expression(data)
+            # print(tokens)
+            tree = parse_expression(tokens)
+
+            # from trepan.api import debug; debug()
+            self.assertEqual(tree, expect)
+            pass
+        return
+
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        filename = 'expr1.txt'
-        data = open(filename).read()
-    elif len(sys.argv) == 2:
-        if sys.argv[1] in ['-h', '--help']:
-            print(""""usage: %s [filename | expression ]""" %
-                      sys.argv[0])
-            sys.exit(1)
-        filename = sys.argv[1]
-        data = open(filename).read()
-    else:
-        data = ' '.join(sys.argv[1:])
-    print(data)
-    tokens = scan_expression(data)
-    print(tokens)
-    tree = parse_expression(tokens)
-    print(tree)
-    i = Interpret(tree)
-    print("Final value is: %d" % i.value)
+    unittest.main()
