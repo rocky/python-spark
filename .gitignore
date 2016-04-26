@@ -3,3 +3,7 @@
 /.python-version
 /dist
 /spark.egg-info
+/.eggs
+/.tox
+/ChangeLog
+/how-to-make-a-release.txt

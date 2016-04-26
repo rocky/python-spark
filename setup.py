@@ -19,15 +19,16 @@ __import__('pkg_resources')
 from setuptools import setup
 
 setup(
-       author             = author,
        # classifiers        = classifiers,
        description        = short_desc,
        # install_requires   = install_requires,
        # license            = license,
        long_description   = long_description,
+       maintainer         = maintainer,
+       maintainer_email   = maintainer_email,
        packages           = ['spark'],
        py_modules         = py_modules,
-       name               = modname,
+       name               = 'spark_parser',
        test_suite         = 'nose.collector',
        url                = web,
        setup_requires     = ['nose>=1.0'],
