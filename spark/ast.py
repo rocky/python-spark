@@ -19,7 +19,8 @@ class AST(UserList):
         because AST token offsets might be different"""
         return len(self.data) == 1  and None == self.data[0]
 
-    def __getslice__(self, low, high):    return self.data[low:high]
+    def __getslice__(self, low, high):
+        return self.data[low:high]
 
     def __eq__(self, o):
         if isinstance(o, AST):

@@ -3,8 +3,9 @@
 SPARK example to parse simple arithmetic expressions
 """
 import re, sys
-from spark import AST, GenericParser, GenericASTTraversal
-from spark import GenericScanner, GenericToken
+from spark.spark import GenericParser, GenericASTTraversal
+from spark import AST
+from spark.scanner import GenericScanner, GenericToken
 
 class ExprScanner(GenericScanner):
 
@@ -48,7 +49,7 @@ class ExprScanner(GenericScanner):
 
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
-# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
+#DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
 
 class ExprParser(GenericParser):

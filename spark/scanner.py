@@ -22,9 +22,12 @@ class GenericToken:
         self.type = type
         self.attr = attr
 
-    def __cmp__(self, o):
-        return cmp(self.type, o)
-
+    def __eq__(self, o):
+        """ '==', but it's okay if offsets and linestarts are different"""
+        if isinstance(o, GenericToken):
+            return (self.type == o.type) and (self.attr == o.attr)
+        else:
+            return self.type == o
     def __repr__(self):
         return self.attr or self.type
 
