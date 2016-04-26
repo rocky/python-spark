@@ -49,7 +49,7 @@ class ExprScanner(GenericScanner):
 
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
-#DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
+# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
 
 class ExprParser(GenericParser):

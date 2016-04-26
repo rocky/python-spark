@@ -10,7 +10,7 @@
 #     short_desc,       version,            web,              zip_safe
 
 from __pkginfo__ import \
-    author,           author_email,                                  \
+    author,           maintainer,      maintainer_email,             \
     long_description,                                                \
     modname,          py_modules,       					         \
     short_desc,       version,          web,              zip_safe
@@ -20,12 +20,12 @@ from setuptools import setup
 
 setup(
        author             = author,
-       author_email       = author_email,
        # classifiers        = classifiers,
        description        = short_desc,
        # install_requires   = install_requires,
        # license            = license,
        long_description   = long_description,
+       packages           = ['spark'],
        py_modules         = py_modules,
        name               = modname,
        test_suite         = 'nose.collector',

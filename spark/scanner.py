@@ -28,6 +28,7 @@ class GenericToken:
             return (self.type == o.type) and (self.attr == o.attr)
         else:
             return self.type == o
+
     def __repr__(self):
         return self.attr or self.type
 

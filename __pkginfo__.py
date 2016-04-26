@@ -29,10 +29,11 @@ classifiers =  ['Development Status :: 3 - Alpha',
                 ]
 
 # The rest in alphabetic order
-author             = "John Aycock, Rocky Bernstein"
-author_email       = "rb@dustyfeet.com"
+author             = "John Aycock"
 ftp_url            = None
 # license            = 'BSDish'
+maintainer         = "Rocky Bernstein",
+maintainer_email   = "rb@dustyfeet.com"
 modname            = 'spark'
 py_modules         = None
 short_desc         = 'An Early-Algorithm LR Parser'
