@@ -46,7 +46,7 @@ def get_srcdir():
     return os.path.realpath(filename)
 
 ns = {}
-version            = '1.0.0'
+version            = '1.0.1'
 web                = 'https://github.com/rocky/python-spark/'
 
 # tracebacks in zip files are funky and not debuggable

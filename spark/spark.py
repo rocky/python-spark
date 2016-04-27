@@ -50,7 +50,7 @@ class _State:
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
 
-class GenericParser:
+class GenericParser(object):
     '''
     An Earley parser, as per J. Earley, "An Efficient Context-Free
     Parsing Algorithm", CACM 13(2), pp. 94-102.  Also J. C. Earley,

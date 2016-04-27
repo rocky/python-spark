@@ -6,9 +6,10 @@ SPARK
 SPARK is an Early Algorithm Parser with some Generic Abstract Syntax
 Tree building routines.
 
-SPARK stands for the Scanning, Parsing, and Rewriting Kit.
-The first version (circa 1998) was described in the paper Compiling
-Little Languages in Python at the 7th International Python Conference.
+SPARK stands for the Scanning, Parsing, and Rewriting Kit.  The first
+version was written by John Aycock was described in his 1988 paper:
+"Compiling Little Languages in Python" at the 7th International Python
+Conference.
 
 
 
