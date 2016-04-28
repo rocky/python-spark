@@ -1,3 +1,8 @@
+spark 1.0.1 2016-04-27
+
+- Fix metadata for Python3 upload
+- Fix module exports
+
 spark 1.0.0 2016-04-26
 
 - First Python package release: 8 years in the making
