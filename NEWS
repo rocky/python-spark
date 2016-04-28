@@ -1,3 +1,8 @@
+spark 1.1.0 2016-04-28
+
+- change module name to from spark to spark_parser to avoid conflict
+  other python spark modules in existence
+
 spark 1.0.2 2016-04-27
 
 - Administrivia

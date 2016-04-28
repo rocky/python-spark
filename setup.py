@@ -36,7 +36,7 @@ ftp_url            = None
 # license            = 'BSDish'
 maintainer         = "Rocky Bernstein"
 maintainer_email   = "rb@dustyfeet.com"
-modname            = 'spark'
+modname            = 'spark_parser'
 py_modules         = None
 short_desc         = 'An Early-Algorithm LR Parser'
 
@@ -48,7 +48,7 @@ def get_srcdir():
     return os.path.realpath(filename)
 
 ns = {}
-version            = '1.0.2'
+version            = '1.1.0'
 web                = 'https://github.com/rocky/python-spark/'
 
 # tracebacks in zip files are funky and not debuggable
@@ -71,7 +71,7 @@ setup(
        long_description   = long_description,
        maintainer         = maintainer,
        maintainer_email   = maintainer_email,
-       packages           = ['spark'],
+       packages           = ['spark_parser'],
        py_modules         = py_modules,
        name               = 'spark_parser',
        test_suite         = 'nose.collector',

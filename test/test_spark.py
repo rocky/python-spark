@@ -4,9 +4,9 @@ SPARK unit test via parsing simple arithmetic expressions
 """
 import re, sys, unittest
 
-from spark.spark import GenericParser, GenericASTTraversal
-from spark import AST
-from spark.scanner import GenericScanner, GenericToken
+from spark_parser import GenericParser, GenericASTTraversal
+from spark_parser import AST
+from spark_parser.scanner import GenericScanner, GenericToken
 
 class ExprScanner(GenericScanner):
 
