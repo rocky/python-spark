@@ -1,9 +1,11 @@
 *.pyc
 *~
-/.python-version
-/dist
-/spark.egg-info
 /.eggs
+/.python-version
 /.tox
 /ChangeLog
+/build
+/dist
 /how-to-make-a-release.txt
+/spark.egg-info
+/spark_parser.egg-info
