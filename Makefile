@@ -14,7 +14,7 @@ all: check
 
 #: Run all tests with several Python versions via tox
 check-full: check
-	flake8 spark && flake8 test && flake8 example
+	flake8 spark_parser && flake8 test && flake8 example
 
 #: Run tests (one version of Python)
 check:
