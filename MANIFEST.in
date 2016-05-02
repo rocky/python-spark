@@ -1,0 +1,6 @@
+include README.rst
+include ChangeLog
+include __pkginfo__.py
+recursive-include spark_parser *.py
+recursive-include test *.py
+recursive-include example *.py

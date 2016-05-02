@@ -3,7 +3,6 @@
 /.eggs
 /.python-version
 /.tox
-/ChangeLog
 /build
 /dist
 /how-to-make-a-release.txt

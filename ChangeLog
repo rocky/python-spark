@@ -1,0 +1,110 @@
+2016-05-02  rocky <rb@dustyfeet.com>
+
+	* README.rst: Rework a little Cite where to find an example
+
+2016-04-28  rocky <rb@dustyfeet.com>
+
+	* spark_parser/__init__.py: Fix import
+
+2016-04-28  rocky <rb@dustyfeet.com>
+
+	* Makefile, spark_parser/__init__.py, spark_parser/ast.py,
+	spark_parser/scanner.py, spark_parser/spark.py: spark ->
+	spark_parser
+
+2016-04-28  rocky <rb@dustyfeet.com>
+
+	* NEWS, example/expr/expr.py, setup.py, spark/__init__.py,
+	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py: 
+	Get ready for release 1.0.2
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* NEWS: Get ready for release 1.0.2
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* .travis.yml: Build env typo
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* .gitignore, .travis.yml, __pkginfo__.py, setup.py: Remove
+	__pkginfo__.py. Try pypy and pypy3
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* README.rst: A doc into tweak
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* NEWS, spark/__init__.py: Fix module exports and update NEWS
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* spark/__init__.py: Export GenericASTBuilder
+
+2016-04-27  rocky <rb@dustyfeet.com>
+
+	* README.rst, __pkginfo__.py, spark/spark.py, tox.ini: Small fixes spark.py: use new-style classes README.rst: note John Aycock
+	tox.ini: py35->py34
+
+2016-04-26  rocky <rb@dustyfeet.com>
+
+	* __pkginfo__.py: Typo causing 3.5 wheel upload failure
+
+2016-04-26  rocky <rb@dustyfeet.com>
+
+	* .gitignore, NEWS, setup.py: Administrivia
+
+2016-04-26  rocky <rb@dustyfeet.com>
+
+	* Makefile, __pkginfo__.py, example/expr/expr.py, setup.py,
+	spark/scanner.py, tox.ini: Get ready for release 1.0.0
+
+2016-04-25  rocky <rb@dustyfeet.com>
+
+	* .travis.yml: Try travis on 3.5
+
+2016-04-25  rocky <rb@dustyfeet.com>
+
+	* example/expr/expr.py, spark/ast.py, spark/scanner.py: Works on
+	Python3: cmp -> __eq__ ast.py, scanner: small typo
+
+2016-04-24  rocky <rb@dustyfeet.com>
+
+	* README.rst: Add SPARK build status
+
+2016-04-24  rocky <rb@dustyfeet.com>
+
+	* .travis.yml, Makefile, __pkginfo__.py, example/expr/expr.py,
+	spark/__init__.py, spark/ast.py, spark/scanner.py, spark/spark.py,
+	test/test_spark.py, tox.ini: Add test and lots of other stuff - Go over example grammar - Add Makefile - spark - go over .travis.yml - scanner.py: remove old Python2 ism that isn't in Python3 - spark: make more Python3 compatible - start a tox file
+
+2016-04-24  rocky <rb@dustyfeet.com>
+
+	* example/expr/README.md, example/expr/expr.py, spark/__init__.py,
+	spark/scanner.py: Refactor and Improve based on expr example Add generic scanner Start to document this shit better.
+
+2016-04-21  rocky <rb@dustyfeet.com>
+
+	* example/expr/expr.py, spark/__init__.py, spark/ast.py,
+	spark/spark.py: Include semantic actions
+
+2016-04-21  rocky <rb@dustyfeet.com>
+
+	* example/expr/expr.py: WIP Start semantic routines
+
+2016-04-21  rocky <rb@dustyfeet.com>
+
+	* example/expr/expr.py, example/expr/expr1.txt,
+	example/expr/expr2.txt, spark/__init__.py, spark/ast.py: Start
+	arithmetic expression example also add generic AST routine
+
+2016-04-20  rocky <rb@dustyfeet.com>
+
+	* README.rst: Reduce README.rst
+
+2016-04-20  rocky <rb@dustyfeet.com>
+
+	* Initial guess at Spark package
+
