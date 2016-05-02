@@ -46,5 +46,5 @@ If you extend this example and you think you have a good clean example
 for others, make a github pull request and perhaps I'll include it.
 
 Alternatively, if you have another good example to use for
-demonstration of SPART, again make a github pull request for
+demonstration of SPARK, again make a github pull request for
 inclusion.
