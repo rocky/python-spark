@@ -26,7 +26,7 @@ This uses `setup.py`, so it follows the standard Python routine:
 Example
 -------
 
-The github `example` directory_ has a worked out example; Package uncompyle6_
+The github `example` directory_ has a worked-out example; Package uncompyle6_
 uses this and contains a much larger example.
 
 See Also
