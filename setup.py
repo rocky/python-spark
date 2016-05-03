@@ -14,7 +14,7 @@ copyright   = """
 Copyright (C) 2016 Rocky Bernstein <rb@dustyfeet.com>.
 """
 
-classifiers =  ['Development Status :: 3 - Alpha',
+classifiers =  ['Development Status :: 4 - Beta',
                 'Intended Audience :: Developers',
                 'Operating System :: OS Independent',
                 'Programming Language :: Python',
@@ -33,7 +33,7 @@ classifiers =  ['Development Status :: 3 - Alpha',
 # The rest in alphabetic order
 author             = "John Aycock"
 ftp_url            = None
-# license            = 'BSDish'
+license            = 'MIT'
 maintainer         = "Rocky Bernstein"
 maintainer_email   = "rb@dustyfeet.com"
 modname            = 'spark_parser'

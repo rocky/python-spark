@@ -3,20 +3,19 @@
 SPARK
 =====
 
-SPARK stands for the Scanning, Parsing, and Rewriting Kit. It is
-a Jay Early Algorithm Parser with some generic Abstract Syntax
-Tree-building routines.
+SPARK stands for Scanning, Parsing, and Rewriting Kit. It uses Jay
+Early's algorithm for LR parsing and comes with some generic Abstract
+Syntax Tree routines. There is also a prototype scanner which does its
+job by combining Python regular expressions.
 
-The first version was written by John Aycock was described in his 1988 paper:
-"Compiling Little Languages in Python" at the 7th International Python
-Conference.
-
-
+The original version of this was written by John Aycock and was
+described in his 1988 paper: "Compiling Little Languages in Python" at
+the 7th International Python Conference.
 
 Installation
 ------------
 
-This uses setup.py, so it follows the standard Python routine:
+This uses `setup.py`, so it follows the standard Python routine:
 
 ::
 
@@ -27,9 +26,8 @@ This uses setup.py, so it follows the standard Python routine:
 Example
 -------
 
-The github example directory_ has worked out example(s).
-
-
+The github `example` directory_ has a worked out example; Package uncompyle6_
+uses this and contains a much larger example.
 
 See Also
 --------
@@ -38,6 +36,7 @@ See Also
 * https://pypi.python.org/pypi/uncompyle6/
 
 .. _directory: https://github.com/rocky/python-spark/tree/master/example
+.. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
 .. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
 		 :target: https://travis-ci.org/rocky/python-spark
