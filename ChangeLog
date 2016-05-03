@@ -1,3 +1,20 @@
+2016-05-03  rocky <rb@dustyfeet.com>
+
+	* setup.py: Get ready for release 1.1.1
+
+2016-05-03  rocky <rb@dustyfeet.com>
+
+	* MANIFEST.in, README.rst, setup.py: Add LICENSE. Go over
+	README.rst; Administrivia
+
+2016-05-02  rocky <rb@dustyfeet.com>
+
+	* example/expr/README.md: Typo
+
+2016-05-02  rocky <rb@dustyfeet.com>
+
+	* .gitignore, ChangeLog, LICENSE, MANIFEST.in: Improve packaging
+
 2016-05-02  rocky <rb@dustyfeet.com>
 
 	* README.rst: Rework a little Cite where to find an example
