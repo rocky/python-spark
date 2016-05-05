@@ -17,15 +17,15 @@ class AST(UserList):
     def isNone(self):
         """An AST None token. We can't use regular list comparisons
         because AST token offsets might be different"""
-        return len(self.data) == 1  and None == self.data[0]
+        return len(self.data) == 1 and self.data[0] is None
 
     def __getslice__(self, low, high):
         return self.data[low:high]
 
     def __eq__(self, o):
         if isinstance(o, AST):
-            return self.type == o.type \
-                   and UserList.__eq__(self, o)
+            return (self.type == o.type
+                    and UserList.__eq__(self, o))
         else:
             return self.type == o
 

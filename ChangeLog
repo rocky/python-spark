@@ -1,6 +1,14 @@
+2016-05-05  rocky <rb@dustyfeet.com>
+
+	* setup.py: Get ready for release 1.1.2
+
 2016-05-03  rocky <rb@dustyfeet.com>
 
-	* setup.py: Get ready for release 1.1.1
+	* README.rst: little grammar thing
+
+2016-05-03  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, setup.py: Get ready for release 1.1.1
 
 2016-05-03  rocky <rb@dustyfeet.com>
 

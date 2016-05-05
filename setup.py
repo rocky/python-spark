@@ -48,7 +48,7 @@ def get_srcdir():
     return os.path.realpath(filename)
 
 ns = {}
-version            = '1.1.1'
+version            = '1.1.2'
 web                = 'https://github.com/rocky/python-spark/'
 
 # tracebacks in zip files are funky and not debuggable
@@ -64,16 +64,16 @@ __import__('pkg_resources')
 from setuptools import setup
 
 setup(
-       # classifiers        = classifiers,
+       classifiers        = classifiers,
        description        = short_desc,
        # install_requires   = install_requires,
-       # license            = license,
+       license            = license,
        long_description   = long_description,
        maintainer         = maintainer,
        maintainer_email   = maintainer_email,
        packages           = ['spark_parser'],
        py_modules         = py_modules,
-       name               = 'spark_parser',
+       name               = 'spark3_parser',
        test_suite         = 'nose.collector',
        url                = web,
        setup_requires     = ['nose>=1.0'],
