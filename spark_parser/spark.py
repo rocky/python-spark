@@ -91,7 +91,7 @@ class GenericParser(object):
             self.makeNewRules()
             self.ruleschanged = False
             self.edges, self.cores = {}, {}
-            self.states = { 0: self.makeState0() }
+            self.states = {0: self.makeState0()}
             self.makeState(0, self._BOF)
         #
         #  XXX - should find a better way to do this..
@@ -118,7 +118,7 @@ class GenericParser(object):
         self.rule2func = {}
         self.rule2name = {}
         self.collectRules()
-        start = D['rules'][self._START][0][1][1] # Blech.
+        start = D['rules'][self._START][0][1][1]  # Blech.
         self.augment(start)
         D['rule2func'] = self.rule2func
         D['makeSet'] = self.makeSet_fast
@@ -236,8 +236,8 @@ class GenericParser(object):
             n = len(rhs)
             while i < n:
                 sym = rhs[i]
-                if sym not in self.rules or \
-                    not self.nullable[sym]:
+                if (sym not in self.rules or
+                    not self.nullable[sym]):
                         candidate = 0
                         i = i + 1
                         continue
@@ -256,7 +256,7 @@ class GenericParser(object):
                 if lhs in self.newrules:
                     self.newrules[lhs].append(rule)
                 else:
-                    self.newrules[lhs] = [ rule ]
+                    self.newrules[lhs] = [rule]
                 self.new2old[rule] = oldrule
 
     def typestring(self, token):
@@ -412,11 +412,13 @@ class GenericParser(object):
         return rv
 
     def gotoT(self, state, t):
-        if self.debug['rules']: print("Terminal", t, state)
+        if self.debug['rules']:
+            print("Terminal", t, state)
         return [self.goto(state, t)]
 
     def gotoST(self, state, st):
-        if self.debug['transition']: print("GotoST", st, state)
+        if self.debug['transition']:
+            print("GotoST", st, state)
         rv = []
         for t in self.states[state].T:
             if st == t:

@@ -7,4 +7,6 @@
 /dist
 /how-to-make-a-release.txt
 /spark.egg-info
+/spark3_parser.egg-info
 /spark_parser.egg-info
+/tmp
