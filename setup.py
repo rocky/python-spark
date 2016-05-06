@@ -60,7 +60,6 @@ def read(*rnames):
 
 long_description   = ( read("README.rst") + '\n' )
 
-__import__('pkg_resources')
 from setuptools import setup
 
 setup(
