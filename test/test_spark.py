@@ -18,6 +18,10 @@ class ExprScanner(GenericScanner):
         GenericScanner.tokenize(self, input)
         return self.rv
 
+    def add_token(self, name, s):
+        t = GenericToken(kind=name, attr=s)
+        self.rv.append(t)
+
     # The function names below begin with 't_'.
     # This indicates to GenericScanner that these routines
     # form the tokens. GenericScanner introspects on the
@@ -34,19 +38,16 @@ class ExprScanner(GenericScanner):
     # Recognize operators: +, -, *, and /
     def t_add_op(self, s):
         r'[+]'
-        t = GenericToken(type='add_op', attr=s)
-        self.rv.append(t)
+        self.add_token('ADD_OP', s)
 
     def t_mult_op(self, s):
         r'[*]'
-        t = GenericToken(type='mult_op', attr=s)
-        self.rv.append(t)
+        self.add_token('MULT_OP', s)
 
     # Recognize integers
     def t_integer(self, s):
         r'\d+'
-        t = GenericToken(type='integer', attr=s)
-        self.rv.append(t)
+        self.add_token('INTEGER', s)
 
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
@@ -64,7 +65,7 @@ class ExprParser(GenericParser):
         GenericParser.__init__(self, start, debug)
 
     def p_expr_add_term(self, args):
-        ' expr ::= expr add_op term '
+        ' expr ::= expr ADD_OP term '
         return AST('add', [args[0], args[2]])
 
     def p_expr2term(self, args):
@@ -72,7 +73,7 @@ class ExprParser(GenericParser):
         return AST('single', [args[0]])
 
     def p_term_mult_factor(self, args):
-        ' term ::= term mult_op factor '
+        ' term ::= term MULT_OP factor '
         return AST('multiply', [args[0], args[2]])
 
     def p_term2factor(self, args):
@@ -80,7 +81,7 @@ class ExprParser(GenericParser):
         return AST('single', [args[0]])
 
     def p_factor2integer(self, args):
-        ' factor ::= integer '
+        ' factor ::= INTEGER '
         return AST('single', [args[0]])
 
 def scan_expression(data):
@@ -99,9 +100,9 @@ class TestSpark(unittest.TestCase):
     def test_exprs(self):
 
         # Build up some AST trees to use in tetsting
-        test_factor_to_integer1 = AST('single', [GenericToken('integer', '1')])
-        test_factor_to_integer2 = AST('single', [GenericToken('integer', '2')])
-        test_factor_to_integer3 = AST('single', [GenericToken('integer', '3')])
+        test_factor_to_integer1 = AST('single', [GenericToken('INTEGER', '1')])
+        test_factor_to_integer2 = AST('single', [GenericToken('INTEGER', '2')])
+        test_factor_to_integer3 = AST('single', [GenericToken('INTEGER', '3')])
 
         test_term_to_factor1 = AST('single', [test_factor_to_integer1])
         test_term_to_factor2 = AST('single', [test_factor_to_integer2])
