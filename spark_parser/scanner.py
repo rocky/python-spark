@@ -18,8 +18,8 @@ def _namelist(instance):
 
 class GenericToken:
     """A sample Token class that can be used in scanning"""
-    def __init__(self, type, attr=' '):
-        self.type = type
+    def __init__(self, kind, attr=None):
+        self.type = kind
         self.attr = attr
 
     def __eq__(self, o):
@@ -28,6 +28,12 @@ class GenericToken:
             return (self.type == o.type) and (self.attr == o.attr)
         else:
             return self.type == o
+
+    def __str__(self):
+        if self.attr:
+            return 'type: %s, value: %r' % (self.type, self.attr)
+        else:
+            return "type: %s" % self.type
 
     def __repr__(self):
         return self.attr or self.type
@@ -42,7 +48,7 @@ class GenericScanner:
 
         def t_add_op(self, s):
         r'[+-]'
-        t = GenericToken(type='add_op', attr=s)
+        t = GenericToken(type='ADD_OP', attr=s)
         self.rv.append(t)
     """
     def __init__(self):
@@ -67,7 +73,7 @@ class GenericScanner:
         return '|'.join(rv)
 
     def error(self, s, pos):
-        print("Lexical error at position %s" % pos)
+        print("Lexical error in %s at position %s" % (s, pos))
         raise SystemExit
 
     def tokenize(self, s):

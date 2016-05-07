@@ -14,11 +14,6 @@ class AST(UserList):
         self.type = intern(kind)
         UserList.__init__(self, kids)
 
-    def isNone(self):
-        """An AST None token. We can't use regular list comparisons
-        because AST token offsets might be different"""
-        return len(self.data) == 1 and self.data[0] is None
-
     def __getslice__(self, low, high):
         return self.data[low:high]
 

@@ -2,12 +2,16 @@
 """
 SPARK example to parse simple arithmetic expressions
 """
-import re, sys
+import sys
 from spark_parser import GenericParser, GenericASTTraversal
 from spark_parser import AST
 from spark_parser.scanner import GenericScanner, GenericToken
 
 class ExprScanner(GenericScanner):
+    """A simple integer expression Parser.
+
+    Note: function parse() comes from GenericASTBuilder
+    """
 
     def __init__(self):
         GenericScanner.__init__(self)
@@ -17,6 +21,10 @@ class ExprScanner(GenericScanner):
         GenericScanner.tokenize(self, input)
         return self.rv
 
+    def add_token(self, name, s):
+        t = GenericToken(kind=name, attr=s)
+        self.rv.append(t)
+
     # The function names below begin with 't_'.
     # This indicates to GenericScanner that these routines
     # form the tokens. GenericScanner introspects on the
@@ -24,28 +32,27 @@ class ExprScanner(GenericScanner):
     # up with both the names of the tokens and the regular expressions
     # that make up those tokens
 
-    # Recognize white space, but we don't cerate a token for it.
+    # Recognize white space, but we don't create a token for it.
     # This has the effect of stripping white space between tokens
     def t_whitespace(self, s):
         r' \s+ '
         pass
 
-    # Recognize operators: +, -, *, and /
+    # Recognize binary operators.
+    # The routines for '+' and '-' are separated from '*' and '/'
+    # keep operator precidence separate.
     def t_add_op(self, s):
         r'[+-]'
-        t = GenericToken(type='add_op', attr=s)
-        self.rv.append(t)
+        self.add_token('ADD_OP', s)
 
-    def t_mult(self, s):
+    def t_mult_op(self, s):
         r'[/*]'
-        t = GenericToken(type='mult_op', attr=s)
-        self.rv.append(t)
+        self.add_token('MULT_OP', s)
 
     # Recognize integers
     def t_integer(self, s):
         r'\d+'
-        t = GenericToken(type='integer', attr=s)
-        self.rv.append(t)
+        self.add_token('INTEGER', s)
 
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
@@ -66,7 +73,7 @@ class ExprParser(GenericParser):
     # action to take
 
     def p_expr_add_term(self, args):
-        ' expr ::= expr add_op term '
+        ' expr ::= expr ADD_OP term '
         op = 'add' if args[1].attr ==  '+' else 'subtract'
         return AST(op, [args[0], args[2]])
 
@@ -75,7 +82,7 @@ class ExprParser(GenericParser):
         return AST('single', [args[0]])
 
     def p_term_mult_factor(self, args):
-        ' term ::= term mult_op factor '
+        ' term ::= term MULT_OP factor '
         op = 'multiply' if args[1].attr ==  '*' else 'divide'
         return AST(op, [args[0], args[2]])
 
@@ -84,7 +91,7 @@ class ExprParser(GenericParser):
         return AST('single', [args[0]])
 
     def p_factor2integer(self, args):
-        ' factor ::= integer '
+        ' factor ::= INTEGER '
         return AST('single', [args[0]])
 
 class Interpret(GenericASTTraversal):
