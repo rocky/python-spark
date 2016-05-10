@@ -2,11 +2,11 @@
 """
 SPARK unit test via parsing simple arithmetic expressions
 """
-import re, sys, unittest
+import unittest
 
-from spark_parser import GenericParser, GenericASTTraversal
 from spark_parser import AST
 from spark_parser.scanner import GenericScanner, GenericToken
+from spark_parser.spark import GenericParser
 
 class ExprScanner(GenericScanner):
 
@@ -117,8 +117,7 @@ class TestSpark(unittest.TestCase):
         for data, expect in [
                 ['1', test_expr_to_term1],
                 ['1+2', test_expr3],
-                ['1+2*3', test_expr7],
-                ]:
+                ['1+2*3', test_expr7]]:
             # print(data)
             tokens = scan_expression(data)
             # print(tokens)

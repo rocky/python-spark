@@ -1,6 +1,40 @@
+2016-05-10  rocky <rb@dustyfeet.com>
+
+	* NEWS, README.rst, spark_parser/spark.py: Get ready for release
+	1.2.0
+
+2016-05-07  rocky <rb@dustyfeet.com>
+
+	* test/test_spark.py: Fix up test
+
+2016-05-07  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/expr/README.md, example/expr/expr.py,
+	example/expr2/README.md, example/expr2/__init__.py,
+	example/expr2/parser.py, example/expr2/scanner.py,
+	spark_parser/ast.py, spark_parser/scanner.py: Add another example.  ast.py: remove isNone scanner.py: * don't use "type" as a parameter name * add a __str__ routine
+
+2016-05-06  rocky <rb@dustyfeet.com>
+
+	* .travis.yml: Try travis on pypy and 3.3
+
+2016-05-06  rocky <rb@dustyfeet.com>
+
+	* .gitignore, spark_parser/ast.py, spark_parser/spark.py: More
+	administriva
+
+2016-05-06  rocky <rb@dustyfeet.com>
+
+	* setup.py: don't need to import pkg_resources
+
 2016-05-05  rocky <rb@dustyfeet.com>
 
-	* setup.py: Get ready for release 1.1.2
+	* .travis.yml, setup.py: Fix classifiers
+
+2016-05-05  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, setup.py, spark_parser/ast.py: Get ready for
+	release 1.1.2
 
 2016-05-03  rocky <rb@dustyfeet.com>
 

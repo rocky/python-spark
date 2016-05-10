@@ -47,8 +47,8 @@ class ExprParser(GenericASTBuilder):
         return rv
 
     ##########################################################
-    ## Python 2 grammar rules. Grammar rule functions
-    ## start with the name p_ and are collected automatically
+    # Python 2 grammar rules. Grammar rule functions
+    # start with the name p_ and are collected automatically
     ##########################################################
     def p_expr(self, args):
         '''
@@ -70,15 +70,17 @@ class ExprParser(GenericASTBuilder):
         '''
 
 def parse_python(python_str, out=sys.stdout,
-                  show_tokens=False, parser_debug=DEFAULT_DEBUG):
+                 show_tokens=False, parser_debug=DEFAULT_DEBUG):
     assert isinstance(python_str, str)
     tokens = ExprScanner().tokenize(python_str)
     for t in tokens:
         print(t)
 
     # For heavy grammar debugging
-    # parser_debug = {'rules': True, 'transition': True, 'reduce' : True}
-    parser_debug = {'rules': False, 'transition': False, 'reduce' : True}
+    # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
+    #                 'errorstack': True}
+    parser_debug = {'rules': False, 'transition': False, 'reduce': True,
+                    'errorstack': True}
     return ExprParser(parser_debug).parse(tokens)
 
 if __name__ == '__main__':

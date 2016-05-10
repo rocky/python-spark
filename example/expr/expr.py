@@ -74,7 +74,7 @@ class ExprParser(GenericParser):
 
     def p_expr_add_term(self, args):
         ' expr ::= expr ADD_OP term '
-        op = 'add' if args[1].attr ==  '+' else 'subtract'
+        op = 'add' if args[1].attr == '+' else 'subtract'
         return AST(op, [args[0], args[2]])
 
     def p_expr2term2(self, args):
@@ -83,7 +83,7 @@ class ExprParser(GenericParser):
 
     def p_term_mult_factor(self, args):
         ' term ::= term MULT_OP factor '
-        op = 'multiply' if args[1].attr ==  '*' else 'divide'
+        op = 'multiply' if args[1].attr == '*' else 'divide'
         return AST(op, [args[0], args[2]])
 
     def p_term2single(self, args):
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         if sys.argv[1] in ['-h', '--help']:
             print(""""usage: %s [filename | expression ]""" %
-                      sys.argv[0])
+                  sys.argv[0])
             sys.exit(1)
         filename = sys.argv[1]
         data = open(filename).read()
