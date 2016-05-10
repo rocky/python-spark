@@ -38,7 +38,7 @@ maintainer         = "Rocky Bernstein"
 maintainer_email   = "rb@dustyfeet.com"
 modname            = 'spark_parser'
 py_modules         = None
-short_desc         = 'An Early-Algorithm LR Parser'
+short_desc         = 'An Early-Algorithm Context-free grammar Parser'
 
 import os.path
 
