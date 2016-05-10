@@ -1,3 +1,9 @@
+spark 1.2.0 2016-05-10
+
+- Add routine to find/show error stack
+- Allow setting paring debug option on parse method
+- Add an additional example
+
 spark 1.1.2 2016-05-05
 
 - Add LICENSE to setup.py - this time for sure!

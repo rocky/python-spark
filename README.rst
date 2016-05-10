@@ -4,13 +4,16 @@ SPARK
 =====
 
 SPARK stands for Scanning, Parsing, and Rewriting Kit. It uses Jay
-Early's algorithm for LR parsing and comes with some generic Abstract
-Syntax Tree routines. There is also a prototype scanner which does its
-job by combining Python regular expressions.
+Early's algorithm for parsing context free grammars, and comes with
+some generic Abstract Syntax Tree routines. There is also a prototype
+scanner which does its job by combining Python regular expressions.
 
 The original version of this was written by John Aycock and was
 described in his 1988 paper: "Compiling Little Languages in Python" at
 the 7th International Python Conference.
+
+Note: Early algorithm parsers are almost linear when given an LR grammar.
+These are grammars which are left-recursive.
 
 Installation
 ------------
@@ -26,7 +29,7 @@ This uses `setup.py`, so it follows the standard Python routine:
 Example
 -------
 
-The github `example` directory_ has a worked-out example; Package uncompyle6_
+The github `example` directory_ has a worked-out examples; Package uncompyle6_
 uses this and contains a much larger example.
 
 See Also

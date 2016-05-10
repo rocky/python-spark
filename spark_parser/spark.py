@@ -25,7 +25,7 @@ from __future__ import print_function
 
 import os, re
 
-__version__ = 'SPARK-1.0.0 Python2 and Python3 compatible'
+__version__ = 'SPARK-1.2.0 Python2 and Python3 compatible'
 
 def _namelist(instance):
     namelist, namedict, classlist = [], {}, [instance.__class__]
@@ -46,9 +46,12 @@ class _State:
         self.T, self.complete, self.items = [], [], items
         self.stateno = stateno
 
-# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
-# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
-DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
+# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True,
+#                  'errorstack': True }
+# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True,
+#                  'errorstack': True }
+DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False,
+                 'errorstack': False}
 
 class GenericParser(object):
     '''
@@ -266,7 +269,41 @@ class GenericParser(object):
         print("Syntax error at or near `%s' token" % token)
         raise SystemExit
 
-    def parse(self, tokens):
+    def errorstack(self):
+        """Show the stacks of completed symbols.
+        We get this by inspecting the current transitions
+        possible and from that extracting the set of states
+        we are in, and from there we look at the set of
+        symbols before the "dot"
+        """
+        print()
+        print("-- Stacks of completed symbols:")
+        states = [s for s in self.edges.values() if s]
+        # States now has the set of states we are in
+        state_stack = set()
+        for state in states:
+            # Find rules which can follow, but keep only
+            # the part before the dot
+            for rule, dot in self.states[state].items:
+                lhs, rhs = rule
+                if dot > 0:
+                    state_stack.add(' '.join(rhs[:dot]))
+                    pass
+                pass
+            pass
+        for stack in sorted(state_stack):
+            print(stack)
+
+    def parse(self, tokens, debug=None):
+        """This is the main entry point from outside.
+
+        Passing in a debug dictionary changes the default debug
+        setting.
+        """
+
+        if debug:
+            self.debug = debug
+
         sets = [ [(1, 0), (2, 0)] ]
         self.links = {}
 
@@ -293,6 +330,8 @@ class GenericParser(object):
         finalitem = (self.finalState(tokens), 0)
         if finalitem not in sets[-2]:
             if len(tokens) > 0:
+                if self.debug['errorstack']:
+                    self.errorstack()
                 self.error(tokens[i-1])
             else:
                 self.error(None)
@@ -301,11 +340,8 @@ class GenericParser(object):
                     tokens, len(sets)-2)
 
     def isnullable(self, sym):
-        #
-        #  For symbols in G_e only.  If we weren't supporting 1.5,
-        #  could just use sym.startswith().
-        #
-        return self._NULLABLE == sym[0:len(self._NULLABLE)]
+        #  For symbols in G_e only.
+        return sym.startswith(self._NULLABLE)
 
     def skip(self, xxx_todo_changeme, pos=0):
         (lhs, rhs) = xxx_todo_changeme
