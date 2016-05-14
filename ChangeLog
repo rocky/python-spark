@@ -1,3 +1,22 @@
+2016-05-14  rocky <rb@dustyfeet.com>
+
+	* setup.py, spark_parser/__init__.py, spark_parser/spark.py,
+	spark_parser/version.py: 2 kinds of stack dumping. Redo packaging if debug['errorstack'] == 'full' then show where dot is in state
+	stack Redo setup.py;   pick up version automatically   correct "name" field
+
+2016-05-10  rocky <rb@dustyfeet.com>
+
+	* setup.py: Correct parser language class
+
+2016-05-10  rocky <rb@dustyfeet.com>
+
+	* setup.py: Get ready for release 1.2.0
+
+2016-05-10  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, example/expr/expr.py, example/expr2/parser.py,
+	test/test_spark.py: flake8
+
 2016-05-10  rocky <rb@dustyfeet.com>
 
 	* NEWS, README.rst, spark_parser/spark.py: Get ready for release
