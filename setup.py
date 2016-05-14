@@ -37,31 +37,29 @@ license            = 'MIT'
 maintainer         = "Rocky Bernstein"
 maintainer_email   = "rb@dustyfeet.com"
 modname            = 'spark_parser'
+name               = 'spark-parser'
 py_modules         = None
 short_desc         = 'An Early-Algorithm Context-free grammar Parser'
-
-import os.path
-
-
-def get_srcdir():
-    filename = os.path.normcase(os.path.dirname(os.path.abspath(__file__)))
-    return os.path.realpath(filename)
-
-ns = {}
-version            = '1.2.0'
 web                = 'https://github.com/rocky/python-spark/'
 
 # tracebacks in zip files are funky and not debuggable
 zip_safe = True
 
+import os
+def get_srcdir():
+    filename = os.path.normcase(os.path.dirname(os.path.abspath(__file__)))
+    return os.path.realpath(filename)
+
+srcdir = get_srcdir()
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    return open(os.path.join(srcdir, *rnames)).read()
 
+# Get info from files; set: long_description and VERSION
 long_description   = ( read("README.rst") + '\n' )
+exec(read('spark_parser/version.py'))
 
-from setuptools import setup
-
+from setuptools import setup, find_packages
 setup(
        classifiers        = classifiers,
        description        = short_desc,
@@ -70,11 +68,11 @@ setup(
        long_description   = long_description,
        maintainer         = maintainer,
        maintainer_email   = maintainer_email,
-       packages           = ['spark_parser'],
+       packages           = find_packages(),
        py_modules         = py_modules,
-       name               = 'spark3_parser',
+       name               = name,
        test_suite         = 'nose.collector',
        url                = web,
        setup_requires     = ['nose>=1.0'],
-       version            = version,
+       version            = VERSION,
        zip_safe           = zip_safe)

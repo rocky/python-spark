@@ -24,9 +24,6 @@ Copyright (c) 2015-2016 Rocky Bernstein
 from __future__ import print_function
 
 import os, re
-
-__version__ = 'SPARK-1.2.0 Python2 and Python3 compatible'
-
 def _namelist(instance):
     namelist, namedict, classlist = [], {}, [instance.__class__]
     for c in classlist:
@@ -47,11 +44,11 @@ class _State:
         self.stateno = stateno
 
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True,
-#                  'errorstack': True }
+#                  'errorstack': 'full' }
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True,
-#                  'errorstack': True }
+#                  'errorstack': 'plain' }
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False,
-                 'errorstack': False}
+                 'errorstack': None}
 
 class GenericParser(object):
     '''
@@ -269,7 +266,7 @@ class GenericParser(object):
         print("Syntax error at or near `%s' token" % token)
         raise SystemExit
 
-    def errorstack(self):
+    def errorstack(self, full=False):
         """Show the stacks of completed symbols.
         We get this by inspecting the current transitions
         possible and from that extracting the set of states
@@ -287,7 +284,10 @@ class GenericParser(object):
             for rule, dot in self.states[state].items:
                 lhs, rhs = rule
                 if dot > 0:
-                    state_stack.add(' '.join(rhs[:dot]))
+                    if full:
+                        state_stack.add(' '.join(rhs[:dot]) + ' . ' + ' '.join(rhs[dot:]))
+                    else:
+                        state_stack.add(' '.join(rhs[:dot]))
                     pass
                 pass
             pass
@@ -331,7 +331,7 @@ class GenericParser(object):
         if finalitem not in sets[-2]:
             if len(tokens) > 0:
                 if self.debug['errorstack']:
-                    self.errorstack()
+                    self.errorstack(str(self.debug['errorstack']) == 'full')
                 self.error(tokens[i-1])
             else:
                 self.error(None)
