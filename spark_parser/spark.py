@@ -678,6 +678,13 @@ class GenericParser(object):
         '''
         return list[0]
 
+    def dumpGrammar(self):
+        import collections
+        for lhs, rhs in collections.OrderedDict(sorted(self.rule2name.items())):
+            print("%s ::= %s" % (lhs, ' '.join(rhs)))
+            pass
+        return
+
 #
 #  GenericASTBuilder automagically constructs a concrete/abstract syntax tree
 #  for a given input.  The extra argument is a class (not an instance!)
