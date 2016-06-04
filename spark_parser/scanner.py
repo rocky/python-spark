@@ -38,6 +38,14 @@ class GenericToken:
     def __repr__(self):
         return self.attr or self.type
 
+    # Used in generic table-driven semantics routines
+    def __hash__(self):
+        return hash(self.attr)
+
+    # Used in generic table-driven semantics routines
+    def __getitem__(self, i):
+        raise IndexError
+
 class GenericScanner:
     """A class which can be used subclass off of to make
 
