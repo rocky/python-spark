@@ -84,9 +84,13 @@ TABLE_R0 = {}
 
 TABLE_DIRECT = {
     'pass_stmt':		( '%|pass\n', ),
-    'import_from': ( '%|from %[1] import %c\n', 2 ),
+    'import_from': ( '%|from %c import %c\n', 1, 2 ),
+    'import_name': ( '%|import %c\n', 1 ),
     'newline_or_stmt': ('%c', 0),
-    'dotted_name': ('%c', 0),
+     'dotted_name': ('%c%c', 0, 1),
+    'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
+    # 'import_as_name': ('%c as %c', 0, 2),
+    'import_as_name': ('%c', 0),
     'NAME':	( '%{attr}', ),
     'DOT':	( '.', ),
 
@@ -294,11 +298,11 @@ MAP_R = (TABLE_R, -1)
 MAP = {
     'file_input':	MAP_R,
     'stmt':		MAP_R,
+    'stmt':		MAP_R,
     'del_stmt':		MAP_R,
     'designator':	MAP_R,
     'exprlist':		MAP_R0,
     'dots_dotted_name_or_dots': MAP_R0,
-    'dots': MAP_R,
 }
 
 escape = re.compile(r'''
@@ -481,7 +485,6 @@ class Python2Formatter(GenericASTTraversal, object):
     def n_return_stmt(self, node):
         self.write(self.indent, 'return')
         self.write(' ')
-        from trepan.api import debug; debug();
         self.preorder(node[0])
         self.println()
         self.prune() # stop recursing
@@ -564,10 +567,6 @@ class Python2Formatter(GenericASTTraversal, object):
             if node[-2][0][-1] != 'BUILD_TUPLE_0':
                 node[-2][0].type = 'build_tuple2'
         self.default(node)
-#        maybe_tuple = node[-2][-1]
-#        if maybe_tuple.type.startswith('BUILD_TUPLE'):
-#            maybe_tuple.type = 'build_tuple2'
-#        self.default(node)
 
     n_store_subscr = n_binary_subscr = n_delete_subscr
 
@@ -690,18 +689,6 @@ class Python2Formatter(GenericASTTraversal, object):
         self.preorder(node[2][1])
         self.indentLess()
         self.prune()
-
-    def n_import_as(self, node):
-        iname = node[0].pattr
-        assert node[-1][-1].type.startswith('STORE_')
-        sname = node[-1][-1].pattr # assume one of STORE_.... here
-        if iname == sname or iname.startswith(sname + '.'):
-            self.write(iname)
-        else:
-            self.write(iname, ' as ', sname)
-        self.prune() # stop recursing
-
-    n_import_as_cont = n_import_as
 
     def n_importfrom(self, node):
         if node[0].pattr > 0:
@@ -1143,8 +1130,8 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
 
     formatter = Python2Formatter()
 
-    # Punt for now
-    # return python_stmts
+    if showast:
+        print(parsed)
 
     # What we've been waiting for: Generate source from AST!
     python2_formatted_str = formatter.format_python2(parsed)
