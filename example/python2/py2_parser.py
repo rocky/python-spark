@@ -183,7 +183,38 @@ class PythonParser(GenericASTBuilder):
         import_stmt ::= import_name
         import_stmt ::= import_from
 
-        # .... FILL IN ABOVE
+        import_name ::= IMPORT dotted_as_names
+
+        import_from ::= FROM dots_dotted_name_or_dots import_list
+
+        import_as_name ::= NAME
+        import_as_name ::= NAME AS NAME
+
+        dotted_as_name ::= dotted_name
+        dotted_as_name ::= dotted_name AS NAME
+
+        dots_dotted_name_or_dots ::= dots dotted_name
+        dots_dotted_name_or_dots ::= DOT dots
+        dots ::= dots DOT
+        dots ::=
+
+        import_list ::= IMPORT STAR
+        import_list ::= IMPORT LPAREN import_as_names RPAREN
+        import_list ::= IMPORT import_as_names
+
+        import_as_names ::= import_as_name comma_import_as_names comma_opt
+        import_as_names ::= import_as_name
+
+        comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
+        comma_dotted_as_names ::= dotted_as_name
+
+        dotted_as_names ::= dotted_as_name comma_dotted_as_names
+        comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
+        comma_dotted_as_names ::=
+
+        dotted_name ::= NAME dot_names
+        dot_names ::= dot_names DOT NAME
+        dot_names ::=
 
         global_stmt ::= GLOBAL NAME comma_names
         comma_names ::= comma_names COMMA NAME
@@ -196,6 +227,7 @@ class PythonParser(GenericASTBuilder):
         assert_stmt ::= ASSERT test
         assert_stmt ::= ASSERT test COMMA test
 
+        # Fill compound statement
         # ....
         exprlist ::= expr comma_exprs comma_opt
         comma_exprs ::= comma_expr_star COMMA expr
@@ -208,35 +240,35 @@ class PythonParser(GenericASTBuilder):
         testlist ::= testlist COMMA test
         testlist ::= test
 
-        # GO OVER
-        test ::= and_or_tests IF or_test ELSE test
-        test ::= and_or_tests
+        test ::= or_test IF or_test ELSE test
+        test ::= or_test
+        test ::= lambdef
 
-        # test ::= lambdef
+        or_test ::= and_test or_and_tests
 
-        and_or_tests ::= and_or_tests and_or_test
-        and_or_tests ::= and_or_tests not_tests
-        and_or_tests ::= and_or_test
-        and_or_tests ::= not_test
+        or_and_tests ::= or_and_tests or_and_test
+        or_and_tests ::=
 
-        and_or_test ::= and_test
-        and_or_test ::= or_test
-        not_test ::= NOT not_test
-        not_test ::= NOT comparison
+        or_and_test ::= OR and_test
 
-        and_test ::=  and_test AND not_test
-        or_test ::=  and_tests OR not_test
+        and_test ::= not_test and_not_tests
 
+        and_not_tests ::= and_not_tests AND not_test
+        and_not_tests ::=
 
         not_test ::= NOT not_test
         not_test ::= comparison
 
-        comparison ::= comp_op_exprs
+        not_test ::=
+             'not' not_test | comparison
+
+        comparison ::= expr comp_op_exprs
 
         comp_op_exprs ::= comp_op_exprs comp_op expr
-        comp_op_exprs ::= expr
+        comp_op_exprs ::=
 
         comp_op ::= COMP_OP
+        comp_op ::= IN
 
         expr       ::= expr BINOP expr
         expr       ::= LPAREN expr RPAREN
@@ -269,12 +301,10 @@ def parse_python(python_str, out=sys.stdout,
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        for expression in ("pass",
-                           "pass; del x",
-                           "assert x == y",
-                           "global a, b, c",
-                           "global a",
-                               ):
+        for expression in (
+                "from os import path",
+                "from os import path as shmath",
+                ):
             print(expression)
             print('-' * 30)
             ast = parse_python(expression, show_tokens=True)

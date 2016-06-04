@@ -8,8 +8,8 @@ from spark_parser.scanner import GenericScanner, GenericToken
 
 import re
 RESERVED_WORDS = re.split("\s+",
-"""assert break class continue def del eval else elif for global
-import pass print return self while yield""")
+"""as assert break class continue def del eval exec else elif for from global
+if in import pass print return self while yield""")
 
 BRACKET2NAME = {
     '(': 'LPAREN',   ')': 'RPAREN',
@@ -54,7 +54,7 @@ x = 2y + z
         self.add_token(BRACKET2NAME[s], s)
 
     def t_op(self, s):
-        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|in|not|is|<<|>>|[<>%^&+/-]'
+        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|is|<<|>>|[<>%^&+/-]'
         # FIXME: handle is not and not in
         if s in ('<', '>', '==', '>=', '<>', '!=', 'in', 'not', 'is'):
             self.add_token('COMP_OP', s)
