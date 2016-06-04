@@ -285,31 +285,32 @@ class PythonParser(GenericASTBuilder):
         sep       ::= SEMICOLON
         '''
 
-def parse_python(python_str, out=sys.stdout,
-                 show_tokens=False, parser_debug=DEFAULT_DEBUG):
-    assert isinstance(python_str, str)
-    tokens = Python2Scanner().tokenize(python_str)
-    for t in tokens:
-        print(t)
+def parse_python2(python_stmts,
+                  show_tokens=False, parser_debug=DEFAULT_DEBUG):
+    assert isinstance(python_stmts, str)
+    tokens = Python2Scanner().tokenize(python_stmts)
+    if show_tokens:
+        for t in tokens:
+            print(t)
 
     # For heavy grammar debugging
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
     #                 'errorstack': True}
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
     #                'errorstack': True}
-    return PythonParser().parse(tokens)
+    return PythonParser(parser_debug).parse(tokens)
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        for expression in (
+        for python2_stmts in (
                 "from os import path",
                 "from os import path as shmath",
                 ):
-            print(expression)
+            print(python2_stmts)
             print('-' * 30)
-            ast = parse_python(expression, show_tokens=True)
+            ast = parse_python2(python2_stmts, show_tokens=True)
             print(ast)
             print('=' * 30)
     else:
-        expression = " ".join(sys.argv[1:])
-        parse_python(expression, show_tokens=True)
+        python2_stmts = " ".join(sys.argv[1:])
+        parse_python2(python2_stmts, show_tokens=True)
