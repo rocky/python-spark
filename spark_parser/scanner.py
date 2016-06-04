@@ -73,6 +73,9 @@ class GenericScanner:
         return '|'.join(rv)
 
     def error(self, s, pos):
+        """Simple-minded error handler. see py2_scan for another
+        possibility.'
+        """
         print("Lexical error in %s at position %s" % (s, pos))
         raise SystemExit
 
