@@ -27,7 +27,7 @@ class ExprScanner(GenericScanner):
     # up with both the names of the tokens and the regular expressions
     # that make up those tokens
 
-    # Recognize white space, but we don't cerate a token for it.
+    # Recognize white space, but we don't create a token for it.
     # This has the effect of stripping white space between tokens
     def t_whitespace(self, s):
         r'\s+'
