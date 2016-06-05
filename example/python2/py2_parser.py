@@ -22,7 +22,7 @@ class PythonParser(GenericASTBuilder):
     """
 
     def __init__(self, start='file_input', debug=DEFAULT_DEBUG):
-        super().__init__(AST, start, debug=debug)
+        super(PythonParser, self).__init__(AST, start, debug=debug)
         self.debug = debug
 
     # def error(self, tokens, index):
