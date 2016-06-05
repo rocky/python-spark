@@ -31,6 +31,8 @@ x = 2y + z
         raise SystemExit
 
     def __init__(self):
+        self.is_newline = True
+        self.indents = [0]
         GenericScanner.__init__(self)
 
     def tokenize(self, input):
@@ -38,8 +40,17 @@ x = 2y + z
         GenericScanner.tokenize(self, input)
         return self.rv
 
-    def add_token(self, name, s):
+    def add_token(self, name, s, is_newline=False):
         t = GenericToken(kind=name, attr=s)
+        if self.is_newline and name not in ['DEDENT', 'INDENT']:
+            while 0 < self.indents[-1]:
+                self.indents = self.indents[0:-1]
+                self.add_token('DEDENT', s)
+                pass
+            if len(self.indents) > 1:
+                self.rv.append(GenericToken(kind='DEDENT', attr=''))
+            self.indent = ''
+        self.is_newline = is_newline
         self.rv.append(t)
 
     # The function names below begin with 't_'.
@@ -68,7 +79,7 @@ x = 2y + z
             raise SystemExit
 
     def t_unop(self, s):
-        r'[+~-]'
+        r'[-]'
         self.add_token('UNOP', s)
 
     def t_linesep(self, s):
@@ -79,7 +90,7 @@ x = 2y + z
     # regexps and as another way we can achieve regexp |
     def t_nl(self, s):
          r'\n'
-         self.add_token('NEWLINE', s)
+         self.add_token('NEWLINE', s, is_newline=True)
 
     def t_comment(self, s):
          r'[#].*'
@@ -134,6 +145,20 @@ x = 2y + z
 
     def t_whitespace(self, s):
         r'[ \t]+'
+        if self.is_newline:
+            # Ugh. Handle Python's indent/dedent mess.
+            indent = len(s)
+            if indent > self.indents[-1]:
+                self.add_token('INDENT', s)
+                self.indents.append(indent)
+            else:
+                # May need several levels of dedent
+                while indent < self.indents[-1]:
+                    self.indents = self.indents[0:-1]
+                    self.add_token('DEDENT', s)
+                    pass
+                pass
+            pass
         return
 
 if __name__ == "__main__":
@@ -145,12 +170,19 @@ if __name__ == "__main__":
         print('-' * 30)
         return
 
-    showit("(10.5 + 2 / 30) // 3 >> 1")
-    showit("""
-() { } + - 'abc' \"abc\" 10 10j 0x10 # foo
-# bar
-""")
+#     showit("(10.5 + 2 / 30) // 3 >> 1")
+#     showit("""
+# () { } + - 'abc' \"abc\" 10 10j 0x10 # foo
+# # bar
+# """)
+#     showit("""
+# for i in range(x):
+#   if True:
+#      pass
+#   pass
+# pass""")
     showit("""
 for i in range(x):
-  pass
-""")
+    while True:
+       break
+pass""")

@@ -83,15 +83,18 @@ TABLE_R = {
 TABLE_R0 = {}
 
 TABLE_DIRECT = {
-    'pass_stmt':		( '%|pass\n', ),
-    'import_from': ( '%|from %c import %c\n', 1, 2 ),
-    'import_name': ( '%|import %c\n', 1 ),
-    'newline_or_stmt': ('%c', 0),
-     'dotted_name': ('%c%c', 0, 1),
+    'pass_stmt':        ( '%|pass\n', ),
+    'import_from':      ( '%|from %c import %c\n', 1, 2 ),
+    'import_name':      ( '%|import %c\n', 1 ),
+    'newline_or_stmt':  ('%c', 0),
+    'del_stmt':	        ( '%|del %c\n', 1),
+    'global_stmt':	( '%|global %C\n', (1, maxint, '')),
+    'if_stmt':	        ( '%|if %c:\n%+%c%-%c%-%c', 1, 3, 4, 5),
+    'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
-    # 'import_as_name': ('%c as %c', 0, 2),
-    'import_as_name': ('%c', 0),
+
     'NAME':	( '%{attr}', ),
+    'STRING':	( '%{attr}', ),
     'DOT':	( '.', ),
 
     'BINARY_ADD':	( '+' ,),
@@ -137,24 +140,9 @@ TABLE_DIRECT = {
 
     'IMPORT_FROM':	( '%{pattr}', ),
     'load_attr':	( '%c.%[1]{pattr}', 0),
-    'LOAD_NAME':	( '%{pattr}', ),
-    'LOAD_CLASSNAME':	( '%{pattr}', ),
-    'LOAD_GLOBAL':	( '%{pattr}', ),
-    'LOAD_DEREF':	( '%{pattr}', ),
-    'LOAD_LOCALS':	( 'locals()', ),
-    'LOAD_ASSERT':  ( '%{pattr}', ),
-#   'LOAD_CONST':	( '%{pattr}', ),	# handled by n_LOAD_CONST
-    'DELETE_FAST':	( '%|del %{pattr}\n', ),
-    'DELETE_NAME':	( '%|del %{pattr}\n', ),
-    'DELETE_GLOBAL':	( '%|del %{pattr}\n', ),
-    'delete_subscr':	( '%|del %c[%c]\n', 0, 1,),
     'binary_subscr':	( '%c[%p]', 0, (1, 100)),
     'binary_subscr2':	( '%c[%p]', 0, (1, 100)),
     'store_subscr':	( '%c[%c]', 0, 1),
-    'STORE_FAST':	( '%{pattr}', ),
-    'STORE_NAME':	( '%{pattr}', ),
-    'STORE_GLOBAL':	( '%{pattr}', ),
-    'STORE_DEREF':	( '%{pattr}', ),
     'unpack':		( '%C%,', (1, maxint, ', ') ),
     'unpack_w_parens':		( '(%C%,)', (1, maxint, ', ') ),
     'unpack_list':	( '[%C]', (1, maxint, ', ') ),
@@ -226,63 +214,11 @@ TABLE_DIRECT = {
     'raise_stmt2':	( '%|raise %c, %c\n', 0, 1),
     'raise_stmt3':	( '%|raise %c, %c, %c\n', 0, 1, 2),
 
-    'ifstmt':		( '%|if %c:\n%+%c%-', 0, 1 ),
     'iflaststmt':		( '%|if %c:\n%+%c%-', 0, 1 ),
     'iflaststmtl':		( '%|if %c:\n%+%c%-', 0, 1 ),
     'testtrue':     ( 'not %p', (0, 22) ),
 
-    'ifelsestmt':	( '%|if %c:\n%+%c%-%|else:\n%+%c%-', 0, 1, 3 ),
-    'ifelsestmtc':	( '%|if %c:\n%+%c%-%|else:\n%+%c%-', 0, 1, 3 ),
-    'ifelsestmtl':	( '%|if %c:\n%+%c%-%|else:\n%+%c%-', 0, 1, 3 ),
-    'ifelifstmt':	( '%|if %c:\n%+%c%-%c', 0, 1, 3 ),
-    'elifelifstmt':	( '%|elif %c:\n%+%c%-%c', 0, 1, 3 ),
-    'elifstmt':		( '%|elif %c:\n%+%c%-', 0, 1 ),
-    'elifelsestmt':	( '%|elif %c:\n%+%c%-%|else:\n%+%c%-', 0, 1, 3 ),
-    'ifelsestmtr':	( '%|if %c:\n%+%c%-%|else:\n%+%c%-', 0, 1, 2 ),
-    'elifelsestmtr':	( '%|elif %c:\n%+%c%-%|else:\n%+%c%-\n\n', 0, 1, 2 ),
-
-    'whileTruestmt':	( '%|while True:\n%+%c%-\n\n', 1 ),
-    'whilestmt':	( '%|while %c:\n%+%c%-\n\n', 1, 2 ),
-    'while1stmt':	( '%|while 1:\n%+%c%-\n\n', 1 ),
-    'while1elsestmt':  ( '%|while 1:\n%+%c%-%|else:\n%+%c%-\n\n', 1, 3 ),
-    'whileelsestmt':	( '%|while %c:\n%+%c%-%|else:\n%+%c%-\n\n', 1, 2, -2 ),
-    'whileelselaststmt':	( '%|while %c:\n%+%c%-%|else:\n%+%c%-', 1, 2, -2 ),
-    'forstmt':		( '%|for %c in %c:\n%+%c%-\n\n', 3, 1, 4 ),
-    'forelsestmt':	(
-        '%|for %c in %c:\n%+%c%-%|else:\n%+%c%-\n\n', 3, 1, 4, -2),
-    'forelselaststmt':	(
-        '%|for %c in %c:\n%+%c%-%|else:\n%+%c%-', 3, 1, 4, -2),
-    'forelselaststmtl':	(
-        '%|for %c in %c:\n%+%c%-%|else:\n%+%c%-\n\n', 3, 1, 4, -2),
-    'trystmt':		( '%|try:\n%+%c%-%c\n\n', 1, 3 ),
-    'tryelsestmt':		( '%|try:\n%+%c%-%c%|else:\n%+%c%-\n\n', 1, 3, 4 ),
-    'tryelsestmtc':		( '%|try:\n%+%c%-%c%|else:\n%+%c%-', 1, 3, 4 ),
-    'tryelsestmtl':		( '%|try:\n%+%c%-%c%|else:\n%+%c%-', 1, 3, 4 ),
-    'tf_trystmt':		( '%c%-%c%+', 1, 3 ),
-    'tf_tryelsestmt':		( '%c%-%c%|else:\n%+%c', 1, 3, 4 ),
-    'except':                   ('%|except:\n%+%c%-', 3 ),
-    'except_pop_except':        ('%|except:\n%+%c%-', 4 ),
-    'except_cond1':	( '%|except %c:\n', 1 ),
-    'except_cond2':	( '%|except %c as %c:\n', 1, 5 ),
-    'except_suite':     ( '%+%c%-%C', 0, (1, maxint, '') ),
-    'except_suite_finalize':     ( '%+%c%-%C', 1, (3, maxint, '') ),
-    'tryfinallystmt':	( '%|try:\n%+%c%-%|finally:\n%+%c%-\n\n', 1, 5 ),
-    'withstmt':     ( '%|with %c:\n%+%c%-', 0, 3),
-    'withasstmt':   ( '%|with %c as %c:\n%+%c%-', 0, 2, 3),
-    'STORE_FAST':	( '%{pattr}', ),
-    'kv':		( '%c: %c', 3, 1 ),
-    'kv2':		( '%c: %c', 1, 2 ),
     'mapexpr':		( '{%[1]C}', (0, maxint, ', ') ),
-
-    #######################
-    # Python 2.5 Additions
-    #######################
-
-    # Import style for 2.5
-    'importstmt': ( '%|import %c\n', 2),
-    'importstar': ( '%|from %[2]{pattr} import *\n', ),
-    'importmultiple': ( '%|import %c%c\n', 2, 3 ),
-    'import_cont'   : ( ', %c', 2 ),
 
     # CE - Fixes for tuples
     'assign2':     ( '%|%c, %c = %c, %c\n', 3, 4, 0, 1 ),
@@ -299,10 +235,7 @@ MAP = {
     'file_input':	MAP_R,
     'stmt':		MAP_R,
     'stmt':		MAP_R,
-    'del_stmt':		MAP_R,
     'designator':	MAP_R,
-    'exprlist':		MAP_R0,
-    'dots_dotted_name_or_dots': MAP_R0,
 }
 
 escape = re.compile(r'''
@@ -352,16 +285,6 @@ class Python2Formatter(GenericASTTraversal, object):
     indent = property(lambda s: s.params['indent'],
                  lambda s, x: s.params.__setitem__('indent', x),
                  lambda s: s.params.__delitem__('indent'),
-                 None)
-
-    isLambda = property(lambda s: s.params['isLambda'],
-                 lambda s, x: s.params.__setitem__('isLambda', x),
-                 lambda s: s.params.__delitem__('isLambda'),
-                 None)
-
-    _globals = property(lambda s: s.params['_globals'],
-                 lambda s, x: s.params.__setitem__('_globals', x),
-                 lambda s: s.params.__delitem__('_globals'),
                  None)
 
     def indentMore(self, indent=TAB):
@@ -482,50 +405,64 @@ class Python2Formatter(GenericASTTraversal, object):
                 self.println( indent, line )
             self.println(indent, trimmed[-1], quote)
 
-    def n_return_stmt(self, node):
-        self.write(self.indent, 'return')
-        self.write(' ')
+    # Possibly this kind of thing should be an engine format
+    # 'import_as_name': ('%c %?as %c', 0, 2) which means:
+    #   'import_as_name': ('%c', 0)
+    # if len(node) < 2 else:
+    #   'import_as_name': ('%c as %c', 0, 2),
+    def n_import_as_name(self, node):
         self.preorder(node[0])
+        if len(node) == 3:
+            self.write(' as ')
+            self.preorder(node[2])
+        self.prune() # stop recursing
+
+    # redo as
+    # 'dotted_name': ('%c%?%c', 0, 1)
+    def n_dotted_name(self, node):
+        self.preorder(node[0])
+        if len(node) == 2:
+            self.preorder(node[1])
+        self.prune() # stop recursing
+
+    # redo as
+    # 'dotted_as_name': ('%c%? as %c', 0, 2)
+    def n_dotted_as_name(self, node):
+        self.preorder(node[0])
+        if len(node) == 3:
+            self.write(' as ')
+            self.preorder(node[2])
+        self.prune() # stop recursing
+
+    def n_dots_dotted_name_or_dots(self, node):
+        if node[0] == 'DOT':
+            pass
+        else:
+            self.preorder(node[0])
+            self.preorder(node[1])
+            self.prune()
+
+    # redo as
+    # 'assert_stmt': ('%|assert %c%?, %c\n', 1, 2)
+    def n_assert_stmt(self, node):
+        self.write(self.indent, 'assert ')
+        self.preorder(node[1])
+        if len(node) == 4:
+            self.write(', ')
+            self.preorder(node[3])
         self.println()
         self.prune() # stop recursing
 
-    def n_return_if_stmt(self, node):
-        self.write(self.indent, 'return')
-        self.write(' ')
+    def n_exprlist(self, node):
         self.preorder(node[0])
-        self.println()
+        self.preorder(node[1])
+        self.preorder(node[2])
         self.prune() # stop recursing
 
     def n_yield(self, node):
         self.write('yield')
         self.write(' ')
         self.preorder(node[0])
-        self.prune() # stop recursing
-
-    # In Python 3.3+ only
-    def n_yield_from(self, node):
-        self.write('yield from')
-        self.write(' ')
-        self.preorder(node[0][0][0][0])
-        self.prune() # stop recursing
-
-    def n_buildslice3(self, node):
-        if not node[0].isNone():
-            self.preorder(node[0])
-        self.write(':')
-        if not node[1].isNone():
-            self.preorder(node[1])
-        self.write(':')
-        if not node[2].isNone():
-            self.preorder(node[2])
-        self.prune() # stop recursing
-
-    def n_buildslice2(self, node):
-        if not node[0].isNone():
-            self.preorder(node[0])
-        self.write(':')
-        if not node[1].isNone():
-            self.preorder(node[1])
         self.prune() # stop recursing
 
     def n_ret_expr(self, node):
@@ -542,160 +479,58 @@ class Python2Formatter(GenericASTTraversal, object):
         self.preorder(node[1])
         self.prune()
 
-    def n_LOAD_CONST(self, node):
-        data = node.pattr; datatype = type(data)
-        if isinstance(datatype, int) and data == minint:
-            # convert to hex, since decimal representation
-            # would result in 'LOAD_CONST; UNARY_NEGATIVE'
-            # change:hG/2002-02-07: this was done for all negative integers
-            # todo: check whether this is necessary in Python 2.1
-            self.write( hex(data) )
-        elif datatype is type(Ellipsis):
-            self.write('...')
-        elif data is None:
-            # LOAD_CONST 'None' only occurs, when None is
-            # implicit eg. in 'return' w/o params
-            # pass
-            self.write('None')
-        else:
-            self.write(repr(data))
-        # LOAD_CONST is a terminal, so stop processing/recursing early
-        self.prune()
-
-    def n_delete_subscr(self, node):
-        if node[-2][0] == 'build_list' and node[-2][0][-1].type.startswith('BUILD_TUPLE'):
-            if node[-2][0][-1] != 'BUILD_TUPLE_0':
-                node[-2][0].type = 'build_tuple2'
-        self.default(node)
-
-    n_store_subscr = n_binary_subscr = n_delete_subscr
-
-#    'tryfinallystmt':	( '%|try:\n%+%c%-%|finally:\n%+%c%-', 1, 5 ),
-    def n_tryfinallystmt(self, node):
-        if len(node[1][0]) == 1 and node[1][0][0] == 'stmt':
-            if node[1][0][0][0] == 'trystmt':
-                node[1][0][0][0].type = 'tf_trystmt'
-            if node[1][0][0][0] == 'tryelsestmt':
-                node[1][0][0][0].type = 'tf_tryelsestmt'
-        self.default(node)
-
     def n_exec_stmt(self, node):
         """
-        exec_stmt ::= expr exprlist DUP_TOP EXEC_STMT
-        exec_stmt ::= expr exprlist EXEC_STMT
+        exec_stmt ::= EXEC expr
+        exec_stmt ::= EXEC expr IN test
+        exec_stmt ::= EXEC expr IN test COMMA test
         """
         self.write(self.indent, 'exec ')
-        self.preorder(node[0])
-        if not node[1][0].isNone():
-            sep = ' in '
-            for subnode in node[1]:
-                self.write(sep); sep = ", "
-                self.preorder(subnode)
+        self.preorder(node[1])
+
+        if len(node) > 2:
+            self.write(self.indent, ' in ')
+            self.preorder(node[3])
+            if len(node) > 5:
+                self.write(self.indent, ', ')
+                self.preorder(node[5])
         self.println()
         self.prune() # stop recursing
 
-    def n_ifelsestmt(self, node, preprocess=0):
-        n = node[3][0]
-        if len(n) == 1 == len(n[0]) and n[0] == '_stmts':
-            n = n[0][0][0]
-        elif n[0].type in ('lastc_stmt', 'lastl_stmt'):
-            n = n[0][0]
-        else:
-            if not preprocess:
-                self.default(node)
-            return
+    # FIXME: redo as a format specifier
+    def n_comma_names(self, node):
+        """
+        comma_names ::= comma_names COMMA NAME
+        comma_names ::=
+        """
+        if len(node) > 0:
+            self.preorder(node[0])
+            self.write(", ")
+            self.preorder(node[2])
+            self.prune() # stop recursing
 
-        if n.type in ('ifstmt', 'iflaststmt', 'iflaststmtl'):
-            node.type = 'ifelifstmt'
-            n.type = 'elifstmt'
-        elif n.type in ('ifelsestmtr',):
-            node.type = 'ifelifstmt'
-            n.type = 'elifelsestmtr'
-        elif n.type in ('ifelsestmt', 'ifelsestmtc', 'ifelsestmtl'):
-            node.type = 'ifelifstmt'
-            self.n_ifelsestmt(n, preprocess=1)
-            if n == 'ifelifstmt':
-                n.type = 'elifelifstmt'
-            elif n.type in ('ifelsestmt', 'ifelsestmtc', 'ifelsestmtl'):
-                n.type = 'elifelsestmt'
-        if not preprocess:
-            self.default(node)
-
-    n_ifelsestmtc = n_ifelsestmtl = n_ifelsestmt
-
-    def n_ifelsestmtr(self, node):
-        if len(node[2]) != 2:
-            self.default(node)
-
-        if not (node[2][0][0][0] == 'ifstmt' and node[2][0][0][0][1][0] == 'return_if_stmts') \
-                and not (node[2][0][-1][0] == 'ifstmt' and node[2][0][-1][0][1][0] == 'return_if_stmts'):
-            self.default(node)
-            return
-
-        self.write(self.indent, 'if ')
-        self.preorder(node[0])
-        self.println(':')
-        self.indentMore()
-        self.preorder(node[1])
-        self.indentLess()
-
-        if_ret_at_end = False
-        if len(node[2][0]) >= 3:
-            if node[2][0][-1][0] == 'ifstmt' and node[2][0][-1][0][1][0] == 'return_if_stmts':
-                if_ret_at_end = True
-
-        past_else = False
-        prev_stmt_is_if_ret = True
-        for n in node[2][0]:
-            if (n[0] == 'ifstmt' and n[0][1][0] == 'return_if_stmts'):
-                if prev_stmt_is_if_ret:
-                    n[0].type = 'elifstmt'
-                prev_stmt_is_if_ret = True
-            else:
-                prev_stmt_is_if_ret = False
-                if not past_else and not if_ret_at_end:
-                    self.println(self.indent, 'else:')
-                    self.indentMore()
-                    past_else = True
-            self.preorder(n)
-        if not past_else or if_ret_at_end:
-            self.println(self.indent, 'else:')
+    # redo as
+    # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),
+    def n_else_suite_opt(self, node):
+        if len(node) > 0:
+            self.write(self.indent, 'else: ')
+            self.println('')
             self.indentMore()
-        self.preorder(node[2][1])
+            self.preorder(node[2])
         self.indentLess()
         self.prune()
 
-    def n_elifelsestmtr(self, node):
-        if len(node[2]) != 2:
-            self.default(node)
-
-        for n in node[2][0]:
-            if not (n[0] == 'ifstmt' and n[0][1][0] == 'return_if_stmts'):
-                self.default(node)
-                return
-
-        self.write(self.indent, 'elif ')
-        self.preorder(node[0])
-        self.println(':')
-        self.indentMore()
-        self.preorder(node[1])
-        self.indentLess()
-
-        for n in node[2][0]:
-            n[0].type = 'elifstmt'
-            self.preorder(n)
-        self.println(self.indent, 'else:')
-        self.indentMore()
-        self.preorder(node[2][1])
-        self.indentLess()
-        self.prune()
-
-    def n_importfrom(self, node):
-        if node[0].pattr > 0:
-            node[2].pattr = '.'*node[0].pattr+node[2].pattr
-        self.default(node)
-
-    n_importstar = n_importfrom
+    # redo as
+    # 'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
+    def n_elif_suites(self, node):
+        if len(node) > 0:
+            self.write(self.indent, 'elif ')
+            self.preorder(node[2])
+            self.println(':')
+            self.indentMore()
+            self.preorder(node[4])
+            self.indentLess()
+            self.prune()
 
     def n_mklambda(self, node):
         self.make_function(node, isLambda=True)
@@ -719,73 +554,20 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write( ' ]')
         self.prune() # stop recursing
 
-    def n_genexpr(self, node):
-        self.write('(')
-        code_index = -6 if self.version > 3.0 else -5
-        self.comprehension_walk(node, iter_index=3, code_index=code_index)
-        self.write(')')
-        self.prune()
-
-    def n_setcomp(self, node):
-        self.write('{')
-        self.comprehension_walk(node, iter_index=4)
-        self.write('}')
-        self.prune()
-
-    def n_listcomp(self, node):
-        self.write('[')
-        if node[0].type == 'load_closure':
-            self.listcomprehension_walk2(node)
-        else:
-            self.listcomprehension_walk3(node, 1, 0)
-        self.write(']')
-        self.prune()
-
-    n_dictcomp = n_setcomp
-
     def n_classdef(self, node):
         # class definition ('class X(A,B,C):')
         cclass = self.currentclass
 
-        if self.version > 3.0:
-            currentclass = node[1][0].pattr
-            buildclass = node[0]
-            if buildclass[1][0] == 'kwargs':
-                subclass = buildclass[1][1].attr
-                subclass_info = node[0]
-            elif buildclass[1][0] == 'load_closure':
-                # Python 3 with closures not functions
-                load_closure = buildclass[1]
-                if hasattr(load_closure[-3], 'attr'):
-                    # Python 3.3 classes with closures work like this.
-                    # Note have to test before 3.2 case because
-                    # index -2 also has an attr.
-                    subclass = load_closure[-3].attr
-                elif hasattr(load_closure[-2], 'attr'):
-                    # Python 3.2 works like this
-                    subclass = load_closure[-2].attr
-                else:
-                    raise 'Internal Error n_classdef: cannot find class body'
-                if hasattr(buildclass[3], '__len__'):
-                    subclass_info = buildclass[3]
-                elif hasattr(buildclass[2], '__len__'):
-                    subclass_info = buildclass[2]
-                else:
-                    raise 'Internal Error n_classdef: cannot superclass name'
-            else:
-                subclass = buildclass[1][0].attr
-                subclass_info = node[0]
+        buildclass = node if (node == 'classdefdeco2') else node[0]
+        build_list = buildclass[1][0]
+        if hasattr(buildclass[-3][0], 'attr'):
+            subclass = buildclass[-3][0].attr
+            currentclass = buildclass[0].pattr
+        elif hasattr(node[0][0], 'pattr'):
+            subclass = buildclass[-3][1].attr
+            currentclass = node[0][0].pattr
         else:
-            buildclass = node if (node == 'classdefdeco2') else node[0]
-            build_list = buildclass[1][0]
-            if hasattr(buildclass[-3][0], 'attr'):
-                subclass = buildclass[-3][0].attr
-                currentclass = buildclass[0].pattr
-            elif hasattr(node[0][0], 'pattr'):
-                subclass = buildclass[-3][1].attr
-                currentclass = node[0][0].pattr
-            else:
-                raise 'Internal Error n_classdef: cannot find class name'
+            raise 'Internal Error n_classdef: cannot find class name'
 
         if (node == 'classdefdeco2'):
             self.write('\n')
@@ -795,10 +577,7 @@ class Python2Formatter(GenericASTTraversal, object):
         self.currentclass = str(currentclass)
         self.write(self.indent, 'class ', self.currentclass)
 
-        if self.version > 3.0:
-            self.print_super_classes3(subclass_info)
-        else:
-            self.print_super_classes(build_list)
+        self.print_super_classes(build_list)
         self.println(':')
 
         # class body
@@ -822,36 +601,6 @@ class Python2Formatter(GenericASTTraversal, object):
             value = self.traverse(elem)
             self.write(sep, value)
             sep = line_separator
-
-        self.write(')')
-
-    def print_super_classes3(self, node):
-        n = len(node)-1
-        if node.type != 'expr':
-            assert node[n].type.startswith('CALL_FUNCTION')
-            for i in range(n-2, 0, -1):
-                if not node[i].type in ['expr', 'LOAD_CLASSNAME']:
-                    break
-                pass
-
-            if i == n-2:
-                return
-            line_separator = ', '
-            sep = ''
-            self.write('(')
-            i += 2
-            while i < n:
-                value = self.traverse(node[i])
-                i += 1
-                self.write(sep, value)
-                sep = line_separator
-                pass
-            pass
-        else:
-            self.write('(')
-            value = self.traverse(node[0])
-            self.write(value)
-            pass
 
         self.write(')')
 
@@ -922,64 +671,11 @@ class Python2Formatter(GenericASTTraversal, object):
         self.indentLess(INDENT_PER_LEVEL)
         self.prune()
 
-    def n_build_list(self, node):
-        """
-        prettyprint a list or tuple
-        """
-        lastnode = node.pop()
-        lastnodetype = lastnode.type
-        if lastnodetype.startswith('BUILD_LIST'):
-            self.write('['); endchar = ']'
-        elif lastnodetype.startswith('BUILD_TUPLE'):
-            self.write('('); endchar = ')'
-        elif lastnodetype.startswith('BUILD_SET'):
-            self.write('{'); endchar = '}'
-        elif lastnodetype.startswith('ROT_TWO'):
-            self.write('('); endchar = ')'
-        else:
-            raise 'Internal Error: n_build_list expects list or tuple'
-
-        flat_elems = []
-        for elem in node:
-            if elem == 'expr1024':
-                for subelem in elem:
-                        for subsubelem in subelem:
-                            flat_elems.append(subsubelem)
-            elif elem == 'expr32':
-                for subelem in elem:
-                    flat_elems.append(subelem)
-            else:
-                flat_elems.append(elem)
-
-        self.indentMore(INDENT_PER_LEVEL)
-        if lastnode.attr > 3:
-            line_separator = ',\n' + self.indent
-        else:
-            line_separator = ', '
-        sep = INDENT_PER_LEVEL[:-1]
-
-        # FIXME:
-        # if flat_elems > some_number, then group
-        # do automatic wrapping
-        for elem in flat_elems:
-            if elem == 'ROT_THREE':
-                continue
-            assert elem == 'expr'
-            value = self.traverse(elem)
-            self.write(sep, value)
-            sep = line_separator
-        if lastnode.attr == 1 and lastnodetype.startswith('BUILD_TUPLE'):
-            self.write(',')
-        self.write(endchar)
-        self.indentLess(INDENT_PER_LEVEL)
-
     def n_unpack(self, node):
         for n in node[1:]:
             if n[0].type == 'unpack':
                 n[0].type = 'unpack_w_parens'
         self.default(node)
-
-    n_unpack_w_parens = n_unpack
 
     def n_assign(self, node):
         # A horrible hack for Python 3.0 .. 3.2
@@ -1048,7 +744,6 @@ class Python2Formatter(GenericASTTraversal, object):
             elif typ == 'C':
                 low, high, sep = entry[arg]
                 remaining = len(node[low:high])
-                # remaining = len(node[low:high])
                 for subnode in node[low:high]:
                     self.preorder(subnode)
                     remaining -= 1
@@ -1101,7 +796,10 @@ class Python2Formatter(GenericASTTraversal, object):
         key = node
 
         for i in mapping[1:]:
-            key = key[i]
+            try:
+                key = key[i]
+            except:
+                from trepan.api import debug; debug()
             pass
 
         if key.type in table:
@@ -1123,8 +821,9 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
     formats python2 statements
     """
 
-    parser_debug = {'rules': False, 'transition': False, 'reduce': False,
-                     'errorstack': True}
+    parser_debug = {'rules': False, 'transition': False,
+                    'reduce': showgrammar,
+                    'errorstack': True, 'context': True }
     parsed = parse_python2(python_stmts, show_tokens, parser_debug)
     assert parsed == 'file_input', 'Should have parsed grammar start'
 

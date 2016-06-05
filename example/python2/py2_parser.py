@@ -13,14 +13,18 @@ from py2_scan import Python2Scanner
 from spark_parser import GenericASTBuilder #, DEFAULT_DEBUG
 
 DEFAULT_DEBUG = {'rules': True, 'transition': False, 'reduce' : True,
-                     'errorstack': 'full' }
-class ParserError(Exception):
-    def __init__(self, token):
-        self.token = token
+                     'errorstack': 'full', 'context': True }
+# class ParserError(Exception):
+#     def __init__(self, tokens, index):
+#         self.tokens = tokens
+#         self.index = index
 
-    def __str__(self):
-        return "Syntax error at or near `%r'\n" % \
-               (self.token)
+#     def __str__(self):
+#         msg = "Syntax error at or near token %d: `%s'" % (self.index,
+#                                                           self.tokens[self.index])
+#         start = self.index - 2 if self.index - 2 >= 0 else 0
+#         msg += "Token context: `%s'" % ("\n\t".join(self.tokens[start: self.index+1]))
+#         return msg
 
 class PythonParser(GenericASTBuilder):
     """A more complete spark example: a Python 2 Parser.
@@ -32,8 +36,9 @@ class PythonParser(GenericASTBuilder):
         super().__init__(AST, 'file_input', debug=debug)
         self.debug = debug
 
-    def error(self, token):
-            raise ParserError(token)
+    # def error(self, tokens, index):
+    #         from trepan.api import debug; debug()
+    #         raise ParserError(tokens, index)
 
     def nonterminal(self, nt, args):
         collect = ()
@@ -61,12 +66,19 @@ class PythonParser(GenericASTBuilder):
         file_input ::= newline_or_stmts
         newline_or_stmts ::= newline_or_stmts newline_or_stmt
         newline_or_stmts ::=
+
+        # Grammar uses NEWLINE instead of 'sep', but ; does separate statements.
+        # The grammar is vague on NEWLINE, INDENT, and DEDENT are computed.
+
         newline_or_stmt ::= sep
         newline_or_stmt ::= stmt
 
         stmts      ::= stmts stmt
         stmts      ::= stmt sep
         stmts      ::=
+
+        stmt_plus  ::= stmt_plus sep stmt
+        stmt_plus  ::= stmt
 
         decorator ::= AT dotted_name arg_list_opt NEWLINE
         arglist_opt ::= LPAREN [arglist] RPAREN
@@ -180,42 +192,6 @@ class PythonParser(GenericASTBuilder):
         test_opt3 ::= test COMMA test
         test_opt3 ::= test
 
-        import_stmt ::= import_name
-        import_stmt ::= import_from
-
-        import_name ::= IMPORT dotted_as_names
-
-        import_from ::= FROM dots_dotted_name_or_dots import_list
-
-        import_as_name ::= NAME
-        import_as_name ::= NAME AS NAME
-
-        dotted_as_name ::= dotted_name
-        dotted_as_name ::= dotted_name AS NAME
-
-        dots_dotted_name_or_dots ::= dots dotted_name
-        dots_dotted_name_or_dots ::= DOT dots
-        dots ::= dots DOT
-        dots ::=
-
-        import_list ::= IMPORT STAR
-        import_list ::= IMPORT LPAREN import_as_names RPAREN
-        import_list ::= IMPORT import_as_names
-
-        import_as_names ::= import_as_name comma_import_as_names comma_opt
-        import_as_names ::= import_as_name
-
-        comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
-        comma_dotted_as_names ::= dotted_as_name
-
-        dotted_as_names ::= dotted_as_name comma_dotted_as_names
-        comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
-        comma_dotted_as_names ::=
-
-        dotted_name ::= NAME dot_names
-        dot_names ::= dot_names DOT NAME
-        dot_names ::=
-
         global_stmt ::= GLOBAL NAME comma_names
         comma_names ::= comma_names COMMA NAME
         comma_names ::=
@@ -282,8 +258,79 @@ class PythonParser(GenericASTBuilder):
         strings   ::= STRING
 
         sep       ::= NEWLINE
+        sep       ::= NEWLINE DEDENT
         sep       ::= SEMICOLON
         '''
+
+    # Import-related grammar
+    def p_import(self, args):
+        """
+        import_stmt ::= import_name
+        import_stmt ::= import_from
+
+        import_name ::= IMPORT dotted_as_names
+
+        import_from ::= FROM dots_dotted_name_or_dots import_list
+
+        import_as_name ::= NAME
+        import_as_name ::= NAME AS NAME
+
+        dotted_as_name ::= dotted_name
+        dotted_as_name ::= dotted_name AS NAME
+
+        dots_dotted_name_or_dots ::= dots dotted_name
+        dots_dotted_name_or_dots ::= DOT dots
+        dots ::= dots DOT
+        dots ::=
+
+        import_list ::= IMPORT STAR
+        import_list ::= IMPORT LPAREN import_as_names RPAREN
+        import_list ::= IMPORT import_as_names
+
+        import_as_names ::= import_as_name comma_import_as_names comma_opt
+        import_as_names ::= import_as_name
+
+        comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
+        comma_dotted_as_names ::= dotted_as_name
+
+        dotted_as_names ::= dotted_as_name comma_dotted_as_names
+        comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
+        comma_dotted_as_names ::=
+
+        dotted_name ::= NAME dot_names
+        dot_names ::= dot_names DOT NAME
+        dot_names ::=
+        """
+
+    def p_compund_stmt(self, args):
+        """
+        compound_stmt ::= if_stmt
+        compound_stmt ::= while_stmt
+        compound_stmt ::= for_stmt
+        compound_stmt ::= try_stmt
+        compound_stmt ::= with_stmt
+        compound_stmt ::= funcdef
+        compound_stmt ::= classdef
+        compound_stmt ::= decorated
+
+        if_stmt ::= IF test COLON suite elif_suites else_suite_opt
+        elif_suites ::= elif_suites ELIF test COLON suite
+        elif_suites ::=
+        else_suite_opt ::= ELSE COLON suite
+        else_suite_opt ::=
+
+        suite ::= simple_stmt
+        suite ::= sep stmt_plus
+
+        # The python grammar has a single DEDENT rather than NEWLINE DEDENT
+        # but a DEDENT implies a NEWLINE and it is easier for our scanner
+        # to include both rather than remove the NEWLINE token.
+        # Also it makes the rule more symmetric.
+
+        suite ::= NEWLINE INDENT stmt_plus NEWLINE DEDENT
+
+        """
+
 
 def parse_python2(python_stmts,
                   show_tokens=False, parser_debug=DEFAULT_DEBUG):
@@ -303,8 +350,12 @@ def parse_python2(python_stmts,
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         for python2_stmts in (
-                "from os import path",
-                "from os import path as shmath",
+                "if True: pass",
+                """
+if True:
+  pass
+pass
+""",
                 ):
             print(python2_stmts)
             print('-' * 30)
@@ -313,4 +364,4 @@ if __name__ == '__main__':
             print('=' * 30)
     else:
         python2_stmts = " ".join(sys.argv[1:])
-        parse_python2(python2_stmts, show_tokens=True)
+        parse_python2(python2_stmts, show_tokens=False)
