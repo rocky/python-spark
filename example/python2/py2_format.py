@@ -97,36 +97,8 @@ TABLE_DIRECT = {
     'STRING':	( '%{attr}', ),
     'DOT':	( '.', ),
 
-    'BINARY_ADD':	( '+' ,),
-    'BINARY_SUBTRACT':	( '-' ,),
-    'BINARY_MULTIPLY':	( '*' ,),
-    'BINARY_DIVIDE':	( '/' ,),
-    'BINARY_TRUE_DIVIDE':	( '/' ,),
-    'BINARY_FLOOR_DIVIDE':	( '//' ,),
-    'BINARY_MODULO':	( '%%',),
-    'BINARY_POWER':	( '**',),
-    'BINARY_LSHIFT':	( '<<',),
-    'BINARY_RSHIFT':	( '>>',),
-    'BINARY_AND':	( '&' ,),
-    'BINARY_OR':	( '|' ,),
-    'BINARY_XOR':	( '^' ,),
-    'INPLACE_ADD':	( '+=' ,),
-    'INPLACE_SUBTRACT':	( '-=' ,),
-    'INPLACE_MULTIPLY':	( '*=' ,),
-    'INPLACE_DIVIDE':	( '/=' ,),
-    'INPLACE_TRUE_DIVIDE':	( '/=' ,),
-    'INPLACE_FLOOR_DIVIDE':	( '//=' ,),
-    'INPLACE_MODULO':	( '%%=',),
-    'INPLACE_POWER':	( '**=',),
-    'INPLACE_LSHIFT':	( '<<=',),
-    'INPLACE_RSHIFT':	( '>>=',),
-    'INPLACE_AND':	( '&=' ,),
-    'INPLACE_OR':	( '|=' ,),
-    'INPLACE_XOR':	( '^=' ,),
     'binary_expr':	( '%c %c %c', 0, -1, 1 ),
 
-    'UNARY_POSITIVE':	( '+',),
-    'UNARY_NEGATIVE':	( '-',),
     'UNARY_INVERT':	( '~%c'),
     'unary_expr':   ( '%c%c', 1, 0),
 
@@ -225,7 +197,6 @@ TABLE_DIRECT = {
     'assign3':     ( '%|%c, %c, %c = %c, %c, %c\n', 5, 6, 7, 0, 1, 2 ),
 
 }
-
 
 MAP_DIRECT = (TABLE_DIRECT, )
 MAP_R0 = (TABLE_R0, -1, 0)
@@ -532,176 +503,6 @@ class Python2Formatter(GenericASTTraversal, object):
             self.indentLess()
             self.prune()
 
-    def n_mklambda(self, node):
-        self.make_function(node, isLambda=True)
-        self.prune() # stop recursing
-
-    def n_list_compr(self, node):
-        """List comprehensions the way they are done in Python2.
-        """
-        n = node[-1]
-        assert n == 'list_iter'
-        # find innermost node
-        while n == 'list_iter':
-            n = n[0] # recurse one step
-            if   n == 'list_for':	n = n[3]
-            elif n == 'list_if':	n = n[2]
-            elif n == 'list_if_not': n= n[2]
-        assert n == 'lc_body'
-        self.write( '[ ')
-        self.preorder(n[0]) # lc_body
-        self.preorder(node[-1]) # for/if parts
-        self.write( ' ]')
-        self.prune() # stop recursing
-
-    def n_classdef(self, node):
-        # class definition ('class X(A,B,C):')
-        cclass = self.currentclass
-
-        buildclass = node if (node == 'classdefdeco2') else node[0]
-        build_list = buildclass[1][0]
-        if hasattr(buildclass[-3][0], 'attr'):
-            subclass = buildclass[-3][0].attr
-            currentclass = buildclass[0].pattr
-        elif hasattr(node[0][0], 'pattr'):
-            subclass = buildclass[-3][1].attr
-            currentclass = node[0][0].pattr
-        else:
-            raise 'Internal Error n_classdef: cannot find class name'
-
-        if (node == 'classdefdeco2'):
-            self.write('\n')
-        else:
-            self.write('\n\n')
-
-        self.currentclass = str(currentclass)
-        self.write(self.indent, 'class ', self.currentclass)
-
-        self.print_super_classes(build_list)
-        self.println(':')
-
-        # class body
-        self.indentMore()
-        self.build_class(subclass)
-        self.indentLess()
-
-        self.currentclass = cclass
-        self.write('\n\n\n')
-
-        self.prune()
-
-    def print_super_classes(self, node):
-        if not (node == 'build_list'):
-            return
-
-        self.write('(')
-        line_separator = ', '
-        sep = ''
-        for elem in node[:-1]:
-            value = self.traverse(elem)
-            self.write(sep, value)
-            sep = line_separator
-
-        self.write(')')
-
-    def n_mapexpr(self, node):
-        """
-        prettyprint a mapexpr
-        'mapexpr' is something like k = {'a': 1, 'b': 42 }"
-        """
-        self.indentMore(INDENT_PER_LEVEL)
-        line_seperator = ',\n' + self.indent
-        sep = INDENT_PER_LEVEL[:-1]
-        self.write('{')
-
-        if self.version > 3.0:
-            if node[0].type.startswith('kvlist'):
-                # Python 3.5+ style key/value list in mapexpr
-                kv_node = node[0]
-                l = list(kv_node)
-                i = 0
-                while i < len(l):
-                    name = self.traverse(l[i], indent='')
-                    value = self.traverse(l[i+1], indent=self.indent+(len(name)+2)*' ')
-                    self.write(sep, name, ': ', value)
-                    sep = line_seperator
-                    i += 2
-                    pass
-                pass
-            elif node[1].type.startswith('kvlist'):
-                # Python 3.0..3.4 style key/value list in mapexpr
-                kv_node = node[1]
-                l = list(kv_node)
-                if len(l) > 0 and l[0].type == 'kv3':
-                    # Python 3.2 does this
-                    kv_node = node[1][0]
-                    l = list(kv_node)
-                i = 0
-                while i < len(l):
-                    name = self.traverse(l[i+1], indent='')
-                    value = self.traverse(l[i], indent=self.indent+(len(name)+2)*' ')
-                    self.write(sep, name, ': ', value)
-                    sep = line_seperator
-                    i += 3
-                    pass
-                pass
-            pass
-        else:
-            # Python 2 style kvlist
-            assert node[-1] == 'kvlist'
-            kv_node = node[-1] # goto kvlist
-
-            for kv in kv_node:
-                assert kv in ('kv', 'kv2', 'kv3')
-                # kv ::= DUP_TOP expr ROT_TWO expr STORE_SUBSCR
-                # kv2 ::= DUP_TOP expr expr ROT_THREE STORE_SUBSCR
-                # kv3 ::= expr expr STORE_MAP
-                if kv == 'kv':
-                    name = self.traverse(kv[-2], indent='')
-                    value = self.traverse(kv[1], indent=self.indent+(len(name)+2)*' ')
-                elif kv == 'kv2':
-                    name = self.traverse(kv[1], indent='')
-                    value = self.traverse(kv[-3], indent=self.indent+(len(name)+2)*' ')
-                elif kv == 'kv3':
-                    name = self.traverse(kv[-2], indent='')
-                    value = self.traverse(kv[0], indent=self.indent+(len(name)+2)*' ')
-                    self.write(sep, name, ': ', value)
-                    sep = line_seperator
-        self.write('}')
-        self.indentLess(INDENT_PER_LEVEL)
-        self.prune()
-
-    def n_unpack(self, node):
-        for n in node[1:]:
-            if n[0].type == 'unpack':
-                n[0].type = 'unpack_w_parens'
-        self.default(node)
-
-    def n_assign(self, node):
-        # A horrible hack for Python 3.0 .. 3.2
-        if 3.0 <= self.version <= 3.2 and len(node) == 2:
-            if (node[0][0] == 'LOAD_FAST' and node[0][0].pattr == '__locals__' and
-                node[1][0].type == 'STORE_LOCALS'):
-                self.prune()
-        self.default(node)
-
-    def n_assign2(self, node):
-        for n in node[-2:]:
-            if n[0] == 'unpack':
-                n[0].type = 'unpack_w_parens'
-        self.default(node)
-
-    def n_assign3(self, node):
-        for n in node[-3:]:
-            if n[0] == 'unpack':
-                n[0].type = 'unpack_w_parens'
-        self.default(node)
-
-    def n_except_cond2(self, node):
-        if node[5][0] == 'unpack':
-            node[5][0].type = 'unpack_w_parens'
-        self.default(node)
-
     def engine(self, entry, startnode):
         """The format template interpetation engine.  See the comment at the
         beginning of this module for the how we interpret format specifications such as
@@ -824,7 +625,8 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
     parser_debug = {'rules': False, 'transition': False,
                     'reduce': showgrammar,
                     'errorstack': True, 'context': True }
-    parsed = parse_python2(python_stmts, show_tokens, parser_debug)
+    parsed = parse_python2(python_stmts, show_tokens=show_tokens,
+                           parser_debug=parser_debug)
     assert parsed == 'file_input', 'Should have parsed grammar start'
 
     formatter = Python2Formatter()

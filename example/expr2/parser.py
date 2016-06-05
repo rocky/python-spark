@@ -12,14 +12,6 @@ from scanner import ExprScanner
 
 from spark_parser import GenericASTBuilder, DEFAULT_DEBUG
 
-class ParserError(Exception):
-    def __init__(self, token):
-        self.token = token
-
-    def __str__(self):
-        return "Syntax error at or near `%r'\n" % \
-               (self.token)
-
 class ExprParser(GenericASTBuilder):
     """A more complete expression Parser.
 
@@ -29,9 +21,6 @@ class ExprParser(GenericASTBuilder):
     def __init__(self, debug=DEFAULT_DEBUG):
         super().__init__(AST, 'expr', debug=debug)
         self.debug = debug
-
-    def error(self, token):
-            raise ParserError(token)
 
     def nonterminal(self, nt, args):
         collect = ()

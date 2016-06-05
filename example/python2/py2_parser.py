@@ -21,8 +21,8 @@ class PythonParser(GenericASTBuilder):
     Note: function parse() comes from GenericASTBuilder
     """
 
-    def __init__(self, debug=DEFAULT_DEBUG):
-        super().__init__(AST, 'file_input', debug=debug)
+    def __init__(self, start='file_input', debug=DEFAULT_DEBUG):
+        super().__init__(AST, start, debug=debug)
         self.debug = debug
 
     # def error(self, tokens, index):
@@ -68,6 +68,11 @@ class PythonParser(GenericASTBuilder):
 
         stmt_plus  ::= stmt_plus sep stmt
         stmt_plus  ::= stmt
+
+        eval_input ::= testlist newlines
+
+        newlines ::= newlines NEWLINE
+        newlines ::=
 
         decorator ::= AT dotted_name arg_list_opt NEWLINE
         arglist_opt ::= LPAREN [arglist] RPAREN
@@ -235,7 +240,7 @@ class PythonParser(GenericASTBuilder):
         comp_op ::= COMP_OP
         comp_op ::= IN
 
-        expr       ::= expr BINOP expr
+        expr       ::= expr OP expr
         expr       ::= LPAREN expr RPAREN
         expr       ::= atom
 
@@ -328,7 +333,7 @@ class PythonParser(GenericASTBuilder):
         """
 
 
-def parse_python2(python_stmts,
+def parse_python2(python_stmts, start='file_input',
                   show_tokens=False, parser_debug=DEFAULT_DEBUG):
     assert isinstance(python_stmts, str)
     tokens = Python2Scanner().tokenize(python_stmts)
@@ -338,10 +343,8 @@ def parse_python2(python_stmts,
 
     # For heavy grammar debugging
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #                 'errorstack': True}
-    # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #                'errorstack': True}
-    return PythonParser(parser_debug).parse(tokens)
+    #               'errorstack': True, 'context': True}
+    return PythonParser(start=start, debug=parser_debug).parse(tokens)
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -355,7 +358,7 @@ pass
                 ):
             print(python2_stmts)
             print('-' * 30)
-            ast = parse_python2(python2_stmts, show_tokens=True)
+            ast = parse_python2(python2_stmts, start='file_input', show_tokens=True)
             print(ast)
             print('=' * 30)
     else:

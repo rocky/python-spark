@@ -264,6 +264,7 @@ class GenericParser(object):
 
     def error(self, tokens, index):
         print("Syntax error at or near token %d: `%s'" % (index, tokens[index]))
+
         if 'context' in self.debug and self.debug['context']:
             start = index - 2 if index - 2 >= 0 else 0
             tokens = [str(tokens[i]) for i in range(start, index+1)]

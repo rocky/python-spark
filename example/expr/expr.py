@@ -99,26 +99,26 @@ class Interpret(GenericASTTraversal):
     def __init__(self, ast):
         GenericASTTraversal.__init__(self, ast)
         self.postorder(ast)
-        self.value = ast.value
+        self.attr = int(ast.attr)
 
     # Rules for interpreting nodes based on their AST node type
     def n_integer(self, node):
-        node.value = int(node.attr)
+        node.attr = int(node.attr)
 
     def n_single(self, node):
-        node.value = node.data[0].value
+        node.attr = node.data[0].attr
 
     def n_multiply(self, node):
-        node.value = node[0].value * node[1].value
+        node.attr = int(node[0].attr) * int(node[1].attr)
 
     def n_divide(self, node):
-        node.value = node[0].value / node[1].value
+        node.attr = int(node[0].attr) / int(node[1].attr)
 
     def n_add(self, node):
-        node.value = node[0].value + node[1].value
+        node.attr = int(node[0].attr) + int(node[1].attr)
 
     def n_subtract(self, node):
-        node.value = node[0].value - node[1].value
+        node.attr = int(node[0].attr) - int(node[1].attr)
 
     def default(self, node):
         pass
@@ -153,4 +153,4 @@ if __name__ == '__main__':
     tree = parse_expression(tokens)
     print(tree)
     i = Interpret(tree)
-    print("Final value is: %d" % i.value)
+    print("Final value is: %d" % i.attr)
