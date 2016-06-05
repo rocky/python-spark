@@ -1,0 +1,13 @@
+type: LPAREN, value: '('
+type: RPAREN, value: ')'
+type: LBRACE, value: '{'
+type: RBRACE, value: '}'
+type: OP, value: '+'
+type: UNOP, value: '~'
+type: STRING, value: "'abc'"
+type: STRING, value: '"abc"'
+type: NUMBER, value: '10'
+type: NUMBER, value: '10j'
+type: NUMBER, value: '0x10'
+type: COMMENT, value: '# foo'
+type: NEWLINE, value: '\n'

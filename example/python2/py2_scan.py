@@ -45,11 +45,8 @@ x = 2y + z
         if self.is_newline and name not in ['DEDENT', 'INDENT']:
             while 0 < self.indents[-1]:
                 self.indents = self.indents[0:-1]
-                self.add_token('DEDENT', s)
-                pass
-            if len(self.indents) > 1:
                 self.rv.append(GenericToken(kind='DEDENT', attr=''))
-            self.indent = ''
+                pass
         self.is_newline = is_newline
         self.rv.append(t)
 
@@ -79,7 +76,7 @@ x = 2y + z
             raise SystemExit
 
     def t_unop(self, s):
-        r'[-]'
+        r'[~]'
         self.add_token('UNOP', s)
 
     def t_linesep(self, s):

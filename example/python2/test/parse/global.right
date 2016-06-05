@@ -1,0 +1,69 @@
+file_input
+newline_or_stmts
+   newline_or_stmts
+      newline_or_stmts
+         newline_or_stmts
+            newline_or_stmts
+               newline_or_stmts
+                  newline_or_stmts
+                     newline_or_stmts
+                        newline_or_stmts
+                           newline_or_stmts
+                           newline_or_stmt
+                              sep
+                                 comments
+                                    comment
+                                       type: COMMENT, value: '# Parsing and formatting tests for:'
+                                       type: NEWLINE, value: '\n'
+                        newline_or_stmt
+                           sep
+                              comments
+                                 comment
+                                    type: COMMENT, value: '#'
+                                    type: NEWLINE, value: '\n'
+                     newline_or_stmt
+                        sep
+                           comments
+                              comment
+                                 type: COMMENT, value: '# global_stmt ::='
+                                 type: NEWLINE, value: '\n'
+                  newline_or_stmt
+                     sep
+                        comments
+                           comment
+                              type: COMMENT, value: "#             'global' NAME (',' NAME)*"
+                              type: NEWLINE, value: '\n'
+               newline_or_stmt
+                  sep
+                     type: NEWLINE, value: '\n'
+            newline_or_stmt
+               stmt
+                  simple_stmt
+                     small_stmt
+                        global_stmt
+                           type: GLOBAL, value: 'global'
+                           type: NAME, value: 'a'
+                           comma_names
+                              comma_names
+                                 comma_names
+                                    comma_names
+                                    type: COMMA, value: ','
+                                    type: NAME, value: 'b'
+                                 type: COMMA, value: ','
+                                 type: NAME, value: 'c'
+                              type: COMMA, value: ','
+                              type: NAME, value: 'd'
+         newline_or_stmt
+            sep
+               type: NEWLINE, value: '\n'
+      newline_or_stmt
+         stmt
+            simple_stmt
+               small_stmt
+                  global_stmt
+                     type: GLOBAL, value: 'global'
+                     type: NAME, value: 'a'
+                     comma_names
+   newline_or_stmt
+      sep
+         type: NEWLINE, value: '\n'

@@ -12,19 +12,8 @@ from py2_scan import Python2Scanner
 
 from spark_parser import GenericASTBuilder #, DEFAULT_DEBUG
 
-DEFAULT_DEBUG = {'rules': True, 'transition': False, 'reduce' : True,
+DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : False,
                      'errorstack': 'full', 'context': True }
-# class ParserError(Exception):
-#     def __init__(self, tokens, index):
-#         self.tokens = tokens
-#         self.index = index
-
-#     def __str__(self):
-#         msg = "Syntax error at or near token %d: `%s'" % (self.index,
-#                                                           self.tokens[self.index])
-#         start = self.index - 2 if self.index - 2 >= 0 else 0
-#         msg += "Token context: `%s'" % ("\n\t".join(self.tokens[start: self.index+1]))
-#         return msg
 
 class PythonParser(GenericASTBuilder):
     """A more complete spark example: a Python 2 Parser.
@@ -257,9 +246,16 @@ class PythonParser(GenericASTBuilder):
         strings   ::= strings STRING
         strings   ::= STRING
 
+        sep       ::= comments
         sep       ::= NEWLINE
         sep       ::= NEWLINE DEDENT
         sep       ::= SEMICOLON
+
+        comments ::= comments comment
+        comments ::= comment
+
+        comment ::= COMMENT NEWLINE DEDENT
+        comment ::= COMMENT NEWLINE
         '''
 
     # Import-related grammar
