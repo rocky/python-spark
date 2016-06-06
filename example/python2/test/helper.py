@@ -12,8 +12,8 @@ def compare_one(func, python_file, verbose=True):
     got_file = python_file[:-2] + 'got'
     with open(python_file, 'r') as py_fp:
         input_data = py_fp.read()
-        tokens = func(input_data)
-        got = [str(t)+"\n" for t in tokens]
+        items = func(input_data)
+        got = [str(t)+"\n" for t in items]
         same = True
         with open(right_file, 'r') as right_fp:
             right_data = right_fp.readlines()

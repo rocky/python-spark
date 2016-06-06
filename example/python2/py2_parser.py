@@ -23,21 +23,30 @@ class PythonParser(GenericASTBuilder):
 
     def __init__(self, start='file_input', debug=DEFAULT_DEBUG):
         super(PythonParser, self).__init__(AST, start, debug=debug)
+        self.start = start
         self.debug = debug
 
-    # def error(self, tokens, index):
-    #         from trepan.api import debug; debug()
-    #         raise ParserError(tokens, index)
-
     def nonterminal(self, nt, args):
-        collect = ()
+        # Put left-recursive list non-terminals:
+        # x ::= x y
+        # x ::=
+        collect = ('stmts', 'comments', 'dot_names', 'dots',
+                   'comp_op_exprs', 'newline_or_stmts',
+                   'comma_names'
+                   )
 
+        has_len = hasattr(args, '__len__')
         if nt in collect and len(args) > 1:
             #
             #  Collect iterated thingies together.
             #
             rv = args[0]
             rv.append(args[1])
+        elif (has_len and len(args) == 1 and
+              hasattr(args[0], '__len__') and len(args[0]) == 1):
+            # Remove singleton derivations
+            rv = GenericASTBuilder.nonterminal(self, nt, args[0])
+            del args[0] # save memory
         else:
             rv = GenericASTBuilder.nonterminal(self, nt, args)
         return rv
@@ -187,8 +196,10 @@ class PythonParser(GenericASTBuilder):
         test_opt3 ::= test
 
         global_stmt ::= GLOBAL NAME comma_names
-        comma_names ::= comma_names COMMA NAME
+        comma_names ::= comma_names comma_name
         comma_names ::=
+
+        comma_name  ::= COMMA NAME
 
         exec_stmt ::= EXEC expr
         exec_stmt ::= EXEC expr IN test
@@ -341,8 +352,11 @@ def parse_python2(python_stmts, start='file_input',
         for t in tokens:
             print(t)
 
-    # For heavy grammar debugging
+    # For heavy grammar debugging:
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
+    #               'errorstack': True, 'context': True}
+    # Normal debugging:
+    # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
     #               'errorstack': True, 'context': True}
     return PythonParser(start=start, debug=parser_debug).parse(tokens)
 
