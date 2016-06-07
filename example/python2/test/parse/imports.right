@@ -215,6 +215,7 @@ newline_or_stmts
                   type: NAME, value: 'os'
                   dot_names
                      type: DOT, value: '.'
+                     type: NAME, value: 'path'
             comma_dotted_as_names
    newline_or_stmt
       type: NEWLINE, value: '\n'
@@ -227,6 +228,7 @@ newline_or_stmts
                   type: NAME, value: 'os'
                   dot_names
                      type: DOT, value: '.'
+                     type: NAME, value: 'path'
                type: AS, value: 'as'
                type: NAME, value: 'path2'
             comma_dotted_as_names
@@ -241,6 +243,7 @@ newline_or_stmts
                   type: NAME, value: 'os'
                   dot_names
                      type: DOT, value: '.'
+                     type: NAME, value: 'path'
             comma_dotted_as_names
                comma_dotted_as_names
                type: COMMA, value: ','
@@ -249,5 +252,6 @@ newline_or_stmts
                      type: NAME, value: 'dir'
                      dot_names
                         type: DOT, value: '.'
+                        type: NAME, value: 'foo'
    newline_or_stmt
       type: NEWLINE, value: '\n'

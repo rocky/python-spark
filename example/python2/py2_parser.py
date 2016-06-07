@@ -34,16 +34,20 @@ class PythonParser(GenericASTBuilder):
                    'comp_op_exprs', 'newline_or_stmts',
                    'comma_names'
                    )
+        no_skip = ('pass_stmt',)
 
         has_len = hasattr(args, '__len__')
+
         if nt in collect and len(args) > 1:
             #
             #  Collect iterated thingies together.
             #
             rv = args[0]
-            rv.append(args[1])
+            for arg in args[1:]:
+                rv.append(arg)
         elif (has_len and len(args) == 1 and
-              hasattr(args[0], '__len__') and len(args[0]) == 1):
+              hasattr(args[0], '__len__') and args[0] not in no_skip and
+              len(args[0]) == 1):
             # Remove singleton derivations
             rv = GenericASTBuilder.nonterminal(self, nt, args[0])
             del args[0] # save memory
@@ -363,16 +367,17 @@ def parse_python2(python_stmts, start='file_input',
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         for python2_stmts in (
-                "if True: pass",
+                # "if True: pass",
                 """
 if True:
-  pass
+  if True:
+     pass
 pass
 """,
                 ):
             print(python2_stmts)
             print('-' * 30)
-            ast = parse_python2(python2_stmts, start='file_input', show_tokens=True)
+            ast = parse_python2(python2_stmts, start='file_input', show_tokens=False)
             print(ast)
             print('=' * 30)
     else:

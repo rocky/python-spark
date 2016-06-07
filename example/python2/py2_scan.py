@@ -46,6 +46,7 @@ x = 2y + z
             while 0 < self.indents[-1]:
                 self.indents = self.indents[0:-1]
                 self.rv.append(GenericToken(kind='DEDENT', attr=''))
+                self.rv.append(GenericToken(kind='NEWLINE', attr=''))
                 pass
         self.is_newline = is_newline
         self.rv.append(t)

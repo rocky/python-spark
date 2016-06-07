@@ -1,6 +1,24 @@
 file_input
 newline_or_stmts
    newline_or_stmt
+      comment
+         type: COMMENT, value: '# Parsing and formatting tests for:'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# exec_stmt ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'exec' expr ['in' test [',' test]]"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
       exec_stmt
          type: EXEC, value: 'exec'
          expr

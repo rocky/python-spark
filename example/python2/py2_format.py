@@ -91,6 +91,7 @@ TABLE_DIRECT = {
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'if_stmt':	        ( '%|if %c:\n%+%c%-%c%-%c', 1, 3, 4, 5),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
+    'comma_name':	( ', %c', 1),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
 
     'NAME':	( '%{attr}', ),
@@ -468,18 +469,6 @@ class Python2Formatter(GenericASTTraversal, object):
         self.println()
         self.prune() # stop recursing
 
-    # FIXME: redo as a format specifier
-    def n_comma_names(self, node):
-        """
-        comma_names ::= comma_names COMMA NAME
-        comma_names ::=
-        """
-        if len(node) > 0:
-            self.preorder(node[0])
-            self.write(", ")
-            self.preorder(node[2])
-            self.prune() # stop recursing
-
     # redo as
     # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),
     def n_else_suite_opt(self, node):
@@ -646,5 +635,13 @@ if __name__ == '__main__':
         print('=' * 30)
         print(formatted)
         return
-    format_test("from os import path")
-    format_test("pass")
+    # format_test("from os import path")
+    # format_test("pass")
+    format_test("global a, b, c, d")
+#     format_test("""
+# if True:
+#   if True:
+#      pass
+# pass
+
+# """)
