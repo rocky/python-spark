@@ -34,7 +34,7 @@ class PythonParser(GenericASTBuilder):
                    'comp_op_exprs', 'newline_or_stmts',
                    'comma_names'
                    )
-        no_skip = ('pass_stmt',)
+        no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt')
 
         has_len = hasattr(args, '__len__')
 
@@ -335,6 +335,8 @@ class PythonParser(GenericASTBuilder):
         else_suite_opt ::= ELSE COLON suite
         else_suite_opt ::=
 
+        while_stmt ::= WHILE test COLON suite else_suite_opt
+
         suite ::= simple_stmt
         suite ::= sep stmt_plus
 
@@ -358,10 +360,10 @@ def parse_python2(python_stmts, start='file_input',
 
     # For heavy grammar debugging:
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #               'errorstack': True, 'context': True}
+    #               'errorstack': 'full', 'context': True}
     # Normal debugging:
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
-    #               'errorstack': True, 'context': True}
+    #                'errorstack': 'full', 'context': True}
     return PythonParser(start=start, debug=parser_debug).parse(tokens)
 
 if __name__ == '__main__':
@@ -369,9 +371,9 @@ if __name__ == '__main__':
         for python2_stmts in (
                 # "if True: pass",
                 """
-if True:
-  if True:
-     pass
+while True:
+    if False:
+        continue
 pass
 """,
                 ):

@@ -11,19 +11,10 @@ sys.path.append(dirname)
 from py2_parser import parse_python2
 
 for python2_stmts in (
-        # "from os import path",
-        # "from os import path as shmath",
-        # "import os",
-        # "import sys, os",
-        # "import sys, os",
-        # "import os.path",
-        # "import os.path, dir.foo",
-        # "exec 'exec-string' in locals, globals",
-        # "exec 'exec-string' in dict",
-        # "exec 'exec-string'",
-        # "pass",
-        # "pass; del x",
-        "x + y",
+        """
+while True:
+    pass
+""",
         # "assert x == y",
         # "global a, b, c",
         # "global a",

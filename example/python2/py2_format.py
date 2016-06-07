@@ -93,6 +93,7 @@ TABLE_DIRECT = {
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
+    'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
@@ -111,8 +112,6 @@ TABLE_DIRECT = {
     'slice2':		( '%c[:%p]', 0, (1, 100) ),
     'slice3':		( '%c[%p:%p]', 0, (1, 100), (2, 100) ),
 
-    'IMPORT_FROM':	( '%{pattr}', ),
-    'load_attr':	( '%c.%[1]{pattr}', 0),
     'binary_subscr':	( '%c[%p]', 0, (1, 100)),
     'binary_subscr2':	( '%c[%p]', 0, (1, 100)),
     'store_subscr':	( '%c[%c]', 0, 1),
@@ -124,11 +123,9 @@ TABLE_DIRECT = {
     'list_iter':	( '%c', 0),
     'list_for':		( ' for %c in %c%c', 2, 0, 3 ),
     'list_if':		( ' if %c%c', 0, 2 ),
-    'list_if_not':		( ' if not %p%c', (0, 22), 2 ),
+    'list_if_not':	( ' if not %p%c', (0, 22), 2 ),
     'lc_body':		( '', ),	# ignore when recusing
 
-    'comp_iter':	( '%c', 0),
-    'comp_for':		( ' for %c in %c%c', 2, 0, 3 ),
     'comp_if':		( ' if %c%c', 0, 2 ),
     'comp_ifnot':	( ' if not %p%c', (0, 22), 2 ),
     'comp_body':	( '', ),	# ignore when recusing
@@ -637,7 +634,13 @@ if __name__ == '__main__':
         return
     # format_test("from os import path")
     # format_test("pass")
-    format_test("global a, b, c, d")
+    format_test("""
+while True:
+    if False:
+        continue
+
+pass
+""")
 #     format_test("""
 # if True:
 #   if True:
