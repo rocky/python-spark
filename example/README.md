@@ -9,7 +9,7 @@ from the parser.
 The largest and more complete example is a formatter for Python
 2.6. It reads in valid Python 2.6, parses it and builds an abstract
 syntax tree. Then it prints it back out according to some table-driven
-formatting rules.
+formatting rules. It is left incomplete.
 
 After you've mastered this, consider going onto uncompyle2 which
 turne Python bytecode (many versions) into Python.

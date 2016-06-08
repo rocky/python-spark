@@ -83,12 +83,14 @@ TABLE_R = {
 TABLE_R0 = {}
 
 TABLE_DIRECT = {
+    'break_stmt':       ( '%|break\n', ),
+    'continue_stmt':    ( '%|continue\n', ),
+    'del_stmt':	        ( '%|del %c\n', 1),
+    'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'pass_stmt':        ( '%|pass\n', ),
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c', 0),
-    'del_stmt':	        ( '%|del %c\n', 1),
-    'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'if_stmt':	        ( '%|if %c:\n%+%c%-%c%-%c', 1, 3, 4, 5),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
@@ -98,101 +100,6 @@ TABLE_DIRECT = {
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
     'DOT':	( '.', ),
-
-    'binary_expr':	( '%c %c %c', 0, -1, 1 ),
-
-    'UNARY_INVERT':	( '~%c'),
-    'unary_expr':   ( '%c%c', 1, 0),
-
-    'unary_not':	( 'not %c', 0 ),
-    'unary_convert':	( '`%c`', 0 ),
-    'get_iter':	( 'iter(%c)', 0 ),
-    'slice0':		( '%c[:]', 0 ),
-    'slice1':		( '%c[%p:]', 0, (1, 100) ),
-    'slice2':		( '%c[:%p]', 0, (1, 100) ),
-    'slice3':		( '%c[%p:%p]', 0, (1, 100), (2, 100) ),
-
-    'binary_subscr':	( '%c[%p]', 0, (1, 100)),
-    'binary_subscr2':	( '%c[%p]', 0, (1, 100)),
-    'store_subscr':	( '%c[%c]', 0, 1),
-    'unpack':		( '%C%,', (1, maxint, ', ') ),
-    'unpack_w_parens':		( '(%C%,)', (1, maxint, ', ') ),
-    'unpack_list':	( '[%C]', (1, maxint, ', ') ),
-    'build_tuple2':	( '%P', (0, -1, ', ', 100) ),
-
-    'list_iter':	( '%c', 0),
-    'list_for':		( ' for %c in %c%c', 2, 0, 3 ),
-    'list_if':		( ' if %c%c', 0, 2 ),
-    'list_if_not':	( ' if not %p%c', (0, 22), 2 ),
-    'lc_body':		( '', ),	# ignore when recusing
-
-    'comp_if':		( ' if %c%c', 0, 2 ),
-    'comp_ifnot':	( ' if not %p%c', (0, 22), 2 ),
-    'comp_body':	( '', ),	# ignore when recusing
-    'set_comp_body':    ( '%c', 0 ),
-    'gen_comp_body':    ( '%c', 0 ),
-    'dict_comp_body':   ( '%c:%c', 1, 0 ),
-
-    'assign':		( '%|%c = %p\n', -1, (0, 200) ),
-    'augassign1':	( '%|%c %c %c\n', 0, 2, 1),
-    'augassign2':	( '%|%c.%[2]{pattr} %c %c\n', 0, -3, -4),
-    'designList':	( '%c = %c', 0, -1 ),
-    'and':          	( '%c and %c', 0, 2 ),
-    'ret_and':        	( '%c and %c', 0, 2 ),
-    'and2':          	( '%c', 3 ),
-    'or':           	( '%c or %c', 0, 2 ),
-    'ret_or':           	( '%c or %c', 0, 2 ),
-    'conditional':  ( '%p if %p else %p', (2, 27), (0, 27), (4, 27)),
-    'ret_cond':     ( '%p if %p else %p', (2, 27), (0, 27), (4, 27)),
-    'conditionalnot':  ( '%p if not %p else %p', (2, 27), (0, 22), (4, 27)),
-    'ret_cond_not':  ( '%p if not %p else %p', (2, 27), (0, 22), (4, 27)),
-    'conditional_lambda':  ( '(%c if %c else %c)', 2, 0, 3),
-    'return_lambda':    ('%c', 0),
-    'compare':		( '%p %[-1]{pattr} %p', (0, 19), (1, 19) ),
-    'cmp_list':		( '%p %p', (0, 20), (1, 19)),
-    'cmp_list1':	( '%[3]{pattr} %p %p', (0, 19), (-2, 19)),
-    'cmp_list2':	( '%[1]{pattr} %p', (0, 19)),
-    'funcdef':  	( '\n\n%|def %c\n', -2), # -2 to handle closures
-    'funcdefdeco':  	( '\n\n%c', 0),
-    'mkfuncdeco':  	( '%|@%c\n%c', 0, 1),
-    'mkfuncdeco0':  	( '%|def %c\n', 0),
-    'classdefdeco':  	( '\n\n%c', 0),
-    'classdefdeco1':  	( '%|@%c\n%c', 0, 1),
-    'kwarg':    	( '%[0]{pattr}=%c', 1),
-    'kwargs':    	( '%D', (0, maxint, ', ') ),
-    'importlist2':	( '%C', (0, maxint, ', ') ),
-
-    'assert':		( '%|assert %c\n' , 0 ),
-    'assert2':		( '%|assert %c, %c\n' , 0, 3 ),
-    'assert_expr_or': ( '%c or %c', 0, 2 ),
-    'assert_expr_and':    ( '%c and %c', 0, 2 ),
-    'print_items_stmt': ( '%|print %c%c,\n', 0, 2),
-    'print_items_nl_stmt': ( '%|print %c%c\n', 0, 2),
-    'print_item':  ( ', %c', 0),
-    'print_nl':	( '%|print\n', ),
-    'print_to':		( '%|print >> %c, %c,\n', 0, 1 ),
-    'print_to_nl':	( '%|print >> %c, %c\n', 0, 1 ),
-    'print_nl_to':	( '%|print >> %c\n', 0 ),
-    'print_to_items':	( '%C', (0, 2, ', ') ),
-
-    'call_stmt':	( '%|%p\n', (0, 200)),
-    'break_stmt':	( '%|break\n', ),
-    'continue_stmt':	( '%|continue\n', ),
-
-    'raise_stmt0':	( '%|raise\n', ),
-    'raise_stmt1':	( '%|raise %c\n', 0),
-    'raise_stmt2':	( '%|raise %c, %c\n', 0, 1),
-    'raise_stmt3':	( '%|raise %c, %c, %c\n', 0, 1, 2),
-
-    'iflaststmt':		( '%|if %c:\n%+%c%-', 0, 1 ),
-    'iflaststmtl':		( '%|if %c:\n%+%c%-', 0, 1 ),
-    'testtrue':     ( 'not %p', (0, 22) ),
-
-    'mapexpr':		( '{%[1]C}', (0, maxint, ', ') ),
-
-    # CE - Fixes for tuples
-    'assign2':     ( '%|%c, %c = %c, %c\n', 3, 4, 0, 1 ),
-    'assign3':     ( '%|%c, %c, %c = %c, %c, %c\n', 5, 6, 7, 0, 1, 2 ),
 
 }
 
