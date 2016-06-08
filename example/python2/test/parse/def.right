@@ -1,0 +1,44 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      funcdef
+         type: DEF, value: 'def'
+         type: NAME, value: 'foo1'
+         parameters
+            type: LPAREN, value: '('
+            varargslist_opt
+            type: RPAREN, value: ')'
+         type: COLON, value: ':'
+         suite
+            pass_stmt
+               type: PASS, value: 'pass'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      funcdef
+         type: DEF, value: 'def'
+         type: NAME, value: 'foo2'
+         parameters
+            type: LPAREN, value: '('
+            varargslist_opt
+            type: RPAREN, value: ')'
+         type: COLON, value: ':'
+         suite
+            type: NEWLINE, value: '\n'
+            type: INDENT, value: '    '
+            stmt_plus
+               pass_stmt
+                  type: PASS, value: 'pass'
+            type: NEWLINE, value: '\n'
+            type: DEDENT
+   newline_or_stmt
+      type: NEWLINE
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      pass_stmt
+         type: PASS, value: 'pass'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

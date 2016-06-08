@@ -1,6 +1,12 @@
 2016-06-08  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.3.0
+	* ChangeLog, MANIFEST.in, NEWS, TODO.rst,
+	example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/test/test_format.py,
+	example/python2/test/test_parse_inline.py,
+	spark_parser/__init__.py, spark_parser/spark.py,
+	spark_parser/version.py: Get ready for release 1.3.0 * TODO.rst: Add to do list * spark.py:  Document dumpGrammar * __init__.py:  use RsT formatting in docstrings * example/python2: add semnatic action for return stmt, NUMBER, and
+	func_def
 
 2016-06-07  R. Bernstein <rocky@users.noreply.github.com>
 
