@@ -12,7 +12,7 @@ syntax tree. Then it prints it back out according to some table-driven
 formatting rules. It is left incomplete.
 
 After you've mastered this, consider going onto uncompyle2 which
-turne Python bytecode (many versions) into Python.
+turn Python bytecode back into Python.
 
 There is plenty of room improvement for each program, but that is
 somewhat deliberate. The hope is that you'll modify these to
