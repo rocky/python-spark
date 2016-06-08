@@ -62,7 +62,6 @@ PYTHON3 = (sys.version_info >= (3, 0))
 
 from py2_parser import parse_python2
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
-import uncompyle6.parser as python_parser
 
 if PYTHON3:
     from io import StringIO
@@ -120,17 +119,6 @@ escape = re.compile(r'''
                 ((?P<type> [^{] ) |
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
-
-class ParserError(python_parser.ParserError):
-    def __init__(self, error, tokens):
-        self.error = error # previous exception
-        self.tokens = tokens
-
-    def __str__(self):
-        lines = ['--- This code section failed: ---']
-        lines.extend( list(map(str, self.tokens)) )
-        lines.extend( ['', str(self.error)] )
-        return '\n'.join(lines)
 
 class Python2FormatterError(Exception):
     def __init__(self, errmsg):
