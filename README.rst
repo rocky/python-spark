@@ -9,7 +9,7 @@ some generic Abstract Syntax Tree routines. There is also a prototype
 scanner which does its job by combining Python regular expressions.
 
 The original version of this was written by John Aycock and was
-described in his 1988 paper: "Compiling Little Languages in Python" at
+described in his 1998 paper: "Compiling Little Languages in Python" at
 the 7th International Python Conference.
 
 Note: Early algorithm parsers are almost linear when given an LR grammar.
