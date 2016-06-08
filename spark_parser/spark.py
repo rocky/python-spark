@@ -48,7 +48,7 @@ class _State:
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True,
 #                  'errorstack': 'plain' }
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False,
-                 'errorstack': None}
+                 'errorstack': None, 'context': True}
 
 class GenericParser(object):
     '''
@@ -262,8 +262,13 @@ class GenericParser(object):
     def typestring(self, token):
         return None
 
-    def error(self, token):
-        print("Syntax error at or near `%s' token" % token)
+    def error(self, tokens, index):
+        print("Syntax error at or near token %d: `%s'" % (index, tokens[index]))
+
+        if 'context' in self.debug and self.debug['context']:
+            start = index - 2 if index - 2 >= 0 else 0
+            tokens = [str(tokens[i]) for i in range(start, index+1)]
+            print("Token context:\n\t%s" % ("\n\t".join(tokens)))
         raise SystemExit
 
     def errorstack(self, full=False):
@@ -332,9 +337,9 @@ class GenericParser(object):
             if len(tokens) > 0:
                 if self.debug['errorstack']:
                     self.errorstack(str(self.debug['errorstack']) == 'full')
-                self.error(tokens[i-1])
+                self.error(tokens, i-1)
             else:
-                self.error(None)
+                self.error(None, None)
 
         return self.buildTree(self._START, finalitem,
                     tokens, len(sets)-2)

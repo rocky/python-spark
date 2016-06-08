@@ -1,0 +1,74 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# Parsing and formatting tests for:'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# exec_stmt ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'exec' expr ['in' test [',' test]]"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      exec_stmt
+         type: EXEC, value: 'exec'
+         expr
+            type: STRING, value: "'exec-string'"
+         type: IN, value: 'in'
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'locals'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+         type: COMMA, value: ','
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'globals'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      exec_stmt
+         type: EXEC, value: 'exec'
+         expr
+            type: STRING, value: "'exec-string'"
+         type: IN, value: 'in'
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'dict'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      exec_stmt
+         type: EXEC, value: 'exec'
+         expr
+            type: STRING, value: "'exec-string'"
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

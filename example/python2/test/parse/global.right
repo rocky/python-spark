@@ -1,0 +1,43 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# Parsing and formatting tests for:'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# global_stmt ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'global' NAME (',' NAME)*"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      global_stmt
+         type: GLOBAL, value: 'global'
+         type: NAME, value: 'a'
+         comma_names
+            comma_name
+               type: COMMA, value: ','
+               type: NAME, value: 'b'
+            comma_name
+               type: COMMA, value: ','
+               type: NAME, value: 'c'
+            comma_name
+               type: COMMA, value: ','
+               type: NAME, value: 'd'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      global_stmt
+         type: GLOBAL, value: 'global'
+         type: NAME, value: 'a'
+         comma_names
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

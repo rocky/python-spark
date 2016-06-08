@@ -12,14 +12,6 @@ from scanner import ExprScanner
 
 from spark_parser import GenericASTBuilder, DEFAULT_DEBUG
 
-class ParserError(Exception):
-    def __init__(self, token):
-        self.token = token
-
-    def __str__(self):
-        return "Syntax error at or near `%r'\n" % \
-               (self.token)
-
 class ExprParser(GenericASTBuilder):
     """A more complete expression Parser.
 
@@ -27,21 +19,24 @@ class ExprParser(GenericASTBuilder):
     """
 
     def __init__(self, debug=DEFAULT_DEBUG):
-        super().__init__(AST, 'expr', debug=debug)
+        super(ExprParser, self).__init__(AST, 'expr', debug=debug)
         self.debug = debug
-
-    def error(self, token):
-            raise ParserError(token)
 
     def nonterminal(self, nt, args):
         collect = ()
 
+        has_len = hasattr(args, '__len__')
         if nt in collect and len(args) > 1:
             #
             #  Collect iterated thingies together.
             #
             rv = args[0]
             rv.append(args[1])
+        elif (has_len and len(args) == 1 and
+              hasattr(args[0], '__len__') and len(args[0]) == 1):
+            # Remove singleton derivations
+            rv = GenericASTBuilder.nonterminal(self, nt, args[0])
+            del args[0] # save memory
         else:
             rv = GenericASTBuilder.nonterminal(self, nt, args)
         return rv
@@ -88,4 +83,5 @@ if __name__ == '__main__':
         expression = "(1 + 3)/2"
     else:
         expression = " ".join(sys.argv[1:])
-    parse_python(expression, show_tokens=True)
+    ast = parse_python(expression, show_tokens=True)
+    print(ast)

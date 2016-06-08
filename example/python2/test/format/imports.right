@@ -1,0 +1,11 @@
+from os import path
+from . import path
+from .. import path
+from ..foo import path
+from os import path as shmath
+import os
+import sys, os
+import os.path
+import os.path as path2
+import os.path, dir.foo
+

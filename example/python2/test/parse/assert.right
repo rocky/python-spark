@@ -1,0 +1,63 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# Parsing and formatting tests for:'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# assert_stmt ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'assert' test [',' test]"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      assert_stmt
+         type: ASSERT, value: 'assert'
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'False'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      assert_stmt
+         type: ASSERT, value: 'assert'
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'True'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+         type: COMMA, value: ','
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: STRING, value: "'shit happens'"
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

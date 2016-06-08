@@ -1,0 +1,257 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# Parsing and formatting tests for'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# import_stmt ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#             import_name | import_from'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# import_name ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'import' dotted_as_names"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# import_from ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# import_as_name ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             NAME ['as' NAME]"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# dotted_as_name ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             dotted_name ['as' NAME]"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# import_as_names ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# dotted_as_names ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '#'
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: '# dotted_name ::='
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      comment
+         type: COMMENT, value: "#             NAME ('.' NAME)*"
+         type: NEWLINE, value: '\n'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_from
+         type: FROM, value: 'from'
+         dots_dotted_name_or_dots
+            dots
+            dotted_name
+               type: NAME, value: 'os'
+               dot_names
+         import_list
+            type: IMPORT, value: 'import'
+            import_as_names
+               type: NAME, value: 'path'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_from
+         type: FROM, value: 'from'
+         dots_dotted_name_or_dots
+            type: DOT, value: '.'
+            dots
+         import_list
+            type: IMPORT, value: 'import'
+            import_as_names
+               type: NAME, value: 'path'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_from
+         type: FROM, value: 'from'
+         dots_dotted_name_or_dots
+            type: DOT, value: '.'
+            dots
+               type: DOT, value: '.'
+         import_list
+            type: IMPORT, value: 'import'
+            import_as_names
+               type: NAME, value: 'path'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_from
+         type: FROM, value: 'from'
+         dots_dotted_name_or_dots
+            dots
+               type: DOT, value: '.'
+               type: DOT, value: '.'
+            dotted_name
+               type: NAME, value: 'foo'
+               dot_names
+         import_list
+            type: IMPORT, value: 'import'
+            import_as_names
+               type: NAME, value: 'path'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_from
+         type: FROM, value: 'from'
+         dots_dotted_name_or_dots
+            dots
+            dotted_name
+               type: NAME, value: 'os'
+               dot_names
+         import_list
+            type: IMPORT, value: 'import'
+            import_as_names
+               import_as_name
+                  type: NAME, value: 'path'
+                  type: AS, value: 'as'
+                  type: NAME, value: 'shmath'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_name
+         type: IMPORT, value: 'import'
+         dotted_as_names
+            dotted_as_name
+               dotted_name
+                  type: NAME, value: 'os'
+                  dot_names
+            comma_dotted_as_names
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_name
+         type: IMPORT, value: 'import'
+         dotted_as_names
+            dotted_as_name
+               dotted_name
+                  type: NAME, value: 'sys'
+                  dot_names
+            comma_dotted_as_names
+               comma_dotted_as_names
+               type: COMMA, value: ','
+               dotted_as_name
+                  dotted_name
+                     type: NAME, value: 'os'
+                     dot_names
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_name
+         type: IMPORT, value: 'import'
+         dotted_as_names
+            dotted_as_name
+               dotted_name
+                  type: NAME, value: 'os'
+                  dot_names
+                     type: DOT, value: '.'
+                     type: NAME, value: 'path'
+            comma_dotted_as_names
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_name
+         type: IMPORT, value: 'import'
+         dotted_as_names
+            dotted_as_name
+               dotted_name
+                  type: NAME, value: 'os'
+                  dot_names
+                     type: DOT, value: '.'
+                     type: NAME, value: 'path'
+               type: AS, value: 'as'
+               type: NAME, value: 'path2'
+            comma_dotted_as_names
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      import_name
+         type: IMPORT, value: 'import'
+         dotted_as_names
+            dotted_as_name
+               dotted_name
+                  type: NAME, value: 'os'
+                  dot_names
+                     type: DOT, value: '.'
+                     type: NAME, value: 'path'
+            comma_dotted_as_names
+               comma_dotted_as_names
+               type: COMMA, value: ','
+               dotted_as_name
+                  dotted_name
+                     type: NAME, value: 'dir'
+                     dot_names
+                        type: DOT, value: '.'
+                        type: NAME, value: 'foo'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

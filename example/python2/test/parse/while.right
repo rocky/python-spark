@@ -1,0 +1,34 @@
+file_input
+newline_or_stmts
+   newline_or_stmt
+      while_stmt
+         type: WHILE, value: 'while'
+         test
+            or_test
+               and_test
+                  not_test
+                     comparison
+                        expr
+                           type: NAME, value: 'True'
+                        comp_op_exprs
+                  and_not_tests
+               or_and_tests
+         type: COLON, value: ':'
+         suite
+            type: NEWLINE, value: '\n'
+            type: INDENT, value: '    '
+            stmt_plus
+               pass_stmt
+                  type: PASS, value: 'pass'
+            type: NEWLINE, value: '\n'
+            type: DEDENT
+         else_suite_opt
+   newline_or_stmt
+      type: NEWLINE
+   newline_or_stmt
+      type: NEWLINE, value: '\n'
+   newline_or_stmt
+      pass_stmt
+         type: PASS, value: 'pass'
+   newline_or_stmt
+      type: NEWLINE, value: '\n'

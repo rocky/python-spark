@@ -1,0 +1,3 @@
+assert False
+assert True, 'shit happens'
+
