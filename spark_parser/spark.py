@@ -1,6 +1,6 @@
 """
-Copyright (c) 1998-2002 John Aycock
 Copyright (c) 2015-2016 Rocky Bernstein
+Copyright (c) 1998-2002 John Aycock
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
@@ -276,7 +276,9 @@ class GenericParser(object):
         We get this by inspecting the current transitions
         possible and from that extracting the set of states
         we are in, and from there we look at the set of
-        symbols before the "dot"
+        symbols before the "dot". If full is True, we
+        show the entire rule with the dot placement.
+        Otherwise just the rule up to the dot.
         """
         print()
         print("-- Stacks of completed symbols:")
@@ -684,6 +686,9 @@ class GenericParser(object):
         return list[0]
 
     def dumpGrammar(self):
+        '''
+        Print grammar rules
+        '''
         import collections
         for lhs, rhs in collections.OrderedDict(sorted(self.rule2name.items())):
             print("%s ::= %s" % (lhs, ' '.join(rhs)))

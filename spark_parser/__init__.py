@@ -2,6 +2,7 @@ import sys
 from spark_parser.version import VERSION
 
 __version__ = 'SPARK-%s Python2 and Python3 compatible' % VERSION
+__docformat__ = 'restructuredtext'
 
 PYTHON3 = (sys.version_info >= (3, 0))
 

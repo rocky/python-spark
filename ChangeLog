@@ -1,3 +1,170 @@
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.3.0
+
+2016-06-07  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #5 from rocky/python2-parser Python2 parser
+
+2016-06-07  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/python2/README.md,
+	example/python2/py2_format.py: Tidy a bit.
+
+2016-06-07  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/test/Makefile,
+	example/python2/test/format/while.py,
+	example/python2/test/format/while.right,
+	example/python2/test/parse/while.py,
+	example/python2/test/parse/while.right,
+	example/python2/test/test_format_inline.py,
+	example/python2/test/test_parse_inline.py: Add while, break,
+	continue
+
+2016-06-07  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, example/python2/test/format/assert.py,
+	example/python2/test/format/assert.right,
+	example/python2/test/format/exec.py,
+	example/python2/test/format/exec.right,
+	example/python2/test/format/global.py,
+	example/python2/test/format/global.right,
+	example/python2/test/format/if.py,
+	example/python2/test/format/if.right,
+	example/python2/test/format/imports.py,
+	example/python2/test/format/imports.right,
+	example/python2/test/parse/exec.py,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/if.py,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/test_format.py,
+	example/python2/test/test_format_inline.py,
+	example/python2/test/test_scan_inline.py: Start real format tests Correct some tree flattening routines
+
+2016-06-05  rocky <rb@dustyfeet.com>
+
+	* example/expr2/parser.py, example/python2/py2_parser.py,
+	example/python2/test/helper.py,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/global.right,
+	example/python2/test/parse/imports.right: Flatten nested
+	non-terminal lists
+
+2016-06-05  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py: Python 2.7 compatibility
+
+2016-06-05  rocky <rb@dustyfeet.com>
+
+	* Makefile, example/expr/expr.py, example/expr2/parser.py,
+	example/python2/Makefile, example/python2/py2_format.py,
+	example/python2/py2_parser.py, example/python2/test/Makefile,
+	example/python2/test/helper.py, example/python2/test/test_parse.py,
+	example/python2/test/test_parse_inline.py,
+	example/python2/test/test_scan.py, spark_parser/spark.py: Convert
+	some tests to test-unit.  Some DRYING and parameter passing too.
+
+2016-06-05  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py, example/python2/py2_scan.py,
+	example/python2/test/helper.py,
+	example/python2/test/parse/assert.py,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.py,
+	example/python2/test/parse/exec.py-notyet,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/global.py,
+	example/python2/test/parse/global.right,
+	example/python2/test/parse/if.py-notyet,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.py,
+	example/python2/test/parse/imports.right,
+	example/python2/test/sample/assert.py,
+	example/python2/test/sample/exec.py,
+	example/python2/test/sample/global.py,
+	example/python2/test/sample/if.py,
+	example/python2/test/sample/imports.py,
+	example/python2/test/scan/.gitignore,
+	example/python2/test/scan/expr1.py,
+	example/python2/test/scan/expr1.right,
+	example/python2/test/scan/indent1.py,
+	example/python2/test/scan/indent1.right,
+	example/python2/test/scan/syms.py,
+	example/python2/test/scan/syms.right,
+	example/python2/test/scan/sys.right,
+	example/python2/test/test_format.py,
+	example/python2/test/test_parse.py,
+	example/python2/test/test_scan.py: Start automating tests more
+
+2016-06-05  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/python2/py2_format.py,
+	example/python2/py2_parser.py, example/python2/py2_scan.py,
+	example/python2/test/sample/assert.py,
+	example/python2/test/sample/exec.py,
+	example/python2/test/sample/global.py,
+	example/python2/test/sample/if.py,
+	example/python2/test/sample/imports.py,
+	example/python2/test/test_format.py,
+	example/python2/test/test_parse.py, spark_parser/spark.py: Start
+	handling compound statements * scanner needs handle indent/dedent * add some Python test programs * spark.py: allow token context to be shown
+
+2016-06-04  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/python2/py2_format.py,
+	example/python2/test/test_format.py: Start format testing
+
+2016-06-04  rocky <rb@dustyfeet.com>
+
+	* : commit a4e258195c4e2b28809fb5ed887b9a3d9ca7d4bb Merge: aae0c9b
+	2787c8b Author: rocky <rb@dustyfeet.com> Date:   Sat Jun 4 17:11:26
+	2016 -0400
+
+2016-06-04  rocky <rb@dustyfeet.com>
+
+	* spark_parser/scanner.py: More useful GenericToken class Works with table-driven AST class better added:    __hash__ for comparison    __getitem__ for iterating
+
+2016-06-04  rocky <rb@dustyfeet.com>
+
+	* example/python2/README.md, example/python2/py2_format.py,
+	example/python2/py2_parser.py, example/python2/python.gr,
+	example/python2/python26.gr, example/python2/test/test_parse.py,
+	example/python2/test/test_scan.py: WIP Start semantic actions
+
+2016-06-04  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py, example/python2/py2_scan.py,
+	example/python2/test/test_parse.py,
+	example/python2/test/test_scan.py: Fill in grammar more. Add tests tests as standalone for now.
+
+2016-06-03  rocky <rb@dustyfeet.com>
+
+	* example/expr2/__init__.py, example/python2/README.md,
+	example/python2/__init__.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, example/python2/python.gr: WIP Parser
+	for Python2 grammar
+
+2016-06-03  rocky <rb@dustyfeet.com>
+
+	* spark_parser/scanner.py: Note other kinds of error handlers
+
+2016-05-24  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #3 from killruana/patch-1 Fix a typo
+
+2016-05-15  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Add routine to dump grammar
+
+2016-05-14  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, setup.py: Get ready for release 1.2.1
+
 2016-05-14  rocky <rb@dustyfeet.com>
 
 	* setup.py, spark_parser/__init__.py, spark_parser/spark.py,

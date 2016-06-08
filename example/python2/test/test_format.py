@@ -7,7 +7,7 @@ format_dir = helper_init(__file__, 'format')
 from py2_format import format_python2_stmts
 
 def run_format(python2_stmts):
-    formatted = format_python2_stmts(python2_stmts)
+    formatted = format_python2_stmts(python2_stmts, showast=False)
     return str(formatted).split("\n")
 
 class TestPy2Format(unittest.TestCase):

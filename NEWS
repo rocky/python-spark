@@ -1,13 +1,26 @@
+spark 1.3.0 2016-06-08
+
+- Incompatible change: error now returns token stack
+  and index rather than just the error token
+- add debug options 'context' to show tokens around
+  the error token
+- More useful GenericToken class that works better with the
+  table-driven AST routines often used.
+- Add GenericParser().dumpgrammar to show grammar rules
+- Add Python2 parser example
+
+
 spark 1.2.1 2016-05-14
 
-- Allow full and abbreviated error stack
+- Allow full 'errorstack': 'full' and abbreviated 'errorstack': True
+  to show error stack with full dotted rules or just the part up to the dot
 - fix packaging
 
 spark 1.2.0 2016-05-10
 
 - Add routine to find/show error stack
 - Allow setting paring debug option on parse method
-- Add an additional example
+- Add an additional and longer example parsing expressions.
 
 spark 1.1.2 2016-05-05
 

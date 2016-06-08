@@ -11,9 +11,7 @@ sys.path.append(dirname)
 from py2_parser import parse_python2
 
 for python2_stmts in (
-        """
-while True:
-    pass
+        """def foo(): pass
 """,
         # "assert x == y",
         # "global a, b, c",

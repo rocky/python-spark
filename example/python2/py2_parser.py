@@ -34,7 +34,7 @@ class PythonParser(GenericASTBuilder):
                    'comp_op_exprs', 'newline_or_stmts',
                    'comma_names'
                    )
-        no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt')
+        no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt', 'return_stmt')
 
         has_len = hasattr(args, '__len__')
 

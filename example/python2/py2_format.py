@@ -87,6 +87,8 @@ TABLE_DIRECT = {
     'del_stmt':	        ( '%|del %c\n', 1),
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'pass_stmt':        ( '%|pass\n', ),
+    'return_stmt':      ( '%|return %c\n', 1),
+    'testlist':         ( '%C', (1, maxint, ', ') ),
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c', 0),
@@ -95,9 +97,12 @@ TABLE_DIRECT = {
     'comma_name':	( ', %c', 1),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
+    'funcdef':          ( '%|def %c(%c):\n%+%c%-\n\n', 1, 2 , 4 ),
+
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
+    'NUMBER':	( '%{attr}', ),
     'DOT':	( '.', ),
 
 }
@@ -328,12 +333,6 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write(' ')
         self.preorder(node[0])
         self.prune() # stop recursing
-
-    def n_ret_expr(self, node):
-        if len(node) == 1 and node[0] == 'expr':
-            self.n_expr(node[0])
-        else:
-            self.n_expr(node)
 
     def n_binary_expr(self, node):
         self.preorder(node[0])
