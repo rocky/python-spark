@@ -142,6 +142,7 @@ class PythonParser(GenericASTBuilder):
         varargslist ::= fpdefs kwvals
 
         fpdefs ::= fpdefs fpdef eq_test_op
+
         star_names ::= star_names STAR NAME star_star_opt
         star_names ::= star_names star_star_opt
 
@@ -183,18 +184,17 @@ class PythonParser(GenericASTBuilder):
 
         expr_stmt ::= testlist augassign_or_equal
 
-        augassing_or_equal ::=  augassign_something
-        augassing_or_equal ::=  EQUAL equal_somethings
+        augassign_or_equal ::=  augassign_yield_expr_or_testlist
+        augassign_or_equal ::=  EQUAL yield_expr_or_testlists
 
-        augassign_something ::= AUGASSIGN yield_expr
-        augassign_something ::= AUGASSIGN testlist
+        augassign_yield_expr_or_testlist ::= AUGASSIGN yield_expr_or_testlist
+        augassign_yield_expr_or_testlist ::= EQUAL yield_expr_or_testlists
 
-        equal_somethings ::= equal_somethings yield_expr_or_testlist
-        equal_somethings ::=
+        yield_expr_or_testlists ::= yield_expr_or_testlists yield_expr_or_testlist
+        yield_expr_or_testlists ::=
 
-        yield_expr_or_testlist ::= yield_expr_or_testlist yield_expr
-        yield_expr_or_testlist ::= yield_expr_or_testlist testlist
-        yield_expr_or_testlist ::=
+        yield_expr_or_testlist ::= yield_expr
+        yield_expr_or_testlist ::= testlist
 
         print_stmt ::= PRINT test_params_or_redirect
         test_params_or_redirect ::= test comma_test_opt comma_opt

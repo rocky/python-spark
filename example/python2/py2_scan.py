@@ -20,7 +20,7 @@ BRACKET2NAME = {
 SYMBOL2NAME = {
     '@': 'AT',    '`': 'BACKTICK',
     ':': 'COLON', ',': 'COMMA',
-    '.': 'DOT',
+    '.': 'DOT',   '=': 'EQUAL'
     }
 
 ENDMARKER = r''   # ctrl-d
@@ -71,7 +71,7 @@ x = 2y + z
         self.add_token(BRACKET2NAME[s], s)
 
     def t_symbol(self, s):
-        r'[@:,.`]'
+        r'[@:,.`=]'
         self.add_token(SYMBOL2NAME[s], s)
 
     def t_endmarker(self, s):

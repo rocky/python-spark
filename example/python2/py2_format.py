@@ -85,6 +85,7 @@ TABLE_DIRECT = {
     'break_stmt':       ( '%|break\n', ),
     'continue_stmt':    ( '%|continue\n', ),
     'del_stmt':	        ( '%|del %c\n', 1),
+    'expr_stmt':	( '%|%c%c\n', 0, 1),
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'pass_stmt':        ( '%|pass\n', ),
     'return_stmt':      ( '%|return %c\n', 1),
@@ -96,13 +97,27 @@ TABLE_DIRECT = {
     'comma_name':	( ', %c', 1),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
-    'funcdef':          ( '%|def %c(%c):\n%+%c%-\n\n', 1, 2 , 4 ),
-
+    'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
+    'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
+    'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1),
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
     'NUMBER':	( '%{attr}', ),
+    'OP':	( ' %{attr} ', ),
+    'LPAREN':	( '(', ),
+    'RPAREN':	( ')', ),
+    'LBRACE':	( '{', ),
+    'RBRACE':	( '}', ),
+    'LBRACKET':	( '[', ),
+    'RBRACKET':	( ']', ),
+    'PLUS':	( '+', ),
+    'MINUS':	( '-', ),
+    'TILDE':	( '~', ),
     'DOT':	( '.', ),
+    'EQUAL':	( '=', ),
+    'STAR':	( '*', ),
+    'STARSTAR':	( '**', ),
 
 }
 
@@ -344,12 +359,6 @@ class Python2Formatter(GenericASTTraversal, object):
         self.println()
         self.prune() # stop recursing
 
-    def n_exprlist(self, node):
-        self.preorder(node[0])
-        self.preorder(node[1])
-        self.preorder(node[2])
-        self.prune() # stop recursing
-
     def n_yield(self, node):
         self.write('yield')
         self.write(' ')
@@ -363,6 +372,14 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write(' ')
         self.preorder(node[1])
         self.prune()
+
+    def n_factor(self, node):
+        self.write(' ')
+        self.preorder(node[0])
+        if len(node) > 1:
+            self.preorder(node[1])
+        self.prune()
+
 
     def n_exec_stmt(self, node):
         """
@@ -546,7 +563,7 @@ if __name__ == '__main__':
         from py2_scan import ENDMARKER
         formatted = format_python2_stmts(python2_stmts + ENDMARKER,
                                          show_tokens=False, showast=True,
-                                         showgrammar=True)
+                                         showgrammar=False)
         print('=' * 30)
         print(formatted)
         return
@@ -554,6 +571,7 @@ if __name__ == '__main__':
     # format_test("pass")
     format_test("""
 x = 1 + 2
+y = 3 // 4
 """)
 #     format_test("""
 # if True:
