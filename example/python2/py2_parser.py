@@ -88,8 +88,33 @@ class PythonParser(GenericASTBuilder):
         newlines ::=
 
         decorator ::= AT dotted_name arg_list_opt NEWLINE
-        arglist_opt ::= LPAREN [arglist] RPAREN
+        arglist_opt ::= LPAREN arglist RPAREN
         arglist_opt ::=
+
+        arglist ::= argument_commas arglist2
+
+        argument_commas ::= argument_commas argument_comma
+        argument_commas ::=
+        argument_comma  ::= argument COMMA
+
+        arglist2 ::= argument comma_opt
+        arglist2 ::= START test comma_arguments comma_starstar_test_opt
+        arglist2 ::= STARSTAR test
+
+        comma_arguments ::= comma_arguments comma_argument
+        comma_arguments ::=
+
+        comma_argument ::= COMMA argument
+
+        comma_starstar_test_opt ::= COMMA STARSTAR test
+        comma_starstar_test_opt ::=
+
+        # Really [keyword '='] test
+        argument ::= test gen_for_opt
+        argument ::= test EQUAL test
+
+        gen_for_opt ::= gen_for
+        gen_for_opt ::=
 
         decorators ::= decorators decorator
         decorators ::= decorator
@@ -214,6 +239,14 @@ class PythonParser(GenericASTBuilder):
 
         # Fill compound statement
         # ....
+
+        lambdef ::= LAMBDA varargslist_opt COLON test
+
+        sliceop ::= COLON test_opt
+
+        test_opt ::= test
+        test_opt ::=
+
         exprlist ::= expr comma_exprs comma_opt
         comma_exprs ::= comma_expr_star COMMA expr
         comma_exprs ::=
@@ -288,6 +321,11 @@ class PythonParser(GenericASTBuilder):
         # FIXME: add subscriptlist, subscript sliceopt exprlist
         #        dictmaker
 
+
+        classdef ::= CLASS NAME class_subclass_opt  COLON suite
+
+        class_subclass_opt LPAREN testlist_opt RPAREN
+        class_subclass_opt ::=
 
         atom       ::= LPAREN yield_expr_opt_testlist_gexp RPARENT
         atom       ::= LBRACKET listmaker RBRACKET
@@ -404,13 +442,15 @@ def parse_python2(python_stmts, start='file_input',
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         for python2_stmts in (
-                # "if True: pass",
-                """
-while True:
-    if False:
-        continue
+#                 # "if True: pass",
+#                 """
+# while True:
+#     if False:
+#         continue
 
-""",
+# """,
+                # "if True: pass",
+                """return f()""",
                 ):
             print(python2_stmts)
             print('-' * 30)

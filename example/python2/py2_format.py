@@ -545,16 +545,15 @@ if __name__ == '__main__':
     def format_test(python2_stmts):
         from py2_scan import ENDMARKER
         formatted = format_python2_stmts(python2_stmts + ENDMARKER,
-                                         show_tokens=False, showast=True)
+                                         show_tokens=False, showast=True,
+                                         showgrammar=True)
         print('=' * 30)
         print(formatted)
         return
     # format_test("from os import path")
     # format_test("pass")
     format_test("""
-def fact():
-    if n <= 0:return 1
-    return n*fact(n-1)
+x = 1 + 2
 """)
 #     format_test("""
 # if True:

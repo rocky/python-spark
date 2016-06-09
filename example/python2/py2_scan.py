@@ -9,7 +9,7 @@ from spark_parser.scanner import GenericScanner, GenericToken
 import re
 RESERVED_WORDS = re.split("\s+",
 """as assert break class continue def del eval exec else elif for from global
-if in import pass print return self while yield""")
+if in import lambda pass print return self while yield""")
 
 BRACKET2NAME = {
     '(': 'LPAREN',   ')': 'RPAREN',
@@ -80,8 +80,8 @@ x = 2y + z
 
     OP2NAME = {'+': 'PLUS', '-': 'MINUS', '~': 'TILDE'}
     def t_op(self, s):
-        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=<<|>>|[<>%^&+/~-]'
-        if s in ('<', '>', '==', '>=', '<>', '!='):
+        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|<<|>>|[<>%^&+/~-]'
+        if s in ('<', '>', '==', '>=', '<=', '<>', '!='):
             self.add_token('COMP_OP', s)
         elif s in ('+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '**=',
                    '//='):
@@ -93,10 +93,6 @@ x = 2y + z
         else:
             print("Internal error: Unknown operator %s" % s)
             raise SystemExit
-
-    def t_unop(self, s):
-        r'[~]'
-        self.add_token('UNOP', s)
 
     def t_linesep(self, s):
          r';'
@@ -111,7 +107,7 @@ x = 2y + z
          self.add_token('COMMENT', s)
 
     def t_name(self, s):
-        r'[A-Za-z_][A-Z-a-z_0-9]*'
+        r'[A-Za-z_][A-Za-z_0-9]*'
         if s in RESERVED_WORDS:
             self.add_token(s.upper(), s)
         else:
@@ -163,12 +159,13 @@ if __name__ == "__main__":
     scan = Python2Scanner()
     def showit(expr):
         print(expr)
-        tokens = scan.tokenize(expr)
+        tokens = scan.tokenize(expr + ENDMARKER)
         for t in tokens: print(t)
         print('-' * 30)
         return
 
-#     showit("(10.5 + 2 / 30) // 3 >> 1")
+    showit("(10.5 + 2 / 30) // 3 >> 1")
+    showit("1 + 2")
 #     showit("""
 # () { } + - 'abc' \"abc\" 10 10j 0x10 # foo
 # # bar
@@ -179,8 +176,8 @@ if __name__ == "__main__":
 #      pass
 #   pass
 # pass""")
-    showit("""
-for i in range(x):
-    while True:
-       break
-""" + ENDMARKER)
+#     showit("""
+# for i in range(x):
+#     while True:
+#        break
+# """)
