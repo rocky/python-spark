@@ -72,3 +72,4 @@ newline_or_stmts
             type: STRING, value: "'exec-string'"
    newline_or_stmt
       type: NEWLINE, value: '\n'
+type: ENDMARKER, value: '\x04'

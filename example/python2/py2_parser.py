@@ -8,7 +8,7 @@ from __future__ import print_function
 import sys
 from spark_parser.ast import AST
 
-from py2_scan import Python2Scanner
+from py2_scan import Python2Scanner, ENDMARKER
 
 from spark_parser import GenericASTBuilder #, DEFAULT_DEBUG
 
@@ -65,7 +65,7 @@ class PythonParser(GenericASTBuilder):
         single_input ::= simple_stmt
         single_input ::= compound_stmt NEWLINE
 
-        file_input ::= newline_or_stmts
+        file_input ::= newline_or_stmts ENDMARKER
         newline_or_stmts ::= newline_or_stmts newline_or_stmt
         newline_or_stmts ::=
 
@@ -82,7 +82,7 @@ class PythonParser(GenericASTBuilder):
         stmt_plus  ::= stmt_plus sep stmt
         stmt_plus  ::= stmt
 
-        eval_input ::= testlist newlines
+        eval_input ::= testlist newlines ENDMAKER
 
         newlines ::= newlines NEWLINE
         newlines ::=
@@ -374,12 +374,13 @@ if __name__ == '__main__':
 while True:
     if False:
         continue
-pass
+
 """,
                 ):
             print(python2_stmts)
             print('-' * 30)
-            ast = parse_python2(python2_stmts, start='file_input', show_tokens=False)
+            ast = parse_python2(python2_stmts + ENDMARKER,
+                                start='file_input', show_tokens=False)
             print(ast)
             print('=' * 30)
     else:

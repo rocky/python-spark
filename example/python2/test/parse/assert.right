@@ -61,3 +61,4 @@ newline_or_stmts
                or_and_tests
    newline_or_stmt
       type: NEWLINE, value: '\n'
+type: ENDMARKER, value: '\x04'

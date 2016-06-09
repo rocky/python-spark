@@ -10,3 +10,6 @@ type: NEWLINE, value: '\n'
 type: INDENT, value: '  '
 type: PASS, value: 'pass'
 type: NEWLINE, value: '\n'
+type: DEDENT
+type: NEWLINE
+type: ENDMARKER, value: '\x04'

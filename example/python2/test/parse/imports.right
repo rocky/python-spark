@@ -255,3 +255,4 @@ newline_or_stmts
                         type: NAME, value: 'foo'
    newline_or_stmt
       type: NEWLINE, value: '\n'
+type: ENDMARKER, value: '\x04'

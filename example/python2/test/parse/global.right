@@ -41,3 +41,4 @@ newline_or_stmts
          comma_names
    newline_or_stmt
       type: NEWLINE, value: '\n'
+type: ENDMARKER, value: '\x04'

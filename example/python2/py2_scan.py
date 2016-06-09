@@ -22,6 +22,8 @@ SYMBOL2NAME = {
     ',': 'COMMA', '.': 'DOT',
     }
 
+ENDMARKER = r''   # ctrl-d
+
 class Python2Scanner(GenericScanner):
 
     def error(self, s, pos):
@@ -72,8 +74,8 @@ x = 2y + z
         self.add_token(SYMBOL2NAME[s], s)
 
     def t_endmarker(self, s):
-       r'\x05' # ctrl-d
-       self.add_token('ENDMARKER', s)
+        """"""
+        self.add_token('ENDMARKER', s)
 
     def t_op(self, s):
         r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|is|<<|>>|[<>%^&+/-]'
@@ -178,4 +180,4 @@ if __name__ == "__main__":
 for i in range(x):
     while True:
        break
-pass""")
+""" + ENDMARKER)

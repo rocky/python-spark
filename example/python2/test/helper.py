@@ -8,10 +8,11 @@ def helper_init(file, subdir):
     return os.path.join(dirname, subdir)
 
 def compare_one(func, python_file, verbose=True):
+    from py2_scan import ENDMARKER
     right_file = python_file[:-2] + 'right'
     got_file = python_file[:-2] + 'got'
     with open(python_file, 'r') as py_fp:
-        input_data = py_fp.read()
+        input_data = py_fp.read() + ENDMARKER
         items = func(input_data)
         got = [str(t)+"\n" for t in items]
         same = True
