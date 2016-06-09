@@ -17,6 +17,11 @@ BRACKET2NAME = {
     '[': 'LBRACKET', ']': 'RBRACKET',
     }
 
+SYMBOL2NAME = {
+    '@': 'AT',    ':': 'COLON',
+    ',': 'COMMA', '.': 'DOT',
+    }
+
 class Python2Scanner(GenericScanner):
 
     def error(self, s, pos):
@@ -58,13 +63,21 @@ x = 2y + z
     # up with both the names of the tokens and the regular expressions
     # that make up those tokens
 
-    def t_lparen(self, s):
+    def t_paren(self, s):
         r'[(){}[\]]'
         self.add_token(BRACKET2NAME[s], s)
 
+    def t_symbol(self, s):
+        r'[@:,.]'
+        self.add_token(SYMBOL2NAME[s], s)
+
+    def t_endmarker(self, s):
+       r'\x05' # ctrl-d
+       self.add_token('ENDMARKER', s)
+
     def t_op(self, s):
         r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|is|<<|>>|[<>%^&+/-]'
-        # FIXME: handle is not and not in
+        # FIXME: handle is not and not in. Do in parser?
         if s in ('<', '>', '==', '>=', '<>', '!=', 'in', 'not', 'is'):
             self.add_token('COMP_OP', s)
         elif s in ('+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '**=',
@@ -84,8 +97,6 @@ x = 2y + z
          r';'
          self.add_token('SEMICOLON', s)
 
-    # Note: we can reuse the same token name to simplify
-    # regexps and as another way we can achieve regexp |
     def t_nl(self, s):
          r'\n'
          self.add_token('NEWLINE', s, is_newline=True)
@@ -124,22 +135,6 @@ x = 2y + z
     def t_number(self, s):
         r'(0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+\.\d|\d+)j?'
         self.add_token('NUMBER', s)
-
-    def t_at(self, s):
-        r'@'
-        self.add_token('@', s)
-
-    def t_dot(self, s):
-        r'\.'
-        self.add_token('DOT', s)
-
-    def t_colon(self, s):
-        r':'
-        self.add_token('COLON', s)
-
-    def t_comma(self, s):
-        r','
-        self.add_token('COMMA', s)
 
     def t_whitespace(self, s):
         r'[ \t]+'
