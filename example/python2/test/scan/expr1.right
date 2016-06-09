@@ -1,6 +1,6 @@
 type: LPAREN, value: '('
 type: NUMBER, value: '10.5'
-type: OP, value: '+'
+type: PLUS, value: '+'
 type: NUMBER, value: '2'
 type: OP, value: '/'
 type: NUMBER, value: '30'

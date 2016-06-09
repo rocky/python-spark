@@ -218,12 +218,10 @@ class PythonParser(GenericASTBuilder):
         comma_exprs ::= comma_expr_star COMMA expr
         comma_exprs ::=
 
+        testlist  ::= testlist1 comma_opt
 
-        testlist_opt_comma ::= testlist COMMA
-        testlist_opt_comma ::= testlist
-
-        testlist ::= testlist COMMA test
-        testlist ::= test
+        testlist1 ::= testlist1 COMMA test
+        testlist1 ::= test
 
         test ::= or_test IF or_test ELSE test
         test ::= or_test
@@ -252,12 +250,49 @@ class PythonParser(GenericASTBuilder):
         comp_op_exprs ::= comp_op_exprs comp_op expr
         comp_op_exprs ::=
 
-        comp_op ::= COMP_OP
-        comp_op ::= IN
+        comp_op    ::= COMP_OP
+        comp_op    ::= IN
+        comp_op    ::= IS
+        comp_op    ::= IS NOT
 
         expr       ::= expr OP expr
         expr       ::= LPAREN expr RPAREN
-        expr       ::= atom
+        expr       ::= factor
+
+        term       ::= factor arith_op_factors
+
+        arith_opt_factors ::= arith_op factor
+        arith_opt_factors ::=
+
+        arith_op ::= STAR
+        arith_op ::= SLASH
+        arith_op ::= PERCENT
+        arith_op ::= SLASHSLASH
+
+        factor     ::=  PLUS factor
+        factor     ::=  MINUS factor
+        factor     ::= power
+
+        power      ::= atom trailers starstar_factor_opt
+
+        starstar_factor_opt ::= STARSTAR factor
+        starstar_factor_opt ::=
+
+        trailers   ::= trailers trailer
+        trailers   ::=
+
+        trailer ::= LPAREN arglist_opt RPAREN
+        trailer ::= LBRACKET subscriptlist RPAREN
+        trailer ::= DOT NAME
+
+        # FIXME: add subscriptlist, subscript sliceopt exprlist
+        #        dictmaker
+
+
+        atom       ::= LPAREN yield_expr_opt_testlist_gexp RPARENT
+        atom       ::= LBRACKET listmaker RBRACKET
+        atom       ::= LBRACE dictmaker RBRACE
+        atom       ::= BACKTICK listmaker BACKTICK
 
         atom       ::= NUMBER
         atom       ::= NAME

@@ -22,7 +22,11 @@ newline_or_stmts
       exec_stmt
          type: EXEC, value: 'exec'
          expr
-            type: STRING, value: "'exec-string'"
+            power
+               atom
+                  type: STRING, value: "'exec-string'"
+               trailers
+               starstar_factor_opt
          type: IN, value: 'in'
          test
             or_test
@@ -30,7 +34,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: NAME, value: 'locals'
+                           power
+                              atom
+                                 type: NAME, value: 'locals'
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests
@@ -41,7 +49,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: NAME, value: 'globals'
+                           power
+                              atom
+                                 type: NAME, value: 'globals'
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests
@@ -51,7 +63,11 @@ newline_or_stmts
       exec_stmt
          type: EXEC, value: 'exec'
          expr
-            type: STRING, value: "'exec-string'"
+            power
+               atom
+                  type: STRING, value: "'exec-string'"
+               trailers
+               starstar_factor_opt
          type: IN, value: 'in'
          test
             or_test
@@ -59,7 +75,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: NAME, value: 'dict'
+                           power
+                              atom
+                                 type: NAME, value: 'dict'
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests
@@ -69,7 +89,11 @@ newline_or_stmts
       exec_stmt
          type: EXEC, value: 'exec'
          expr
-            type: STRING, value: "'exec-string'"
+            power
+               atom
+                  type: STRING, value: "'exec-string'"
+               trailers
+               starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
 type: ENDMARKER, value: '\x04'

@@ -88,7 +88,6 @@ TABLE_DIRECT = {
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'pass_stmt':        ( '%|pass\n', ),
     'return_stmt':      ( '%|return %c\n', 1),
-    'testlist':         ( '%C', (1, maxint, ', ') ),
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c', 0),
@@ -273,6 +272,29 @@ class Python2Formatter(GenericASTTraversal, object):
             for line in trimmed[1:-1]:
                 self.println( indent, line )
             self.println(indent, trimmed[-1], quote)
+
+    OTHER_SYM = {'{': '}', '[': ']', '(': ')', '`': '`'}
+
+    def n_atom(self, node):
+      """atom ::=
+             ('(' [yield_expr|testlist_gexp] ')'
+                 | '[' [listmaker] ']'
+                 | '{' [dictmaker] '}'
+                 | '`' testlist1 '`'
+                 | NAME | NUMBER | STRING+)
+      """
+      l = len(node)
+      if l == 1:
+          self.preorder(node[0])
+          self.prune()
+      elif l == 3:
+          left_sym = node[0].pattr
+          self.write(left_sym)
+          self.preorder(node[0])
+          self.prune()
+          self.write(self.OTHER_SYM[left_sym])
+      else:
+          assert False, "Expecting atom to have length 1 or 3"
 
     # Possibly this kind of thing should be an engine format
     # 'import_as_name': ('%c %?as %c', 0, 2) which means:
@@ -521,19 +543,18 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
 
 if __name__ == '__main__':
     def format_test(python2_stmts):
-        "This is a docstring"
-        formatted = format_python2_stmts(python2_stmts, show_tokens=False, showast=True)
+        from py2_scan import ENDMARKER
+        formatted = format_python2_stmts(python2_stmts + ENDMARKER,
+                                         show_tokens=False, showast=True)
         print('=' * 30)
         print(formatted)
         return
     # format_test("from os import path")
     # format_test("pass")
     format_test("""
-while True:
-    if False:
-        continue
-
-pass
+def fact():
+    if n <= 0:return 1
+    return n*fact(n-1)
 """)
 #     format_test("""
 # if True:

@@ -29,7 +29,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: NAME, value: 'False'
+                           power
+                              atom
+                                 type: NAME, value: 'False'
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests
@@ -44,7 +48,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: NAME, value: 'True'
+                           power
+                              atom
+                                 type: NAME, value: 'True'
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests
@@ -55,7 +63,11 @@ newline_or_stmts
                   not_test
                      comparison
                         expr
-                           type: STRING, value: "'shit happens'"
+                           power
+                              atom
+                                 type: STRING, value: "'shit happens'"
+                              trailers
+                              starstar_factor_opt
                         comp_op_exprs
                   and_not_tests
                or_and_tests

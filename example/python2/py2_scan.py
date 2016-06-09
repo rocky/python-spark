@@ -18,8 +18,9 @@ BRACKET2NAME = {
     }
 
 SYMBOL2NAME = {
-    '@': 'AT',    ':': 'COLON',
-    ',': 'COMMA', '.': 'DOT',
+    '@': 'AT',    '`': 'BACKTICK',
+    ':': 'COLON', ',': 'COMMA',
+    '.': 'DOT',
     }
 
 ENDMARKER = r''   # ctrl-d
@@ -70,22 +71,24 @@ x = 2y + z
         self.add_token(BRACKET2NAME[s], s)
 
     def t_symbol(self, s):
-        r'[@:,.]'
+        r'[@:,.`]'
         self.add_token(SYMBOL2NAME[s], s)
 
     def t_endmarker(self, s):
         """"""
         self.add_token('ENDMARKER', s)
 
+    OP2NAME = {'+': 'PLUS', '-': 'MINUS', '~': 'TILDE'}
     def t_op(self, s):
-        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|is|<<|>>|[<>%^&+/-]'
-        # FIXME: handle is not and not in. Do in parser?
-        if s in ('<', '>', '==', '>=', '<>', '!=', 'in', 'not', 'is'):
+        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=<<|>>|[<>%^&+/~-]'
+        if s in ('<', '>', '==', '>=', '<>', '!='):
             self.add_token('COMP_OP', s)
         elif s in ('+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '**=',
-                    '//='):
+                   '//='):
             self.add_token('AUGASSIGN', s)
-        elif s in ('+', '-', '*', '/', '%', '&', '|', '^', '<<', '>>', '**', '//'):
+        elif s in self.OP2NAME.keys():
+            self.add_token(self.OP2NAME[s], s)
+        elif s in ('/', '%', '&', '|', '^', '<<', '>>', '**', '//'):
             self.add_token('OP', s)
         else:
             print("Internal error: Unknown operator %s" % s)
