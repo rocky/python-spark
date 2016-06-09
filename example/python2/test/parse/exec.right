@@ -29,34 +29,24 @@ newline_or_stmts
                starstar_factor_opt
          type: IN, value: 'in'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'locals'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'locals'
+                        trailers
+                        starstar_factor_opt
          type: COMMA, value: ','
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'globals'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'globals'
+                        trailers
+                        starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -70,19 +60,14 @@ newline_or_stmts
                starstar_factor_opt
          type: IN, value: 'in'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'dict'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'dict'
+                        trailers
+                        starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt

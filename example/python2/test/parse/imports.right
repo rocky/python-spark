@@ -113,7 +113,6 @@ newline_or_stmts
             dots
             dotted_name
                type: NAME, value: 'os'
-               dot_names
          import_list
             type: IMPORT, value: 'import'
             import_as_names
@@ -125,7 +124,6 @@ newline_or_stmts
          type: FROM, value: 'from'
          dots_dotted_name_or_dots
             type: DOT, value: '.'
-            dots
          import_list
             type: IMPORT, value: 'import'
             import_as_names
@@ -154,7 +152,6 @@ newline_or_stmts
                type: DOT, value: '.'
             dotted_name
                type: NAME, value: 'foo'
-               dot_names
          import_list
             type: IMPORT, value: 'import'
             import_as_names
@@ -168,7 +165,6 @@ newline_or_stmts
             dots
             dotted_name
                type: NAME, value: 'os'
-               dot_names
          import_list
             type: IMPORT, value: 'import'
             import_as_names
@@ -183,10 +179,7 @@ newline_or_stmts
          type: IMPORT, value: 'import'
          dotted_as_names
             dotted_as_name
-               dotted_name
-                  type: NAME, value: 'os'
-                  dot_names
-            comma_dotted_as_names
+               type: NAME, value: 'os'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -194,16 +187,12 @@ newline_or_stmts
          type: IMPORT, value: 'import'
          dotted_as_names
             dotted_as_name
-               dotted_name
-                  type: NAME, value: 'sys'
-                  dot_names
+               type: NAME, value: 'sys'
             comma_dotted_as_names
                comma_dotted_as_names
                type: COMMA, value: ','
                dotted_as_name
-                  dotted_name
-                     type: NAME, value: 'os'
-                     dot_names
+                  type: NAME, value: 'os'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -216,7 +205,6 @@ newline_or_stmts
                   dot_names
                      type: DOT, value: '.'
                      type: NAME, value: 'path'
-            comma_dotted_as_names
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -231,7 +219,6 @@ newline_or_stmts
                      type: NAME, value: 'path'
                type: AS, value: 'as'
                type: NAME, value: 'path2'
-            comma_dotted_as_names
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt

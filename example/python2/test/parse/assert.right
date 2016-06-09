@@ -24,53 +24,38 @@ newline_or_stmts
       assert_stmt
          type: ASSERT, value: 'assert'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'False'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'False'
+                        trailers
+                        starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
       assert_stmt
          type: ASSERT, value: 'assert'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'True'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'True'
+                        trailers
+                        starstar_factor_opt
          type: COMMA, value: ','
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: STRING, value: "'shit happens'"
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: STRING, value: "'shit happens'"
+                        trailers
+                        starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
 type: ENDMARKER, value: '\x04'

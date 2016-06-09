@@ -4,19 +4,14 @@ newline_or_stmts
       if_stmt
          type: IF, value: 'if'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'True'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'True'
+                        trailers
+                        starstar_factor_opt
          type: COLON, value: ':'
          suite
             pass_stmt
@@ -31,19 +26,14 @@ newline_or_stmts
       if_stmt
          type: IF, value: 'if'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'True'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'True'
+                        trailers
+                        starstar_factor_opt
          type: COLON, value: ':'
          suite
             type: NEWLINE, value: '\n'
@@ -68,19 +58,14 @@ newline_or_stmts
       if_stmt
          type: IF, value: 'if'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'True'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'True'
+                        trailers
+                        starstar_factor_opt
          type: COLON, value: ':'
          suite
             type: NEWLINE, value: '\n'
@@ -89,19 +74,14 @@ newline_or_stmts
                if_stmt
                   type: IF, value: 'if'
                   test
-                     or_test
-                        and_test
-                           not_test
-                              comparison
-                                 expr
-                                    power
-                                       atom
-                                          type: NAME, value: 'False'
-                                       trailers
-                                       starstar_factor_opt
-                                 comp_op_exprs
-                           and_not_tests
-                        or_and_tests
+                     and_test
+                        not_test
+                           expr
+                              power
+                                 atom
+                                    type: NAME, value: 'False'
+                                 trailers
+                                 starstar_factor_opt
                   type: COLON, value: ':'
                   suite
                      type: NEWLINE, value: '\n'

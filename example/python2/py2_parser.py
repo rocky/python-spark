@@ -34,6 +34,7 @@ class PythonParser(GenericASTBuilder):
                    'comp_op_exprs', 'newline_or_stmts',
                    'comma_names'
                    )
+        # nonterminal with a (reserved0 single word derivation
         no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt', 'return_stmt')
 
         has_len = hasattr(args, '__len__')
@@ -51,6 +52,12 @@ class PythonParser(GenericASTBuilder):
             # Remove singleton derivations
             rv = GenericASTBuilder.nonterminal(self, nt, args[0])
             del args[0] # save memory
+        elif (has_len and len(args) == 2 and
+              hasattr(args[1], '__len__') and len(args[1]) == 0):
+            # Remove trailing epsilon rules, but only when there
+            # are two items
+            rv = GenericASTBuilder.nonterminal(self, nt, args[:1])
+            del args[1] # save memory
         else:
             rv = GenericASTBuilder.nonterminal(self, nt, args)
         return rv

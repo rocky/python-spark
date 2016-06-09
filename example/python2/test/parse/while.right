@@ -4,19 +4,14 @@ newline_or_stmts
       while_stmt
          type: WHILE, value: 'while'
          test
-            or_test
-               and_test
-                  not_test
-                     comparison
-                        expr
-                           power
-                              atom
-                                 type: NAME, value: 'True'
-                              trailers
-                              starstar_factor_opt
-                        comp_op_exprs
-                  and_not_tests
-               or_and_tests
+            and_test
+               not_test
+                  expr
+                     power
+                        atom
+                           type: NAME, value: 'True'
+                        trailers
+                        starstar_factor_opt
          type: COLON, value: ':'
          suite
             type: NEWLINE, value: '\n'
