@@ -94,21 +94,26 @@ TABLE_DIRECT = {
     'if_stmt':	        ( '%|if %c:\n%+%c%-%c%-%c', 1, 3, 4, 5),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
-    'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
     'classdef':         ( '%|class %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
+    'comp_op_exprs':    ( ' %c %c', 0, 1),
+    'or_and_test':      ( ' %c %c', 0, 1),
+    'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1),
     # Below is not quite right. Use no space when a function call.
     # Probably need to rewrite grammar to get this though.
-    'yield_expr_or_testlist' : ( '%c ', 0),
 
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
     'NUMBER':	( '%{attr}', ),
-    'BINOP':	( '%{attr}', ),  # Space is a hack. Fix up later
+    'BINOP':	( '%{attr}', ),
+    'COMP_OP':	( '%{attr}', ),
+    'UNOP':	( '%{attr}', ),
+    'OR':	( 'or', ),
+    'AND':	( 'and', ),
     'LPAREN':	( '(', ),
     'RPAREN':	( ')', ),
     'LBRACE':	( '{', ),
@@ -382,6 +387,15 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[1])
         self.prune()
 
+    def n_and_not_tests(self, node):
+        if len(node) > 1:
+            self.preorder(node[0])
+            self.write(' ')
+            self.preorder(node[1])
+            self.write(' ')
+            self.preorder(node[2])
+        self.prune()
+
 
     def n_exec_stmt(self, node):
         """
@@ -457,6 +471,7 @@ class Python2Formatter(GenericASTTraversal, object):
 
     def n_binop_arith_exprs(self, node):
         if len(node) > 0:
+            self.preorder(node[0])
             assert node[1], 'binop'
             self.write(' ')
             self.preorder(node[1])
@@ -465,6 +480,7 @@ class Python2Formatter(GenericASTTraversal, object):
             self.prune()
 
     def n_op_factor(self, node):
+        self.write(' ')
         self.preorder(node[0])
         if len(node) > 1:
             self.preorder(node[1])

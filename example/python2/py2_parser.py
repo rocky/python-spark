@@ -68,6 +68,9 @@ class PythonParser(GenericASTBuilder):
     ##########################################################
     def p_python_grammar(self, args):
         '''
+        ### Note: comment rules that start ## are rules from python26.gr
+        ##  We use them to assist checking translation to a SPARK-format grammar.
+
         single_input ::= NEWLINE
         single_input ::= simple_stmt
         single_input ::= compound_stmt NEWLINE
@@ -95,15 +98,18 @@ class PythonParser(GenericASTBuilder):
         newlines ::=
 
         decorator ::= AT dotted_name arg_list_opt NEWLINE
-        arglist_opt ::= LPAREN arglist RPAREN
+        arglist_opt ::= arglist
         arglist_opt ::=
 
+        ## arglist ::= (argument ',')*
+        ## (argument [','] | '*' test (',' argument)* [',' '**' test] | '**' test)
         arglist ::= argument_commas arglist2
 
         argument_commas ::= argument_commas argument_comma
         argument_commas ::=
         argument_comma  ::= argument COMMA
 
+        ## (argument [','] | '*' test (',' argument)* [',' '**' test] | '**' test)
         arglist2 ::= argument comma_opt
         arglist2 ::= START test comma_arguments comma_starstar_test_opt
         arglist2 ::= STARSTAR test
@@ -116,12 +122,33 @@ class PythonParser(GenericASTBuilder):
         comma_starstar_test_opt ::= COMMA STARSTAR test
         comma_starstar_test_opt ::=
 
-        # Really [keyword '='] test
+        ## Really [keyword '='] test
+        ## argument ::= test [gen_for] | test '=' test
         argument ::= test gen_for_opt
         argument ::= test EQUAL test
 
+        ## list_iter ::= list_for | list_if
+        list_iter ::= list_for
+        list_iter ::= list_if
+
         gen_for_opt ::= gen_for
         gen_for_opt ::=
+
+        ## gen_iter ::= gen_for | gen_if
+        gen_iter ::= gen_for
+        gen_iter ::= gen_if
+
+        ## gen_for ::= 'for' exprlist 'in' or_test [gen_iter]
+        gen_for ::= FOR exprlist IN or_test gen_iter_opt
+
+        gen_iter_opt ::= gen_iter
+        gen_iter_opt ::=
+
+        ## gen_if ::= 'if' old_test [gen_iter]
+        gen_if ::= IF old_test gen_iter_opt
+
+        ## testlist1 ::= test (',' test)*
+        testlist1 ::= test comma_tests
 
         decorators ::= decorators decorator
         decorators ::= decorator
@@ -138,26 +165,23 @@ class PythonParser(GenericASTBuilder):
         varargslist_opt ::=
 
         # FILL IN
-        # varargslist ::= fpdef ['=' test] ',')* ('*' NAME [',' '**' NAME] | '**' NAME)
+        ## varargslist ::= fpdef ['=' test] ',')* ('*' NAME [',' '**' NAME] | '**' NAME)
 
-        # varargslist ::= fpdef ['=' test] (',' fpdef ['=' test])* [',']
+        ## varargslist ::= fpdef ['=' test] (',' fpdef ['=' test])* [',']
         varargslist ::= fpdef eq_test_opt comma_fpdef_opt_eqtests comma_opt
 
-        # (',' fpdef ['=' test])*
+        ## (',' fpdef ['=' test])*
         comma_fpdef_opt_eqtests ::= comma_fpdef_opt_eqtests COMMA fpdef eq_test_opt
         comma_fpdef_opt_eqtests ::=
 
 
-        # (',' fpdef ['=' test])* [',']
+        ## (',' fpdef ['=' test])* [',']
         comma_fpdefs_opt_comma  ::= comma_fpdefs eq_test_opt
         comma_fpdefs ::= COMMA fpdef eq_tests_opt
         comma_fpdefs ::=
 
-        # star_names ::= star_names STAR NAME star_star_opt
-        # star_names ::= star_names star_star_opt
-
-        # star_names ::= star_names sSTAR NAME star_star_opt
-        # star_names ::= star_names star_star_opt
+        star_names ::= star_names STAR NAME star_star_opt
+        star_names ::= star_names star_star_opt
         star_names ::=
 
         eq_tests ::= eq_tests eq_test
@@ -171,14 +195,14 @@ class PythonParser(GenericASTBuilder):
         star_star_opt ::= COMMA STAR_STAR NAME
         star_star_opt ::=
 
-        # fpdef ::= NAME | '(' fplist ')'
+        ## fpdef ::= NAME | '(' fplist ')'
         fpdef ::= NAME
         fpdef ::= LPAREN fplist RPAREN
 
-        # fplist ::= fpdef (',' fpdef)* [',']
+        ## fplist ::= fpdef (',' fpdef)* [',']
         fplist ::= fpdef fplist1 comma_opt
 
-        # (',' fpdef)* [',']
+        ## (',' fpdef)* [',']
         fplist1 ::= fplist COMMA fpdef
         fplist1 ::=
 
@@ -200,7 +224,15 @@ class PythonParser(GenericASTBuilder):
         small_stmt ::= exec_stmt
         small_stmt ::= assert_stmt
 
-        expr_stmt ::= testlist augassign_or_equal
+        # Grammar has:
+        ##  expr_stmt ::= testlist (augassign (yield_expr|testlist)
+        ##          | ('=' (yield_expr|testlist))*)
+        # This misses things just expressions. So I've made the first leg
+        # optional
+        expr_stmt ::= testlist augassign_or_equal_opt
+
+        augassign_or_equal_opt ::= augassign_or_equal
+        augassign_or_equal_opt ::=
 
         augassign_or_equal ::=  augassign_yield_expr_or_testlist
         augassign_or_equal ::=  EQUAL yield_expr_or_testlists
@@ -279,32 +311,58 @@ class PythonParser(GenericASTBuilder):
         comma_tests ::= comma_tests COMMA test
         comma_tests ::=
 
+        ## Backward compatibility cruft to support:
+        ## [ x for x in lambda : True, lambda : False if x() ]
+        ## even while also allowing:
+        ## lambda x : 5 if x else 2
+        ## (But not a mix of the two)
+        ## testlist_safe ::= old_test [(',' old_test)+ [',']]
+        testlist_safe ::= old_test testlist_safe1_opt
+
+        testlist_safe1_opt :: = comma_old_tests comma_opt
+        testlist_safe1_opt :: =
+
+        ## (',' old_test)+
+        comma_old_tests ::= comma_old_tests comma_old_test
+        comma_old_tests ::= comma_old_test
+
+        comma_old_test ::= COMMA old_test
+
+        ## old_test ::= or_test | old_lambdef
+        old_test ::= or_test
+        old_test ::= old_lamdef
+
+        ## old_lambdef ::= 'lambda' [varargslist] ':' old_test
+        old_lambdef ::= LAMBDA varargslist_opt COLON old_test
+
+        test ::= or_test IF or_test ELSE test
         test ::= or_test IF or_test ELSE test
         test ::= or_test
         test ::= lambdef
 
         or_test ::= and_test or_and_tests
 
+        ## ('or' and_test)*
         or_and_tests ::= or_and_tests or_and_test
         or_and_tests ::=
 
         or_and_test ::= OR and_test
 
+        ## and_test ::= not_test ('and' not_test)*
         and_test ::= not_test and_not_tests
 
+        ## ('and' not_test)*
         and_not_tests ::= and_not_tests AND not_test
         and_not_tests ::=
 
+        ## not_test ::= 'not' not_test | comparison
         not_test ::= NOT not_test
         not_test ::= comparison
 
-        not_test ::=
-             'not' not_test | comparison
-
-        # comparison ::= expr (comp_op expr)*
+        ## comparison ::= expr (comp_op expr)*
         comparison ::= expr comp_op_exprs
 
-        # (comp_op expr)*
+        ## (comp_op expr)*
         comp_op_exprs ::= comp_op_exprs comp_op expr
         comp_op_exprs ::=
 
@@ -314,13 +372,13 @@ class PythonParser(GenericASTBuilder):
         comp_op    ::= IS NOT
 
         # Condensation of this
-        #  expr ::= xor_expr ('|' xor_expr)*
-        #  xor_expr ::= and_expr ('^' and_expr)*
-        #  and_expr ::= shift_expr ('&' shift_expr)*
-        #  shift_expr ::= arith_expr (('<<'|'>>') arith_expr)*
-        #  arith_expr ::= term (('+'|'-') term)*
-        #  term ::= factor (('*'|'/'|'%'|'//') factor)*
-        # We don't care about operator precidence
+        ##  expr ::= xor_expr ('|' xor_expr)*
+        ##  xor_expr ::= and_expr ('^' and_expr)*
+        ##  and_expr ::= shift_expr ('&' shift_expr)*
+        ##  shift_expr ::= arith_expr (('<<'|'>>') arith_expr)*
+        ##  arith_expr ::= term (('+'|'-') term)*
+        ##  term ::= factor (('*'|'/'|'%'|'//') factor)*
+        ## We don't care about operator precidence
 
         expr              ::= factor binop_arith_exprs
         binop_arith_exprs ::= binop_arith_exprs binop factor
@@ -331,7 +389,7 @@ class PythonParser(GenericASTBuilder):
         binop             ::= MINUS
         binop             ::= STAR
 
-        # factor  ::= ('+'|'-'|'~') factor | power
+        ## factor  ::= ('+'|'-'|'~') factor | power
         factor    ::= op_factor factor
         factor    ::= power
 
@@ -341,9 +399,9 @@ class PythonParser(GenericASTBuilder):
 
         power      ::= atom trailers starstar_factor_opt
 
-        # atom ::= ('(' [yield_expr|testlist_gexp] ')' | '[' [listmaker] ']'
-        #            | '{' [dictmaker] '}' | '`' testlist1 '`'
-        #            | NAME | NUMBER | STRING+)
+        ## atom ::= ('(' [yield_expr|testlist_gexp] ')' | '[' [listmaker] ']'
+        ##            | '{' [dictmaker] '}' | '`' testlist1 '`'
+        ##            | NAME | NUMBER | STRING+)
         atom       ::= LPAREN yield_expr_or_testlist_gexp_opt RPAREN
         atom       ::= LBRACKET listmaker_opt RBRACKET
         atom       ::= LBRACE dictmaker_opt RBRACE
@@ -352,7 +410,7 @@ class PythonParser(GenericASTBuilder):
         atom       ::= NAME
         atom       ::= strings
 
-        # [yield_expr|testlist_gexp]
+        ## [yield_expr|testlist_gexp]
         yield_expr_or_testlist_gexp_opt ::= yield_expr
         yield_expr_or_testlist_gexp_opt ::= testlist_gexp
         yield_expr_or_testlist_gexp_opt ::=
@@ -360,13 +418,13 @@ class PythonParser(GenericASTBuilder):
         listmaker_opt ::= listmaker
         listmaker_opt ::=
 
-        # listmaker ::= test ( list_for | (',' test)* [','] )
+        ## listmaker ::= test ( list_for | (',' test)* [','] )
 
         listmaker ::=  test  list_for_or_comma_tests_comma_opt
         list_for_or_comma_tests_comma_opt ::= list_for
         list_for_or_comma_tests_comma_opt ::= comma_tests comma_opt
 
-        # testlist_gexp ::= test ( gen_for | (',' test)* [','] )
+        ## testlist_gexp ::= test ( gen_for | (',' test)* [','] )
         testlist_gexp ::= test gen_for_or_comma_tests_comma_opt
 
         gen_for_or_comma_tests_comma_opt ::= gen_for
@@ -377,7 +435,7 @@ class PythonParser(GenericASTBuilder):
         trailers   ::= trailers trailer
         trailers   ::=
 
-        # trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
+        ## trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
         trailer ::= LPAREN arglist_opt RPAREN
         trailer ::= LBRACKET subscriptlist RPAREN
         trailer ::= DOT NAME
