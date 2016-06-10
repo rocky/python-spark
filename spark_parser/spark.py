@@ -160,7 +160,10 @@ class GenericParser(object):
             else:
                 self.rules[lhs] = [ rule ]
             self.rule2func[rule] = fn
-            self.rule2name[rule] = func.__name__[2:]
+            if func.__name__ == '<lambda>': #STRANIKS_SCAN 29/02/2016
+                self.rule2name[rule] = 'lambda'
+            else:
+                self.rule2name[rule] = func.__name__[2:]
         self.ruleschanged = True
 
     def collectRules(self):
@@ -487,6 +490,9 @@ class GenericParser(object):
             fn, arg = self.gotoT, ttype
         else:
             fn, arg = self.gotoST, token
+        if self.debug['reduce']: #STRANIKS_SCAN 01/03/2016
+            print('******** %s ********' % arg)
+            indent1 = len(cur)
 
         for item in cur:
             ptr = (item, i)
@@ -501,11 +507,16 @@ class GenericParser(object):
 
             if parent == i:
                 continue
-
+            if self.debug['reduce']: #STRANIKS_SCAN 01/03/2016
+                indent2 = len(self.states[state].complete)
             for rule in self.states[state].complete:
                 lhs, rhs = rule
                 if self.debug['reduce']:
-                    print("%s ::= %s" % (lhs, ' '.join(rhs)))
+                    text1 = "%d %d%s%s%s ::= %s" % (indent1, indent2, '   '*indent1, ' '*indent2, lhs, ' '.join(rhs))
+                    text2 = '[item=%s,i=%s,parent=%s]' % (item, i, parent)
+                    print(text1.ljust(100) + text2)
+                    if indent2>0:
+                        indent2 -= 1
                 for pitem in sets[parent]:
                     pstate, pparent = pitem
                     k = self.goto(pstate, lhs)
@@ -517,6 +528,12 @@ class GenericParser(object):
                         nk = self.goto(k, None)
                         if nk is not None:
                             self.add(cur, (nk, i))
+            if self.debug['reduce']: #STRANIKS_SCAN 01/03/2016
+                if indent1>0:
+                    indent1 -= 1
+        else:
+            if self.debug['reduce']: #STRANIKS_SCAN 01/03/2016
+                print('')
 
     def makeSet_fast(self, token, sets, i):
         #
