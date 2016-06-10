@@ -88,7 +88,6 @@ TABLE_DIRECT = {
     'expr_stmt':	( '%|%c%c\n', 0, 1),
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'pass_stmt':        ( '%|pass\n', ),
-    'return_stmt':      ( '%|return %c\n', 1),
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c', 0),
@@ -97,6 +96,7 @@ TABLE_DIRECT = {
     'comma_name':	( ', %c', 1),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
+    'classdef':         ( '%|class %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
     'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1),
@@ -104,7 +104,7 @@ TABLE_DIRECT = {
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
     'NUMBER':	( '%{attr}', ),
-    'OP':	( ' %{attr} ', ),
+    'OP':	( ' %{attr}', ),  # Space is a hack. Fix up later
     'LPAREN':	( '(', ),
     'RPAREN':	( ')', ),
     'LBRACE':	( '{', ),
@@ -399,6 +399,16 @@ class Python2Formatter(GenericASTTraversal, object):
         self.println()
         self.prune() # stop recursing
 
+    # 'return_stmt':      ( '%|return %?%c\n', 1),
+    def n_return_stmt(self, node):
+        assert node[0] == 'RETURN'
+        self.write(self.indent, 'return')
+        if len(node) > 1:
+            self.write(' ')
+            self.preorder(node[1])
+        self.println()
+        self.prune() # stop recursing
+
     # redo as
     # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),
     def n_else_suite_opt(self, node):
@@ -414,12 +424,34 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     def n_elif_suites(self, node):
         if len(node) > 0:
+            assert node[1] == 'ELIF'
             self.write(self.indent, 'elif ')
             self.preorder(node[2])
             self.println(':')
             self.indentMore()
             self.preorder(node[4])
             self.indentLess()
+            self.prune()
+
+    # redo as
+    # 'comma_fpdef_opt_eqtests": ( '%?%c, %c%c', 0, 2, 3),
+    def n_comma_fpdef_opt_eqtests(self, node):
+        if len(node) > 0:
+            self.preorder(node[0])
+            assert node[1] == 'COMMA'
+            self.write(', ')
+            self.preorder(node[2])
+            self.preorder(node[3])
+            self.prune()
+
+    # redo as
+    # 'comma_fpdef_opt_eqtests": ( '%?%c, %c', 0, 2),
+    def n_comma_tests(self, node):
+        if len(node) > 0:
+            self.preorder(node[0])
+            assert node[1] == 'COMMA'
+            self.write(', ')
+            self.preorder(node[2])
             self.prune()
 
     def engine(self, entry, startnode):

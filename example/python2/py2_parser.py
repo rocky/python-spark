@@ -77,7 +77,7 @@ class PythonParser(GenericASTBuilder):
         newline_or_stmts ::=
 
         # Grammar uses NEWLINE instead of 'sep', but ; does separate statements.
-        # The grammar is vague on NEWLINE, INDENT, and DEDENT are computed.
+        # The grammar is vague on how NEWLINE, INDENT, and DEDENT are computed.
 
         newline_or_stmt ::= sep
         newline_or_stmt ::= stmt
@@ -134,35 +134,53 @@ class PythonParser(GenericASTBuilder):
 
         parameters ::= LPAREN varargslist_opt RPAREN
 
-        # FIXME: go over this
         varargslist_opt ::=  varargslist
         varargslist_opt ::=
 
-        varargslist ::= fpdefs star_names
-        varargslist ::= fpdefs kwvals
+        # FILL IN
+        # varargslist ::= fpdef ['=' test] ',')* ('*' NAME [',' '**' NAME] | '**' NAME)
 
-        fpdefs ::= fpdefs fpdef eq_test_op
+        # varargslist ::= fpdef ['=' test] (',' fpdef ['=' test])* [',']
+        varargslist ::= fpdef eq_test_opt comma_fpdef_opt_eqtests comma_opt
 
-        star_names ::= star_names STAR NAME star_star_opt
-        star_names ::= star_names star_star_opt
+        # (',' fpdef ['=' test])*
+        comma_fpdef_opt_eqtests ::= comma_fpdef_opt_eqtests COMMA fpdef eq_test_opt
+        comma_fpdef_opt_eqtests ::=
 
-        star_names ::= star_names STAR NAME star_star_opt
-        star_names ::= star_names star_star_opt
 
-        eq_test_opt ::= EQUAL test COMMA
+        # (',' fpdef ['=' test])* [',']
+        comma_fpdefs_opt_comma  ::= comma_fpdefs eq_test_opt
+        comma_fpdefs ::= COMMA fpdef eq_tests_opt
+        comma_fpdefs ::=
+
+        # star_names ::= star_names STAR NAME star_star_opt
+        # star_names ::= star_names star_star_opt
+
+        # star_names ::= star_names sSTAR NAME star_star_opt
+        # star_names ::= star_names star_star_opt
+        star_names ::=
+
+        eq_tests ::= eq_tests eq_test
+        eq_tests ::=
+
+        eq_test_opt ::= eq_test
         eq_test_opt ::=
+
+        eq_test ::= EQUAL test
 
         star_star_opt ::= COMMA STAR_STAR NAME
         star_star_opt ::=
 
+        # fpdef ::= NAME | '(' fplist ')'
         fpdef ::= NAME
-        fpdef ::= LPAREN fplist_comma_opt RPAREN
+        fpdef ::= LPAREN fplist RPAREN
 
-        # FIXME: go over
-        fplist_comma_opt ::= fplist comma_opt
+        # fplist ::= fpdef (',' fpdef)* [',']
+        fplist ::= fpdef fplist1 comma_opt
 
-        fplist ::= fplist COMMA fpdef
-        fplist ::= fpdef
+        # (',' fpdef)* [',']
+        fplist1 ::= fplist COMMA fpdef
+        fplist1 ::=
 
         comma_opt ::= COMMA
         comma_opt ::=
@@ -218,10 +236,11 @@ class PythonParser(GenericASTBuilder):
 
         continue_stmt ::= CONTINUE
 
+        # return_stmt ::= 'return' [testlist]
         return_stmt ::= RETURN testlist_opt
 
         testlist_opt ::= testlist
-        testlsit_opt ::=
+        testlist_opt ::=
 
         yield_stmt ::= yield_expr
 
@@ -258,10 +277,12 @@ class PythonParser(GenericASTBuilder):
         comma_exprs ::= comma_expr_star COMMA expr
         comma_exprs ::=
 
-        testlist  ::= testlist1 comma_opt
+        # testlist ::= test (',' test)* [',']
+        testlist  ::= test comma_tests comma_opt
 
-        testlist1 ::= testlist1 COMMA test
-        testlist1 ::= test
+        # (',' test)*
+        comma_tests ::= comma_tests COMMA test
+        comma_tests ::=
 
         test ::= or_test IF or_test ELSE test
         test ::= or_test
@@ -285,8 +306,10 @@ class PythonParser(GenericASTBuilder):
         not_test ::=
              'not' not_test | comparison
 
+        # comparison ::= expr (comp_op expr)*
         comparison ::= expr comp_op_exprs
 
+        # (comp_op expr)*
         comp_op_exprs ::= comp_op_exprs comp_op expr
         comp_op_exprs ::=
 
@@ -295,7 +318,7 @@ class PythonParser(GenericASTBuilder):
         comp_op    ::= IS
         comp_op    ::= IS NOT
 
-        expr       ::= expr OP expr
+        expr       ::= expr OP factor
         expr       ::= LPAREN expr RPAREN
         expr       ::= factor
 
@@ -309,8 +332,8 @@ class PythonParser(GenericASTBuilder):
         arith_op ::= PERCENT
         arith_op ::= SLASHSLASH
 
-        factor     ::=  PLUS factor
-        factor     ::=  MINUS factor
+        factor     ::= PLUS factor
+        factor     ::= MINUS factor
         factor     ::= power
 
         power      ::= atom trailers starstar_factor_opt
@@ -328,10 +351,9 @@ class PythonParser(GenericASTBuilder):
         # FIXME: add subscriptlist, subscript sliceopt exprlist
         #        dictmaker
 
+        classdef ::= CLASS NAME class_subclass_opt COLON suite
 
-        classdef ::= CLASS NAME class_subclass_opt  COLON suite
-
-        class_subclass_opt LPAREN testlist_opt RPAREN
+        class_subclass_opt ::= LPAREN testlist_opt RPAREN
         class_subclass_opt ::=
 
         atom       ::= LPAREN yield_expr_opt_testlist_gexp RPARENT
