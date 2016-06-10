@@ -27,11 +27,12 @@ newline_or_stmts
             and_test
                not_test
                   expr
-                     power
-                        atom
-                           type: NAME, value: 'False'
-                        trailers
-                        starstar_factor_opt
+                     factor
+                        power
+                           atom
+                              type: NAME, value: 'False'
+                           trailers
+                           starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -41,21 +42,23 @@ newline_or_stmts
             and_test
                not_test
                   expr
-                     power
-                        atom
-                           type: NAME, value: 'True'
-                        trailers
-                        starstar_factor_opt
+                     factor
+                        power
+                           atom
+                              type: NAME, value: 'True'
+                           trailers
+                           starstar_factor_opt
          type: COMMA, value: ','
          test
             and_test
                not_test
                   expr
-                     power
-                        atom
-                           type: STRING, value: "'shit happens'"
-                        trailers
-                        starstar_factor_opt
+                     factor
+                        power
+                           atom
+                              type: STRING, value: "'shit happens'"
+                           trailers
+                           starstar_factor_opt
    newline_or_stmt
       type: NEWLINE, value: '\n'
 type: ENDMARKER, value: '\x04'

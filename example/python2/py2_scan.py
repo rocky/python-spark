@@ -78,18 +78,25 @@ x = 2y + z
         """"""
         self.add_token('ENDMARKER', s)
 
-    OP2NAME = {'+': 'PLUS', '-': 'MINUS', '~': 'TILDE'}
+    # These can a appear as unary operators. Some are also binary operators
+    UNOP2NAME = {'+': 'PLUS', '-': 'MINUS', '~': 'TILDE'}
+
+
     def t_op(self, s):
         r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|<<|>>|[<>%^&+/~-]'
+
+        # Operators need to be further classified since the grammar requires this
         if s in ('<', '>', '==', '>=', '<=', '<>', '!='):
             self.add_token('COMP_OP', s)
         elif s in ('+=', '-=', '*=', '/=', '%=', '&=', '|=', '^=', '<<=', '>>=', '**=',
                    '//='):
             self.add_token('AUGASSIGN', s)
-        elif s in self.OP2NAME.keys():
-            self.add_token(self.OP2NAME[s], s)
-        elif s in ('/', '%', '&', '|', '^', '<<', '>>', '**', '//'):
-            self.add_token('OP', s)
+        elif s in self.UNOP2NAME.keys():
+            self.add_token(self.UNOP2NAME[s], s)
+        elif s in ('|', '^', '&', '<<', '>>', '**', '/', '%', '//'):
+            # These are  *ONLY* binary operators. Operators which are exclusively or
+            # can be unary operators were handled previously
+            self.add_token('BINOP', s)
         else:
             print("Internal error: Unknown operator %s" % s)
             raise SystemExit

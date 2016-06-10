@@ -100,11 +100,15 @@ TABLE_DIRECT = {
     'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
     'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1),
+    # Below is not quite right. Use no space when a function call.
+    # Probably need to rewrite grammar to get this though.
+    'yield_expr_or_testlist' : ( '%c ', 0),
+
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
     'NUMBER':	( '%{attr}', ),
-    'OP':	( ' %{attr}', ),  # Space is a hack. Fix up later
+    'BINOP':	( '%{attr}', ),  # Space is a hack. Fix up later
     'LPAREN':	( '(', ),
     'RPAREN':	( ')', ),
     'LBRACE':	( '{', ),
@@ -290,6 +294,7 @@ class Python2Formatter(GenericASTTraversal, object):
 
     OTHER_SYM = {'{': '}', '[': ']', '(': ')', '`': '`'}
 
+    # redo: 'atom": ( '%? %c %c', 0, 1, 2),
     def n_atom(self, node):
       """atom ::=
              ('(' [yield_expr|testlist_gexp] ')'
@@ -301,15 +306,13 @@ class Python2Formatter(GenericASTTraversal, object):
       l = len(node)
       if l == 1:
           self.preorder(node[0])
-          self.prune()
       elif l == 3:
-          left_sym = node[0].pattr
-          self.write(left_sym)
           self.preorder(node[0])
-          self.prune()
-          self.write(self.OTHER_SYM[left_sym])
+          self.preorder(node[1])
+          self.preorder(node[2])
       else:
           assert False, "Expecting atom to have length 1 or 3"
+      self.prune()
 
     # Possibly this kind of thing should be an engine format
     # 'import_as_name': ('%c %?as %c', 0, 2) which means:
@@ -360,8 +363,7 @@ class Python2Formatter(GenericASTTraversal, object):
         self.prune() # stop recursing
 
     def n_yield(self, node):
-        self.write('yield')
-        self.write(' ')
+        self.write('yield ')
         self.preorder(node[0])
         self.prune() # stop recursing
 
@@ -374,9 +376,9 @@ class Python2Formatter(GenericASTTraversal, object):
         self.prune()
 
     def n_factor(self, node):
-        self.write(' ')
         self.preorder(node[0])
         if len(node) > 1:
+            self.write(' ')
             self.preorder(node[1])
         self.prune()
 
@@ -402,9 +404,8 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'return_stmt':      ( '%|return %?%c\n', 1),
     def n_return_stmt(self, node):
         assert node[0] == 'RETURN'
-        self.write(self.indent, 'return')
+        self.write(self.indent, 'return ')
         if len(node) > 1:
-            self.write(' ')
             self.preorder(node[1])
         self.println()
         self.prune() # stop recursing
@@ -445,7 +446,7 @@ class Python2Formatter(GenericASTTraversal, object):
             self.prune()
 
     # redo as
-    # 'comma_fpdef_opt_eqtests": ( '%?%c, %c', 0, 2),
+    # 'n_comma_tests": ( '%?%c, %c', 0, 2),
     def n_comma_tests(self, node):
         if len(node) > 0:
             self.preorder(node[0])
@@ -453,6 +454,32 @@ class Python2Formatter(GenericASTTraversal, object):
             self.write(', ')
             self.preorder(node[2])
             self.prune()
+
+    def n_binop_arith_exprs(self, node):
+        if len(node) > 0:
+            assert node[1], 'binop'
+            self.write(' ')
+            self.preorder(node[1])
+            self.write(' ')
+            self.preorder(node[2])
+            self.prune()
+
+    def n_op_factor(self, node):
+        self.preorder(node[0])
+        if len(node) > 1:
+            self.preorder(node[1])
+        self.prune()
+
+    # redo as
+    # 'n_starstar_factor_opt": ( '%? %c %c', 0, 1),
+    def n_starstar_factor_opt(self, node):
+        if len(node) > 0:
+            self.write(' ')
+            self.preorder(node[0])
+            self.write(' ')
+            self.preorder(node[1])
+        self.prune()
+
 
     def engine(self, entry, startnode):
         """The format template interpetation engine.  See the comment at the

@@ -263,11 +263,6 @@ class PythonParser(GenericASTBuilder):
         assert_stmt ::= ASSERT test
         assert_stmt ::= ASSERT test COMMA test
 
-        # Fill compound statement
-        # ....
-
-        lambdef ::= LAMBDA varargslist_opt COLON test
-
         sliceop ::= COLON test_opt
 
         test_opt ::= test
@@ -318,32 +313,71 @@ class PythonParser(GenericASTBuilder):
         comp_op    ::= IS
         comp_op    ::= IS NOT
 
-        expr       ::= expr OP factor
-        expr       ::= LPAREN expr RPAREN
-        expr       ::= factor
+        # Condensation of this
+        #  expr ::= xor_expr ('|' xor_expr)*
+        #  xor_expr ::= and_expr ('^' and_expr)*
+        #  and_expr ::= shift_expr ('&' shift_expr)*
+        #  shift_expr ::= arith_expr (('<<'|'>>') arith_expr)*
+        #  arith_expr ::= term (('+'|'-') term)*
+        #  term ::= factor (('*'|'/'|'%'|'//') factor)*
+        # We don't care about operator precidence
 
-        term       ::= factor arith_op_factors
+        expr              ::= factor binop_arith_exprs
+        binop_arith_exprs ::= binop_arith_exprs binop factor
+        binop_arith_exprs ::=
 
-        arith_opt_factors ::= arith_op factor
-        arith_opt_factors ::=
+        binop             ::= BINOP
+        binop             ::= PLUS
+        binop             ::= MINUS
+        binop             ::= STAR
 
-        arith_op ::= STAR
-        arith_op ::= SLASH
-        arith_op ::= PERCENT
-        arith_op ::= SLASHSLASH
+        # factor  ::= ('+'|'-'|'~') factor | power
+        factor    ::= op_factor factor
+        factor    ::= power
 
-        factor     ::= PLUS factor
-        factor     ::= MINUS factor
-        factor     ::= power
+        op_factor ::= PLUS
+        op_factor ::= MINUS
+        op_factor ::= TILDE
 
         power      ::= atom trailers starstar_factor_opt
 
-        starstar_factor_opt ::= STARSTAR factor
-        starstar_factor_opt ::=
+        # atom ::= ('(' [yield_expr|testlist_gexp] ')' | '[' [listmaker] ']'
+        #            | '{' [dictmaker] '}' | '`' testlist1 '`'
+        #            | NAME | NUMBER | STRING+)
+        atom       ::= LPAREN yield_expr_or_testlist_gexp_opt RPAREN
+        atom       ::= LBRACKET listmaker_opt RBRACKET
+        atom       ::= LBRACE dictmaker_opt RBRACE
+        atom       ::= BACKTICK testlist1 BACKTICK
+        atom       ::= NUMBER
+        atom       ::= NAME
+        atom       ::= strings
+
+        # [yield_expr|testlist_gexp]
+        yield_expr_or_testlist_gexp_opt ::= yield_expr
+        yield_expr_or_testlist_gexp_opt ::= testlist_gexp
+        yield_expr_or_testlist_gexp_opt ::=
+
+        listmaker_opt ::= listmaker
+        listmaker_opt ::=
+
+        # listmaker ::= test ( list_for | (',' test)* [','] )
+
+        listmaker ::=  test  list_for_or_comma_tests_comma_opt
+        list_for_or_comma_tests_comma_opt ::= list_for
+        list_for_or_comma_tests_comma_opt ::= comma_tests comma_opt
+
+        # testlist_gexp ::= test ( gen_for | (',' test)* [','] )
+        testlist_gexp ::= test gen_for_or_comma_tests_comma_opt
+
+        gen_for_or_comma_tests_comma_opt ::= gen_for
+        gen_for_or_comma_tests_comma_opt ::= comma_tests comma_opt
+
+        lambdef ::= LAMBDA varargslist_opt COLON test
 
         trailers   ::= trailers trailer
         trailers   ::=
 
+        # trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
         trailer ::= LPAREN arglist_opt RPAREN
         trailer ::= LBRACKET subscriptlist RPAREN
         trailer ::= DOT NAME
@@ -351,19 +385,14 @@ class PythonParser(GenericASTBuilder):
         # FIXME: add subscriptlist, subscript sliceopt exprlist
         #        dictmaker
 
+        starstar_factor_opt ::= STARSTAR factor
+        starstar_factor_opt ::=
+
         classdef ::= CLASS NAME class_subclass_opt COLON suite
 
         class_subclass_opt ::= LPAREN testlist_opt RPAREN
         class_subclass_opt ::=
 
-        atom       ::= LPAREN yield_expr_opt_testlist_gexp RPARENT
-        atom       ::= LBRACKET listmaker RBRACKET
-        atom       ::= LBRACE dictmaker RBRACE
-        atom       ::= BACKTICK listmaker BACKTICK
-
-        atom       ::= NUMBER
-        atom       ::= NAME
-        atom       ::= strings
 
         strings   ::= strings STRING
         strings   ::= STRING

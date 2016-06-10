@@ -7,11 +7,12 @@ newline_or_stmts
             and_test
                not_test
                   expr
-                     power
-                        atom
-                           type: NAME, value: 'True'
-                        trailers
-                        starstar_factor_opt
+                     factor
+                        power
+                           atom
+                              type: NAME, value: 'True'
+                           trailers
+                           starstar_factor_opt
          type: COLON, value: ':'
          suite
             type: NEWLINE, value: '\n'
