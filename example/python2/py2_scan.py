@@ -109,10 +109,6 @@ x = 2y + z
          r'\n'
          self.add_token('NEWLINE', s, is_newline=True)
 
-    def t_comment(self, s):
-         r'[#].*'
-         self.add_token('COMMENT', s)
-
     def t_name(self, s):
         r'[A-Za-z_][A-Za-z_0-9]*'
         if s in RESERVED_WORDS:
@@ -144,21 +140,41 @@ x = 2y + z
         r'(0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+\.\d|\d+)j?'
         self.add_token('NUMBER', s)
 
-    def t_whitespace(self, s):
-        r'[ \t]+'
-        if self.is_newline:
-            # Ugh. Handle Python's indent/dedent mess.
-            indent = len(s)
-            if indent > self.indents[-1]:
-                self.add_token('INDENT', s)
-                self.indents.append(indent)
-            else:
-                # May need several levels of dedent
-                while indent < self.indents[-1]:
-                    self.indents = self.indents[0:-1]
-                    self.add_token('DEDENT', s)
-                    pass
+    # Ugh. Handle Python's indent/dedent mess.
+    def handle_indent_dedent(self, s):
+        indent = len(s)
+        if indent > self.indents[-1]:
+            self.add_token('INDENT', s)
+            self.indents.append(indent)
+        if indent == self.indents[-1]:
+            pass
+        else:
+            # May need several levels of dedent
+            while indent < self.indents[-1]:
+                self.indents = self.indents[0:-1]
+                self.add_token('DEDENT', s)
                 pass
+            pass
+        return
+
+
+    # Combine comment and whitespace because we want to
+    # capture the space before a comment.
+    def t_whitespace_or_comment(self, s):
+        r'([ \t]*[#].*[^\x04][\n]?)|([ \t]+)'
+        if '#' in s:
+            # We have a comment
+            matches = re.match('(\s+)(.*[\n]?)', s)
+            if matches and self.is_newline:
+                self.handle_indent_dedent(matches.group(1))
+                s = matches.group(2)
+            if s.endswith("\n"):
+                self.add_token('COMMENT', s[:-1])
+                self.add_token('NEWLINE', "\n")
+            else:
+                self.add_token('COMMENT', s)
+        elif self.is_newline:
+            self.handle_indent_dedent(s)
             pass
         return
 
@@ -171,8 +187,13 @@ if __name__ == "__main__":
         print('-' * 30)
         return
 
-    showit("(10.5 + 2 / 30) // 3 >> 1")
-    showit("1 + 2")
+    # showit("1 # hi")
+    showit("""def foo():
+    # comment
+    return
+""")
+#    showit("(10.5 + 2 / 30) // 3 >> 1")
+#    showit("1 + 2")
 #     showit("""
 # () { } + - 'abc' \"abc\" 10 10j 0x10 # foo
 # # bar

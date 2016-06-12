@@ -388,7 +388,7 @@ class Python2Formatter(GenericASTTraversal, object):
         self.prune()
 
     def n_and_not_tests(self, node):
-        if len(node) > 1:
+        if len(node) > 0:
             self.preorder(node[0])
             self.write(' ')
             self.preorder(node[1])
@@ -396,6 +396,13 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[2])
         self.prune()
 
+    def n_comment(self, node):
+        if node[0].attr[0] in [' ', '\t']:
+            # remove last \n stored in pending newlines
+            self.pending_newlines = 0
+            self.write(node[0].attr, "\n")
+        else:
+            self.write(self.indent, node[0].attr, "\n")
 
     def n_exec_stmt(self, node):
         """

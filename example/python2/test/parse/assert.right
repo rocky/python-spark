@@ -1,23 +1,19 @@
 file_input
 newline_or_stmts
    newline_or_stmt
-      comment
-         type: COMMENT, value: '# Parsing and formatting tests for:'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# assert_stmt ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             'assert' test [',' test]"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
+      comments
+         comment
+            type: COMMENT, value: '# Parsing and formatting tests for:'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# assert_stmt ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             'assert' test [',' test]\n"
+            type: NEWLINE, value: '\n'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt

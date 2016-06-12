@@ -1,111 +1,85 @@
 file_input
 newline_or_stmts
    newline_or_stmt
-      comment
-         type: COMMENT, value: '# Parsing and formatting tests for'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# import_stmt ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#             import_name | import_from'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# import_name ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             'import' dotted_as_names"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# import_from ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# import_as_name ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             NAME ['as' NAME]"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# dotted_as_name ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             dotted_name ['as' NAME]"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# import_as_names ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# dotted_as_names ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '#'
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: '# dotted_name ::='
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      comment
-         type: COMMENT, value: "#             NAME ('.' NAME)*"
-         type: NEWLINE, value: '\n'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
+      comments
+         comment
+            type: COMMENT, value: '# Parsing and formatting tests for'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# import_stmt ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#             import_name | import_from'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# import_name ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             'import' dotted_as_names"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# import_from ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# import_as_name ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             NAME ['as' NAME]"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# dotted_as_name ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             dotted_name ['as' NAME]"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# import_as_names ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# dotted_as_names ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '#'
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: '# dotted_name ::='
+            type: NEWLINE, value: '\n'
+         comment
+            type: COMMENT, value: "#             NAME ('.' NAME)*\n"
+            type: NEWLINE, value: '\n'
    newline_or_stmt
       import_from
          type: FROM, value: 'from'

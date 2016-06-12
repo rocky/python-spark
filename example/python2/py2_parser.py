@@ -463,7 +463,7 @@ class PythonParser(GenericASTBuilder):
         comments ::= comments comment
         comments ::= comment
 
-        comment ::= COMMENT NEWLINE DEDENT
+        comment ::= COMMENT
         comment ::= COMMENT NEWLINE
         '''
 
@@ -534,8 +534,9 @@ class PythonParser(GenericASTBuilder):
         # to include both rather than remove the NEWLINE token.
         # Also it makes the rule more symmetric.
 
-        suite ::= NEWLINE INDENT stmt_plus NEWLINE DEDENT
-
+        suite ::=  indent stmt_plus dedent
+        suite ::=  NEWLINE INDENT stmt_plus NEWLINE DEDENT
+        indent ::= INDENT comments
         """
 
 
