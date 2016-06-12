@@ -147,6 +147,7 @@ x = 2y + z
             self.add_token('INDENT', s)
             self.indents.append(indent)
         if indent == self.indents[-1]:
+            self.is_newline = False
             pass
         else:
             # May need several levels of dedent

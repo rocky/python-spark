@@ -91,7 +91,6 @@ TABLE_DIRECT = {
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c', 0),
-    'if_stmt':	        ( '%|if %c:\n%+%c%-%c%-%c', 1, 3, 4, 5),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
@@ -430,6 +429,21 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[1])
         self.println()
         self.prune() # stop recursing
+
+    def n_if_stmt(self, node):
+        assert node[0] == 'IF'
+        self.write(self.indent, 'if ')
+        self.preorder(node[1])
+        assert node[2] == 'COLON'
+        self.write(':\n')
+        self.indentMore()
+        self.preorder(node[3])
+        self.indentLess()
+        if len(node[4]) > 0:
+            self.preorder(node[4])
+        if len(node[5]) > 0:
+            self.preorder(node[5])
+        self.prune()
 
     # redo as
     # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),

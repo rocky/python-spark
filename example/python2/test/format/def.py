@@ -18,3 +18,13 @@ class Bar(object):
 
 class Baz(Foo, Bar):
     pass
+
+def fact(n):
+    if n <= 0: return 1
+    return n * fact(n-1)
+
+def fact2(n):
+    if n <= 0:
+        return 1
+    else:
+        return n * fact(n - 1)
