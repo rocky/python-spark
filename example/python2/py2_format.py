@@ -87,23 +87,22 @@ TABLE_DIRECT = {
     'del_stmt':	        ( '%|del %c\n', 1),
     'expr_stmt':	( '%|%c%c\n', 0, 1),
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
+    'print_stmt':       ( '%|print %c\n', 1),
     'pass_stmt':        ( '%|pass\n', ),
     'import_from':      ( '%|from %c import %c\n', 1, 2 ),
     'import_name':      ( '%|import %c\n', 1 ),
-    'newline_or_stmt':  ('%c', 0),
+    'newline_or_stmt':  ('%c\n', 0),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
     'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
     'classdef':         ( '%|class %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
-    'comp_op_exprs':    ( ' %c %c', 0, 1),
-    'or_and_test':      ( ' %c %c', 0, 1),
+    'comp_op_exprs':    ( ' %c %c', 0, 1 ),
+    'or_and_test':      ( ' %c %c', 0, 1 ),
+    'comma_import_as_name': (', %c', 1 ),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
-    'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1),
-    # Below is not quite right. Use no space when a function call.
-    # Probably need to rewrite grammar to get this though.
-
+    'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1 ),
 
     'NAME':	( '%{attr}', ),
     'STRING':	( '%{attr}', ),
@@ -135,7 +134,6 @@ MAP_R = (TABLE_R, -1)
 
 MAP = {
     'file_input':	MAP_R,
-    'stmt':		MAP_R,
     'stmt':		MAP_R,
     'designator':	MAP_R,
 }
@@ -517,6 +515,17 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[1])
         self.prune()
 
+
+    # def n_stmt_plus(self, node):
+    #     if len(node) > 1:
+    #         self.write(self.indent)
+    #         for n in node:
+    #             self.preorder(n)
+    #             self.println()
+    #     else:
+    #         self.preorder(node[0])
+
+    #     self.prune()
 
     def engine(self, entry, startnode):
         """The format template interpetation engine.  See the comment at the

@@ -129,7 +129,7 @@ x = 2y + z
     # ---------
 
     def t_string(self, s):
-        r"('[^']*')|(\"[^\"]*\")"
+        r"([\"]{3}(.|[\n])*[\"]{3})|('{3}(.|[\n])*'{3})|('[^']*')|(\"[^\"]*\")"
         self.add_token('STRING', s)
 
     # numbers; int, float, and complex

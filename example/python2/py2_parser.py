@@ -84,6 +84,7 @@ class PythonParser(GenericASTBuilder):
 
         newline_or_stmt ::= sep
         newline_or_stmt ::= stmt
+        newline_or_stmt ::= comment sep
 
         stmts      ::= stmts stmt
         stmts      ::= stmt sep
@@ -470,11 +471,15 @@ class PythonParser(GenericASTBuilder):
     # Import-related grammar
     def p_import(self, args):
         """
+        ## import_stmt ::= import_name | import_from
         import_stmt ::= import_name
         import_stmt ::= import_from
 
+        ## import_name ::= IMPORT dotted_as_names
         import_name ::= IMPORT dotted_as_names
 
+        ##  import_from ::= ('from' ('.'* dotted_name | '.'+)
+        ##                  'import' ('*' | '(' import_as_names ')' | import_as_names))
         import_from ::= FROM dots_dotted_name_or_dots import_list
 
         import_as_name ::= NAME
@@ -488,12 +493,21 @@ class PythonParser(GenericASTBuilder):
         dots ::= dots DOT
         dots ::=
 
+        ## 'import' ('*' | '(' import_as_names ')' | import_as_names))
         import_list ::= IMPORT STAR
         import_list ::= IMPORT LPAREN import_as_names RPAREN
         import_list ::= IMPORT import_as_names
 
-        import_as_names ::= import_as_name comma_import_as_names comma_opt
-        import_as_names ::= import_as_name
+        ## import_as_names ::= import_as_name ((',' import_as_name)+\) [',']
+        # Note: we don't do the opt comma at the end
+        import_as_names ::= import_as_name comma_import_as_names
+
+        ##  (',' import_as_name)+
+        comma_import_as_names ::= comma_import_as_names comma_import_as_name
+        comma_import_as_names ::=
+
+        ##  ',' import_as_name
+        comma_import_as_name ::= COMMA import_as_name
 
         comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
         comma_dotted_as_names ::= dotted_as_name
@@ -535,8 +549,9 @@ class PythonParser(GenericASTBuilder):
         # Also it makes the rule more symmetric.
 
         suite ::=  indent stmt_plus dedent
-        suite ::=  NEWLINE INDENT stmt_plus NEWLINE DEDENT
+        suite ::=  NEWLINE indent stmt_plus NEWLINE DEDENT
         indent ::= INDENT comments
+        indent ::= INDENT
         """
 
 

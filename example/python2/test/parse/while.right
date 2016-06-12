@@ -16,7 +16,8 @@ newline_or_stmts
          type: COLON, value: ':'
          suite
             type: NEWLINE, value: '\n'
-            type: INDENT, value: '    '
+            indent
+               type: INDENT, value: '    '
             stmt_plus
                pass_stmt
                   type: PASS, value: 'pass'

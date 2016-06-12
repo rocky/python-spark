@@ -22,7 +22,7 @@ if sys.argv[i] == '--scan':
     do_format = False
     i += 1
 
-for path in sys.argv[1:]:
+for path in sys.argv[i:]:
     if not os.path.exists(path):
         print("Can't find file %s; skipping", path)
         continue
