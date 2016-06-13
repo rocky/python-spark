@@ -55,8 +55,12 @@ class PythonParser(GenericASTBuilder):
         elif (has_len and len(args) == 2 and
               hasattr(args[1], '__len__') and len(args[1]) == 0):
             # Remove trailing epsilon rules, but only when there
-            # are two items
-            rv = GenericASTBuilder.nonterminal(self, nt, args[:1])
+            # are two items.
+            if hasattr(args[0], '__len__') and len(args[0]) == 1:
+                # Remove singleton derivation
+                rv = args[0]
+            else:
+                rv = GenericASTBuilder.nonterminal(self, nt, args[:1])
             del args[1] # save memory
         else:
             rv = GenericASTBuilder.nonterminal(self, nt, args)
@@ -438,11 +442,28 @@ class PythonParser(GenericASTBuilder):
 
         ## trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
         trailer ::= LPAREN arglist_opt RPAREN
-        trailer ::= LBRACKET subscriptlist RPAREN
+        trailer ::= LBRACKET subscriptlist RBRACKET
         trailer ::= DOT NAME
 
-        # FIXME: add subscriptlist, subscript sliceopt exprlist
-        #        dictmaker
+        ## subscriptlist ::= subscript (',' subscript)* [',']
+        subscriptlist ::= subscript comma_subscripts comma_opt
+
+        ## (',' subscript)*
+        comma_subscripts ::= comma_subscripts comma_subscript
+        comma_subscripts ::=
+
+        ## ',' subscript
+        comma_subscript ::= COMMA subscript
+
+        ## subscript ::= '.' '.' '.' | test | [test] ':' [test] [sliceop]
+        subscript ::= DOT DOT DOT
+        subscript ::= test
+        subscript ::= test_opt COLON test_opt sliceop_opt
+
+        ## sliceop ::= ':' [test]
+        sliceop ::= COLON test_opt
+
+        # FIXME: add dictmaker
 
         starstar_factor_opt ::= STARSTAR factor
         starstar_factor_opt ::=

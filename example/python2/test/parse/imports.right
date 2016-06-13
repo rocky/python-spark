@@ -89,9 +89,8 @@ newline_or_stmts
                type: NAME, value: 'os'
          import_list
             type: IMPORT, value: 'import'
-            import_as_names
-               import_as_name
-                  type: NAME, value: 'path'
+            import_as_name
+               type: NAME, value: 'path'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -101,9 +100,8 @@ newline_or_stmts
             type: DOT, value: '.'
          import_list
             type: IMPORT, value: 'import'
-            import_as_names
-               import_as_name
-                  type: NAME, value: 'path'
+            import_as_name
+               type: NAME, value: 'path'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -115,9 +113,8 @@ newline_or_stmts
                type: DOT, value: '.'
          import_list
             type: IMPORT, value: 'import'
-            import_as_names
-               import_as_name
-                  type: NAME, value: 'path'
+            import_as_name
+               type: NAME, value: 'path'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -131,9 +128,8 @@ newline_or_stmts
                type: NAME, value: 'foo'
          import_list
             type: IMPORT, value: 'import'
-            import_as_names
-               import_as_name
-                  type: NAME, value: 'path'
+            import_as_name
+               type: NAME, value: 'path'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -155,9 +151,8 @@ newline_or_stmts
    newline_or_stmt
       import_name
          type: IMPORT, value: 'import'
-         dotted_as_names
-            dotted_as_name
-               type: NAME, value: 'os'
+         dotted_as_name
+            type: NAME, value: 'os'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt
@@ -176,13 +171,12 @@ newline_or_stmts
    newline_or_stmt
       import_name
          type: IMPORT, value: 'import'
-         dotted_as_names
-            dotted_as_name
-               dotted_name
-                  type: NAME, value: 'os'
-                  dot_names
-                     type: DOT, value: '.'
-                     type: NAME, value: 'path'
+         dotted_as_name
+            dotted_name
+               type: NAME, value: 'os'
+               dot_names
+                  type: DOT, value: '.'
+                  type: NAME, value: 'path'
    newline_or_stmt
       type: NEWLINE, value: '\n'
    newline_or_stmt

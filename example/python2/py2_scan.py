@@ -20,7 +20,7 @@ BRACKET2NAME = {
 SYMBOL2NAME = {
     '@': 'AT',    '`': 'BACKTICK',
     ':': 'COLON', ',': 'COMMA',
-    '.': 'DOT',   '=': 'EQUAL'
+    '.': 'DOT',
     }
 
 ENDMARKER = r''   # ctrl-d
@@ -71,7 +71,7 @@ x = 2y + z
         self.add_token(BRACKET2NAME[s], s)
 
     def t_symbol(self, s):
-        r'[@:,.`=]'
+        r'[@:,.`]'
         self.add_token(SYMBOL2NAME[s], s)
 
     def t_endmarker(self, s):
@@ -83,7 +83,7 @@ x = 2y + z
 
 
     def t_op(self, s):
-        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|<<|>>|[<>%^&+/~-]'
+        r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|<<|>>|[<>%^&+/=~-]'
 
         # Operators need to be further classified since the grammar requires this
         if s in ('<', '>', '==', '>=', '<=', '<>', '!='):
@@ -97,6 +97,8 @@ x = 2y + z
             # These are  *ONLY* binary operators. Operators which are exclusively or
             # can be unary operators were handled previously
             self.add_token('BINOP', s)
+        elif s == '=':
+            self.add_token('EQUAL', s)
         else:
             print("Internal error: Unknown operator %s" % s)
             raise SystemExit

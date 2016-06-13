@@ -4,7 +4,7 @@ if True:
     pass
 pass
 
-if True:
+if sys.argv[i] == '--scan':
     if False:
         pass
 pass
