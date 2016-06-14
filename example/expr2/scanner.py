@@ -8,6 +8,17 @@ from spark_parser.scanner import GenericScanner, GenericToken
 
 class ExprScanner(GenericScanner):
 
+    def error(self, s, pos):
+        """Show text and a carot under that. For example:
+x = 2y + z
+     ^
+"""
+        print("Lexical error:")
+        print("%s" % s[:pos+10])  # + 10 for trailing context
+        print("%s^" % (" "*(pos-1)))
+        for t in self.rv: print(t)
+        raise SystemExit
+
     def __init__(self):
         GenericScanner.__init__(self)
 
@@ -33,13 +44,9 @@ class ExprScanner(GenericScanner):
         r'\s+'
         pass
 
-    def t_lparen(self, s):
-        r'\('
-        self.add_token('LPAREN', s)
-
-    def t_rparen(self, s):
-        r'\)'
-        self.add_token('RPAREN', s)
+    def t_paren(self, s):
+        r'[()]'
+        self.add_token('LPAREN' if s == '(' else 'RPAREN', s)
 
     def t_dot(self, s):
         r'\.'
@@ -65,9 +72,9 @@ class ExprScanner(GenericScanner):
         self.add_token('MULT_OP', s)
 
     # Recognize integers
-    def t_integer(self, s):
-        r'\d+'
-        self.add_token('INTEGER', s)
+    def t_number(self, s):
+        r'(0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+\.\d|\d+)j?'
+        self.add_token('NUMBER', s)
 
 if __name__ == "__main__":
     tokens = ExprScanner().tokenize("(10.5 + 2 / 30) // 3 >> 1")

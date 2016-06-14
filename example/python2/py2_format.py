@@ -621,11 +621,7 @@ class Python2Formatter(GenericASTTraversal, object):
         key = node
 
         for i in mapping[1:]:
-            try:
-                key = key[i]
-            except:
-                from trepan.api import debug; debug()
-            pass
+            key = key[i]
 
         if key.type in table:
             self.engine(table[key.type], node)

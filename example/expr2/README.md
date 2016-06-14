@@ -1,7 +1,7 @@
 This directory contains a more complete example of using SPARK to parse,
 generate an Abstract Syntax Tree (or AST), and then use that to evaluate simple arithmetic
 expressions of integers with binary operators:
-  `+`, `-`, `*`, `/`, `%`, `^`, `|`, `&`
+  `+`, `-`, `*`, `/`
 
 As is customary, the precedence of multiplication operators `*` and
 `/` bind more strongly than addition operators.
