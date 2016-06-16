@@ -24,7 +24,7 @@ if sys.argv[i] == '--scan':
 
 for path in sys.argv[i:]:
     if not os.path.exists(path):
-        print("Can't find file %s; skipping", path)
+        print("Can't find file %s; skipping" % path)
         continue
 
     with open(path, 'r') as fp:

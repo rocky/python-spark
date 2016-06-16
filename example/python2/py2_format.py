@@ -104,27 +104,30 @@ TABLE_DIRECT = {
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
     'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1 ),
 
-    'NAME':	( '%{attr}', ),
-    'STRING':	( '%{attr}', ),
-    'NUMBER':	( '%{attr}', ),
-    'BINOP':	( '%{attr}', ),
-    'COMP_OP':	( '%{attr}', ),
-    'UNOP':	( '%{attr}', ),
-    'OR':	( 'or', ),
-    'AND':	( 'and', ),
-    'LPAREN':	( '(', ),
-    'RPAREN':	( ')', ),
-    'LBRACE':	( '{', ),
-    'RBRACE':	( '}', ),
-    'LBRACKET':	( '[', ),
-    'RBRACKET':	( ']', ),
-    'PLUS':	( '+', ),
-    'MINUS':	( '-', ),
-    'TILDE':	( '~', ),
-    'DOT':	( '.', ),
-    'EQUAL':	( '=', ),
-    'STAR':	( '*', ),
-    'STARSTAR':	( '**', ),
+    'NAME':	 ( '%{attr}', ),
+    'STRING':	 ( '%{attr}', ),
+    'NUMBER':	 ( '%{attr}', ),
+    'BINOP':	 ( '%{attr}', ),
+    'COMP_OP':	 ( '%{attr}', ),
+    'UNOP':	 ( '%{attr}', ),
+    'AUGASSIGN': ( '%{attr}', ),
+    'OR':	 ( 'or', ),
+    'AND':	 ( 'and', ),
+    'AS':	 ( 'as', ),
+    'LPAREN':	 ( '(', ),
+    'RPAREN':	 ( ')', ),
+    'LBRACE':	 ( '{', ),
+    'RBRACE':	 ( '}', ),
+    'LBRACKET':	 ( '[', ),
+    'RBRACKET':	 ( ']', ),
+    'PLUS':	 ( '+', ),
+    'MINUS':	 ( '-', ),
+    'TILDE':	 ( '~', ),
+    'COLON':	 ( ':', ),
+    'DOT':	 ( '.', ),
+    'EQUAL':	 ( '=', ),
+    'STAR':	 ( '*', ),
+    'STARSTAR':	 ( '**', ),
 
 }
 
@@ -316,6 +319,14 @@ class Python2Formatter(GenericASTTraversal, object):
           assert False, "Expecting atom to have length 1 or 3"
       self.prune()
 
+    def n_subscript(self, node):
+        if node == 'DOT' and len(node) == 3:
+            self.write('...')
+            self.prune
+        for n in node:
+            self.preorder(n)
+        self.prune()
+
     # Possibly this kind of thing should be an engine format
     # 'import_as_name': ('%c %?as %c', 0, 2) which means:
     #   'import_as_name': ('%c', 0)
@@ -443,6 +454,23 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[5])
         self.prune()
 
+    def n_with_stmt(self, node):
+        assert node[0] == 'WITH'
+        self.write(self.indent, 'with ')
+        self.preorder(node[1])
+        i = 2
+        # Redo as n_with_var
+        if len(node[1]) > 0:
+            self.write(' as ')
+            self.preorder(node[2][0][1])
+            i = 3
+        assert node[i] == 'COLON'
+        self.write(":\n")
+        self.indentMore()
+        self.preorder(node[i+1])
+        self.indentLess()
+        self.prune()
+
     # redo as
     # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),
     def n_else_suite_opt(self, node):
@@ -488,6 +516,15 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[2])
             self.prune()
 
+    # redo as
+    # 'n_argument_comma": ( '%c%?%c, ', 0, 1),
+    def n_argument_comma(self, node):
+        self.preorder(node[0])
+        if len(node) > 0:
+            self.preorder(node[1])
+            self.write(', ')
+            self.prune()
+
     def n_binop_arith_exprs(self, node):
         if len(node) > 0:
             self.preorder(node[0])
@@ -515,6 +552,20 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[1])
         self.prune()
 
+
+    def n_for_stmt(self, node):
+        assert node[0] == 'FOR'
+        self.write(self.indent, 'for ')
+        self.preorder(node[1])
+        assert node[2] == 'IN'
+        self.write(' in ')
+        self.preorder(node[3])
+        assert node[4] == 'COLON'
+        self.write(':\n')
+        self.indentMore()
+        self.preorder(node[5])
+        self.indentLess()
+        self.prune()
 
     # def n_stmt_plus(self, node):
     #     if len(node) > 1:

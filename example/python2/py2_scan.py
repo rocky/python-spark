@@ -9,7 +9,7 @@ from spark_parser.scanner import GenericScanner, GenericToken
 import re
 RESERVED_WORDS = re.split("\s+",
 """and as assert break class continue def del eval exec else elif for from global
-if in import lambda or pass print return self while yield""")
+if in import lambda or pass print return self while with yield""")
 
 BRACKET2NAME = {
     '(': 'LPAREN',   ')': 'RPAREN',
