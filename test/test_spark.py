@@ -91,10 +91,6 @@ def scan_expression(data):
     scanner = ExprScanner()
     return scanner.tokenize(data)
 
-def parse_expression(tokens):
-    parser = ExprParser()
-    return parser.parse(tokens)
-
 class TestSpark(unittest.TestCase):
 
     def test_exprs(self):
@@ -114,6 +110,12 @@ class TestSpark(unittest.TestCase):
         test_term6 = AST('multiply', [test_term_to_factor2, test_factor_to_integer3])
         test_expr7 = AST('add', [test_expr_to_term1, test_term6])
 
+        parser = ExprParser()
+        lhs, rhs, tokens, right_recursive = parser.checkSets()
+        self.assertEqual(len(lhs), 0)
+        self.assertEqual(len(rhs), 0)
+        self.assertEqual(len(right_recursive), 0)
+
         for data, expect in [
                 ['1', test_expr_to_term1],
                 ['1+2', test_expr3],
@@ -121,7 +123,7 @@ class TestSpark(unittest.TestCase):
             # print(data)
             tokens = scan_expression(data)
             # print(tokens)
-            tree = parse_expression(tokens)
+            tree = parser.parse(tokens)
 
             # from trepan.api import debug; debug()
             self.assertEqual(tree, expect)

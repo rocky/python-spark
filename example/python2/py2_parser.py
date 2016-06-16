@@ -102,7 +102,7 @@ class PythonParser(GenericASTBuilder):
         newlines ::= newlines NEWLINE
         newlines ::=
 
-        decorator ::= AT dotted_name arg_list_opt NEWLINE
+        decorator ::= AT dotted_name arglist_opt NEWLINE
         arglist_opt ::= arglist
         arglist_opt ::=
 
@@ -135,6 +135,15 @@ class PythonParser(GenericASTBuilder):
         ## list_iter ::= list_for | list_if
         list_iter ::= list_for
         list_iter ::= list_if
+
+        ## list_for ::= 'for' exprlist 'in' testlist_safe [list_iter]
+        list_for ::= FOR exprlist IN testlist_safe list_iter_opt
+
+        list_iter_opt ::= list_iter
+        list_iter_opt ::=
+
+        ## list_if ::= 'if' old_test [list_iter]
+        list_if ::= IF old_test list_iter_opt
 
         gen_for_opt ::= gen_for
         gen_for_opt ::=
@@ -178,12 +187,6 @@ class PythonParser(GenericASTBuilder):
         ## (',' fpdef ['=' test])*
         comma_fpdef_opt_eqtests ::= comma_fpdef_opt_eqtests COMMA fpdef eq_test_opt
         comma_fpdef_opt_eqtests ::=
-
-
-        ## (',' fpdef ['=' test])* [',']
-        comma_fpdefs_opt_comma  ::= comma_fpdefs eq_test_opt
-        comma_fpdefs ::= COMMA fpdef eq_tests_opt
-        comma_fpdefs ::=
 
         star_names ::= star_names STAR NAME star_star_opt
         star_names ::= star_names star_star_opt
@@ -305,8 +308,11 @@ class PythonParser(GenericASTBuilder):
         test_opt ::= test
         test_opt ::=
 
+        ## exprlist ::= expr (',' expr)* [',']
         exprlist ::= expr comma_exprs comma_opt
-        comma_exprs ::= comma_expr_star COMMA expr
+
+        ## (',' expr)*
+        comma_exprs ::= comma_exprs COMMA expr
         comma_exprs ::=
 
         # testlist ::= test (',' test)* [',']
@@ -321,11 +327,12 @@ class PythonParser(GenericASTBuilder):
         ## even while also allowing:
         ## lambda x : 5 if x else 2
         ## (But not a mix of the two)
+
         ## testlist_safe ::= old_test [(',' old_test)+ [',']]
         testlist_safe ::= old_test testlist_safe1_opt
 
-        testlist_safe1_opt :: = comma_old_tests comma_opt
-        testlist_safe1_opt :: =
+        testlist_safe1_opt ::= comma_old_tests comma_opt
+        testlist_safe1_opt ::=
 
         ## (',' old_test)+
         comma_old_tests ::= comma_old_tests comma_old_test
@@ -335,7 +342,7 @@ class PythonParser(GenericASTBuilder):
 
         ## old_test ::= or_test | old_lambdef
         old_test ::= or_test
-        old_test ::= old_lamdef
+        old_test ::= old_lambdef
 
         ## old_lambdef ::= 'lambda' [varargslist] ':' old_test
         old_lambdef ::= LAMBDA varargslist_opt COLON old_test
@@ -415,6 +422,9 @@ class PythonParser(GenericASTBuilder):
         atom       ::= NAME
         atom       ::= strings
 
+        dictmaker_opt ::= dictmaker
+        dictmaker_opt ::=
+
         ## [yield_expr|testlist_gexp]
         yield_expr_or_testlist_gexp_opt ::= yield_expr
         yield_expr_or_testlist_gexp_opt ::= testlist_gexp
@@ -460,13 +470,25 @@ class PythonParser(GenericASTBuilder):
         subscript ::= test
         subscript ::= test_opt COLON test_opt sliceop_opt
 
+        sliceop_opt ::= sliceop
+        sliceop_opt ::=
+
         ## sliceop ::= ':' [test]
         sliceop ::= COLON test_opt
 
-        # FIXME: add dictmaker
 
         starstar_factor_opt ::= STARSTAR factor
         starstar_factor_opt ::=
+
+        ## dictmaker ::= test ':' test (',' test ':' test)* [',']
+        dictmaker ::= test COLON comma_test_colon_tests comma_opt
+
+        ##  (',' test ':' test)*
+        comma_test_colon_tests ::= comma_test_colon_tests comma_test_colon_test
+        comma_test_colon_tests ::=
+
+        ## (',' test ':' test)
+        comma_test_colon_test ::= COMMA test COLON test
 
         classdef ::= CLASS NAME class_subclass_opt COLON suite
 
@@ -559,7 +581,30 @@ class PythonParser(GenericASTBuilder):
         else_suite_opt ::= ELSE COLON suite
         else_suite_opt ::=
 
+        ## while_stmt ::= 'while' test ':' suite ['else' ':' suite]
         while_stmt ::= WHILE test COLON suite else_suite_opt
+
+        ## for_stmt ::= 'for' exprlist 'in' testlist ':' suite ['else' ':' suite]
+        for_stmt ::= FOR exprlist IN testlist COLON suite else_colon_suite_opt
+
+        ## ['else' ':' suite]
+        else_colon_suite_opt ::= ELSE COLON suite
+        else_colon_suite_opt ::=
+
+        ## try_stmt ::= ('try' ':' suite
+        ##      ((except_clause ':' suite)+
+        ##       ['else' ':' suite]
+        ##       ['finally' ':' suite] |
+        ##      'finally' ':' suite))
+
+        ## with_stmt ::= with' test [ with_var ] ':' suite
+        with_stmt ::= WITH test with_var_opt COLON suite
+
+        with_var_opt ::= with_var
+        with_var_opt ::= with_var
+
+        ## with_var ::= 'as' expr
+        with_var ::= AS expr
 
         suite ::= simple_stmt
         suite ::= sep stmt_plus
@@ -569,7 +614,7 @@ class PythonParser(GenericASTBuilder):
         # to include both rather than remove the NEWLINE token.
         # Also it makes the rule more symmetric.
 
-        suite ::=  indent stmt_plus dedent
+        suite ::=  indent stmt_plus DEDENT
         suite ::=  NEWLINE indent stmt_plus NEWLINE DEDENT
         indent ::= INDENT comments
         indent ::= INDENT
@@ -577,7 +622,7 @@ class PythonParser(GenericASTBuilder):
 
 
 def parse_python2(python_stmts, start='file_input',
-                  show_tokens=False, parser_debug=DEFAULT_DEBUG):
+                  show_tokens=False, parser_debug=DEFAULT_DEBUG, check=False):
     assert isinstance(python_stmts, str)
     tokens = Python2Scanner().tokenize(python_stmts)
     if show_tokens:
@@ -590,7 +635,10 @@ def parse_python2(python_stmts, start='file_input',
     # Normal debugging:
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
     #                'errorstack': 'full', 'context': True}
-    return PythonParser(start=start, debug=parser_debug).parse(tokens)
+    parser = PythonParser(start=start, debug=parser_debug)
+    if check:
+        parser.checkGrammar()
+    return parser.parse(tokens)
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -608,9 +656,9 @@ if __name__ == '__main__':
             print(python2_stmts)
             print('-' * 30)
             ast = parse_python2(python2_stmts + ENDMARKER,
-                                start='file_input', show_tokens=False)
+                                start='file_input', show_tokens=False, check=True)
             print(ast)
             print('=' * 30)
     else:
         python2_stmts = " ".join(sys.argv[1:])
-        parse_python2(python2_stmts, show_tokens=False)
+        parse_python2(python2_stmts, show_tokens=False, check=True)

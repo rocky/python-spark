@@ -695,6 +695,56 @@ class GenericParser(object):
             pass
         return
 
+    def checkGrammar(self):
+        '''
+        Check grammar
+        '''
+        lhs, rhs, tokens, right_recursive = self.checkSets()
+        if len(lhs) > 0:
+            print("LHS symbols not used on the RHS:")
+            print(lhs)
+        if len(rhs) > 0:
+            print("RHS symbols not used on the LHS:")
+            print(rhs)
+        if len(right_recursive) > 0:
+            print("Right recursive rules:")
+            for rule in right_recursive:
+                print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+                pass
+            pass
+
+    def checkSets(self):
+        '''
+        Check grammar
+        '''
+        lhs_set = set()
+        rhs_set = set()
+        token_set = set()
+        right_recursive = []
+        for lhs in self.rules:
+            rules_for_lhs = self.rules[lhs]
+            lhs_set.add(lhs)
+            for rule in rules_for_lhs:
+                rhs = rule[1]
+                for sym in rhs:
+                    # We assume any symbol starting with an uppercase letter is
+                    # terminal, and anything else is a nonterminal
+                    if re.match("^[A-Z]", sym):
+                        token_set.add(sym)
+                    else:
+                        rhs_set.add(sym)
+                if len(rhs) > 0 and lhs == rhs[-1]:
+                    right_recursive.append([lhs, rhs])
+                pass
+            pass
+
+        lhs_set.remove(self._START)
+        rhs_set.remove(self._BOF)
+        missing_lhs = lhs_set - rhs_set
+        missing_rhs = rhs_set - lhs_set
+        return (missing_lhs, missing_rhs, token_set, right_recursive)
+
+#
 #
 #  GenericASTBuilder automagically constructs a concrete/abstract syntax tree
 #  for a given input.  The extra argument is a class (not an instance!)

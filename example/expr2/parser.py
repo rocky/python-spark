@@ -60,7 +60,9 @@ def parse_expr(python_str, out=sys.stdout,
     #                 'errorstack': True}
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
     #                'errorstack': True}
-    return ExprParser(parser_debug).parse(tokens)
+    parser = ExprParser(parser_debug)
+    parser.checkGrammar()
+    return parser.parse(tokens)
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
