@@ -1,71 +1,71 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      comments
-         comment
-            type: COMMENT, value: '# Parsing and formatting tests for:'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# exec_stmt ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             'exec' expr ['in' test [',' test]]\n"
-            type: NEWLINE, value: '\n'
-   newline_or_stmt
-      exec_stmt
-         type: EXEC, value: 'exec'
-         factor
-            power
-               atom
-                  type: STRING, value: "'exec-string'"
-               trailers
-               starstar_factor_opt
-         type: IN, value: 'in'
-         test
-            power
-               atom
-                  type: NAME, value: 'locals'
-               trailers
-               starstar_factor_opt
-         type: COMMA, value: ','
-         test
-            power
-               atom
-                  type: NAME, value: 'globals'
-               trailers
-               starstar_factor_opt
-   newline_or_stmt
+file_input (2)
+  0. newline_or_stmts (7)
+    0. newline_or_stmt
+      comments (4)
+        0. comment (2)
+          0. type: COMMENT, value: '# Parsing and formatting tests for:'
+          1. type: NEWLINE, value: '\n'
+        1. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        2. comment (2)
+          0. type: COMMENT, value: '# exec_stmt ::='
+          1. type: NEWLINE, value: '\n'
+        3. comment (2)
+          0. type: COMMENT, value: "#             'exec' expr ['in' test [',' test]]\n"
+          1. type: NEWLINE, value: '\n'
+    1. newline_or_stmt
+      exec_stmt (6)
+        0. type: EXEC, value: 'exec'
+        1. factor
+          power (3)
+            0. atom
+              type: STRING, value: "'exec-string'"
+            1. trailers
+            2. starstar_factor_opt
+        2. type: IN, value: 'in'
+        3. test
+          power (3)
+            0. atom
+              type: NAME, value: 'locals'
+            1. trailers
+            2. starstar_factor_opt
+        4. type: COMMA, value: ','
+        5. test
+          power (3)
+            0. atom
+              type: NAME, value: 'globals'
+            1. trailers
+            2. starstar_factor_opt
+    2. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      exec_stmt
-         type: EXEC, value: 'exec'
-         factor
-            power
-               atom
-                  type: STRING, value: "'exec-string'"
-               trailers
-               starstar_factor_opt
-         type: IN, value: 'in'
-         test
-            power
-               atom
-                  type: NAME, value: 'dict'
-               trailers
-               starstar_factor_opt
-   newline_or_stmt
+    3. newline_or_stmt
+      exec_stmt (4)
+        0. type: EXEC, value: 'exec'
+        1. factor
+          power (3)
+            0. atom
+              type: STRING, value: "'exec-string'"
+            1. trailers
+            2. starstar_factor_opt
+        2. type: IN, value: 'in'
+        3. test
+          power (3)
+            0. atom
+              type: NAME, value: 'dict'
+            1. trailers
+            2. starstar_factor_opt
+    4. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      exec_stmt
-         type: EXEC, value: 'exec'
-         factor
-            power
-               atom
-                  type: STRING, value: "'exec-string'"
-               trailers
-               starstar_factor_opt
-   newline_or_stmt
+    5. newline_or_stmt
+      exec_stmt (2)
+        0. type: EXEC, value: 'exec'
+        1. factor
+          power (3)
+            0. atom
+              type: STRING, value: "'exec-string'"
+            1. trailers
+            2. starstar_factor_opt
+    6. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+  1. type: ENDMARKER, value: '\x04'

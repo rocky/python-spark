@@ -1,46 +1,46 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      funcdef
-         type: DEF, value: 'def'
-         type: NAME, value: 'foo1'
-         parameters
-            type: LPAREN, value: '('
-            varargslist_opt
-            type: RPAREN, value: ')'
-         type: COLON, value: ':'
-         suite
+file_input (2)
+  0. newline_or_stmts (8)
+    0. newline_or_stmt
+      funcdef (5)
+        0. type: DEF, value: 'def'
+        1. type: NAME, value: 'foo1'
+        2. parameters (3)
+          0. type: LPAREN, value: '('
+          1. varargslist_opt
+          2. type: RPAREN, value: ')'
+        3. type: COLON, value: ':'
+        4. suite
+          pass_stmt
+            type: PASS, value: 'pass'
+    1. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    2. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    3. newline_or_stmt
+      funcdef (5)
+        0. type: DEF, value: 'def'
+        1. type: NAME, value: 'foo2'
+        2. parameters (3)
+          0. type: LPAREN, value: '('
+          1. varargslist_opt
+          2. type: RPAREN, value: ')'
+        3. type: COLON, value: ':'
+        4. suite (5)
+          0. type: NEWLINE, value: '\n'
+          1. indent
+            type: INDENT, value: '    '
+          2. stmt_plus
             pass_stmt
-               type: PASS, value: 'pass'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      funcdef
-         type: DEF, value: 'def'
-         type: NAME, value: 'foo2'
-         parameters
-            type: LPAREN, value: '('
-            varargslist_opt
-            type: RPAREN, value: ')'
-         type: COLON, value: ':'
-         suite
-            type: NEWLINE, value: '\n'
-            indent
-               type: INDENT, value: '    '
-            stmt_plus
-               pass_stmt
-                  type: PASS, value: 'pass'
-            type: NEWLINE, value: '\n'
-            type: DEDENT
-   newline_or_stmt
+              type: PASS, value: 'pass'
+          3. type: NEWLINE, value: '\n'
+          4. type: DEDENT
+    4. newline_or_stmt
       type: NEWLINE
-   newline_or_stmt
+    5. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
+    6. newline_or_stmt
       pass_stmt
-         type: PASS, value: 'pass'
-   newline_or_stmt
+        type: PASS, value: 'pass'
+    7. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+  1. type: ENDMARKER, value: '\x04'

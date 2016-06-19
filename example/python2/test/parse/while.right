@@ -1,32 +1,32 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      while_stmt
-         type: WHILE, value: 'while'
-         test
-            power
-               atom
-                  type: NAME, value: 'True'
-               trailers
-               starstar_factor_opt
-         type: COLON, value: ':'
-         suite
-            type: NEWLINE, value: '\n'
-            indent
-               type: INDENT, value: '    '
-            stmt_plus
-               pass_stmt
-                  type: PASS, value: 'pass'
-            type: NEWLINE, value: '\n'
-            type: DEDENT
-         else_suite_opt
-   newline_or_stmt
+file_input (2)
+  0. newline_or_stmts (5)
+    0. newline_or_stmt
+      while_stmt (5)
+        0. type: WHILE, value: 'while'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. type: COLON, value: ':'
+        3. suite (5)
+          0. type: NEWLINE, value: '\n'
+          1. indent
+            type: INDENT, value: '    '
+          2. stmt_plus
+            pass_stmt
+              type: PASS, value: 'pass'
+          3. type: NEWLINE, value: '\n'
+          4. type: DEDENT
+        4. else_suite_opt
+    1. newline_or_stmt
       type: NEWLINE
-   newline_or_stmt
+    2. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
+    3. newline_or_stmt
       pass_stmt
-         type: PASS, value: 'pass'
-   newline_or_stmt
+        type: PASS, value: 'pass'
+    4. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+  1. type: ENDMARKER, value: '\x04'

@@ -28,9 +28,33 @@ class AST(UserList):
         return hash(self.type)
 
     def __repr__(self, indent=''):
+        return self.__repr1__(indent, None)
+
+    def __repr1__(self, indent, sibNum=None):
         rv = str(self.type)
-        for k in self:
-            rv = rv + '\n' + str(k).replace('\n', '\n   ')
+        if sibNum is not None:
+            rv = "%d. %s" % (sibNum, rv)
+        enumerate_children = False
+        if len(self) > 1:
+            rv += " (%d)" % (len(self))
+            enumerate_children = True
+        rv = indent + rv
+        indent += '  '
+        i = 0
+        for node in self:
+            if hasattr(node, '__repr1__'):
+                if enumerate_children:
+                    child =  node.__repr1__(indent, i)
+                else:
+                    child = node.__repr1__(indent, None)
+            else:
+                if enumerate_children:
+                    child = indent + "%d. %s" % (i, str(node))
+                else:
+                    child = indent + str(node)
+                pass
+            rv += "\n" + child
+            i += 1
         return rv
 
 class GenericASTTraversalPruningException(BaseException):

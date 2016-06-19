@@ -1,98 +1,98 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      if_stmt
-         type: IF, value: 'if'
-         test
-            power
-               atom
-                  type: NAME, value: 'True'
-               trailers
-               starstar_factor_opt
-         type: COLON, value: ':'
-         suite
+file_input (2)
+  0. newline_or_stmts (12)
+    0. newline_or_stmt
+      if_stmt (6)
+        0. type: IF, value: 'if'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. type: COLON, value: ':'
+        3. suite
+          pass_stmt
+            type: PASS, value: 'pass'
+        4. elif_suites
+        5. else_suite_opt
+    1. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    2. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    3. newline_or_stmt
+      if_stmt (6)
+        0. type: IF, value: 'if'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. type: COLON, value: ':'
+        3. suite (5)
+          0. type: NEWLINE, value: '\n'
+          1. indent
+            type: INDENT, value: '    '
+          2. stmt_plus
             pass_stmt
-               type: PASS, value: 'pass'
-         elif_suites
-         else_suite_opt
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      if_stmt
-         type: IF, value: 'if'
-         test
-            power
-               atom
-                  type: NAME, value: 'True'
-               trailers
-               starstar_factor_opt
-         type: COLON, value: ':'
-         suite
-            type: NEWLINE, value: '\n'
-            indent
-               type: INDENT, value: '    '
-            stmt_plus
-               pass_stmt
-                  type: PASS, value: 'pass'
-            type: NEWLINE, value: '\n'
-            type: DEDENT
-         elif_suites
-         else_suite_opt
-   newline_or_stmt
+              type: PASS, value: 'pass'
+          3. type: NEWLINE, value: '\n'
+          4. type: DEDENT
+        4. elif_suites
+        5. else_suite_opt
+    4. newline_or_stmt
       type: NEWLINE
-   newline_or_stmt
+    5. newline_or_stmt
       pass_stmt
-         type: PASS, value: 'pass'
-   newline_or_stmt
+        type: PASS, value: 'pass'
+    6. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
+    7. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      if_stmt
-         type: IF, value: 'if'
-         test
-            power
-               atom
-                  type: NAME, value: 'True'
-               trailers
-               starstar_factor_opt
-         type: COLON, value: ':'
-         suite
-            type: NEWLINE, value: '\n'
-            indent
-               type: INDENT, value: '    '
-            stmt_plus
-               if_stmt
-                  type: IF, value: 'if'
-                  test
-                     power
-                        atom
-                           type: NAME, value: 'False'
-                        trailers
-                        starstar_factor_opt
-                  type: COLON, value: ':'
-                  suite
-                     type: NEWLINE, value: '\n'
-                     indent
-                        type: INDENT, value: '        '
-                     stmt_plus
-                        pass_stmt
-                           type: PASS, value: 'pass'
-                     type: NEWLINE, value: '\n'
-                     type: DEDENT
-                  elif_suites
-                  else_suite_opt
-            type: NEWLINE
-            type: DEDENT
-         elif_suites
-         else_suite_opt
-   newline_or_stmt
+    8. newline_or_stmt
+      if_stmt (6)
+        0. type: IF, value: 'if'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. type: COLON, value: ':'
+        3. suite (5)
+          0. type: NEWLINE, value: '\n'
+          1. indent
+            type: INDENT, value: '    '
+          2. stmt_plus
+            if_stmt (6)
+              0. type: IF, value: 'if'
+              1. test
+                power (3)
+                  0. atom
+                    type: NAME, value: 'False'
+                  1. trailers
+                  2. starstar_factor_opt
+              2. type: COLON, value: ':'
+              3. suite (5)
+                0. type: NEWLINE, value: '\n'
+                1. indent
+                  type: INDENT, value: '        '
+                2. stmt_plus
+                  pass_stmt
+                    type: PASS, value: 'pass'
+                3. type: NEWLINE, value: '\n'
+                4. type: DEDENT
+              4. elif_suites
+              5. else_suite_opt
+          3. type: NEWLINE
+          4. type: DEDENT
+        4. elif_suites
+        5. else_suite_opt
+    9. newline_or_stmt
       type: NEWLINE
-   newline_or_stmt
+    10. newline_or_stmt
       pass_stmt
-         type: PASS, value: 'pass'
-   newline_or_stmt
+        type: PASS, value: 'pass'
+    11. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+  1. type: ENDMARKER, value: '\x04'

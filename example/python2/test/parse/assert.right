@@ -1,48 +1,48 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      comments
-         comment
-            type: COMMENT, value: '# Parsing and formatting tests for:'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# assert_stmt ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             'assert' test [',' test]\n"
-            type: NEWLINE, value: '\n'
-   newline_or_stmt
+file_input (2)
+  0. newline_or_stmts (6)
+    0. newline_or_stmt
+      comments (4)
+        0. comment (2)
+          0. type: COMMENT, value: '# Parsing and formatting tests for:'
+          1. type: NEWLINE, value: '\n'
+        1. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        2. comment (2)
+          0. type: COMMENT, value: '# assert_stmt ::='
+          1. type: NEWLINE, value: '\n'
+        3. comment (2)
+          0. type: COMMENT, value: "#             'assert' test [',' test]\n"
+          1. type: NEWLINE, value: '\n'
+    1. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      assert_stmt
-         type: ASSERT, value: 'assert'
-         test
-            power
-               atom
-                  type: NAME, value: 'False'
-               trailers
-               starstar_factor_opt
-   newline_or_stmt
+    2. newline_or_stmt
+      assert_stmt (2)
+        0. type: ASSERT, value: 'assert'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'False'
+            1. trailers
+            2. starstar_factor_opt
+    3. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      assert_stmt
-         type: ASSERT, value: 'assert'
-         test
-            power
-               atom
-                  type: NAME, value: 'True'
-               trailers
-               starstar_factor_opt
-         type: COMMA, value: ','
-         test
-            power
-               atom
-                  type: STRING, value: "'shit happens'"
-               trailers
-               starstar_factor_opt
-   newline_or_stmt
+    4. newline_or_stmt
+      assert_stmt (4)
+        0. type: ASSERT, value: 'assert'
+        1. test
+          power (3)
+            0. atom
+              type: NAME, value: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. type: COMMA, value: ','
+        3. test
+          power (3)
+            0. atom
+              type: STRING, value: "'shit happens'"
+            1. trailers
+            2. starstar_factor_opt
+    5. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+  1. type: ENDMARKER, value: '\x04'

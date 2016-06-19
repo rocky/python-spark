@@ -1,217 +1,217 @@
-file_input
-newline_or_stmts
-   newline_or_stmt
-      comments
-         comment
-            type: COMMENT, value: '# Parsing and formatting tests for'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# import_stmt ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#             import_name | import_from'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# import_name ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             'import' dotted_as_names"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# import_from ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# import_as_name ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             NAME ['as' NAME]"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# dotted_as_name ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             dotted_name ['as' NAME]"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# import_as_names ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# dotted_as_names ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '#'
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: '# dotted_name ::='
-            type: NEWLINE, value: '\n'
-         comment
-            type: COMMENT, value: "#             NAME ('.' NAME)*\n"
-            type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_from
-         type: FROM, value: 'from'
-         dots_dotted_name_or_dots
-            dots
-            dotted_name
-               type: NAME, value: 'os'
-         import_list
-            type: IMPORT, value: 'import'
-            import_as_name
-               type: NAME, value: 'path'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_from
-         type: FROM, value: 'from'
-         dots_dotted_name_or_dots
-            type: DOT, value: '.'
-         import_list
-            type: IMPORT, value: 'import'
-            import_as_name
-               type: NAME, value: 'path'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_from
-         type: FROM, value: 'from'
-         dots_dotted_name_or_dots
-            type: DOT, value: '.'
-            dots
-               type: DOT, value: '.'
-         import_list
-            type: IMPORT, value: 'import'
-            import_as_name
-               type: NAME, value: 'path'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_from
-         type: FROM, value: 'from'
-         dots_dotted_name_or_dots
-            dots
-               type: DOT, value: '.'
-               type: DOT, value: '.'
-            dotted_name
-               type: NAME, value: 'foo'
-         import_list
-            type: IMPORT, value: 'import'
-            import_as_name
-               type: NAME, value: 'path'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_from
-         type: FROM, value: 'from'
-         dots_dotted_name_or_dots
-            dots
-            dotted_name
-               type: NAME, value: 'os'
-         import_list
-            type: IMPORT, value: 'import'
-            import_as_names
-               import_as_name
-                  type: NAME, value: 'path'
-                  type: AS, value: 'as'
-                  type: NAME, value: 'shmath'
-   newline_or_stmt
-      type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_name
-         type: IMPORT, value: 'import'
-         dotted_as_name
+file_input (2)
+  0. newline_or_stmts (21)
+    0. newline_or_stmt
+      comments (26)
+        0. comment (2)
+          0. type: COMMENT, value: '# Parsing and formatting tests for'
+          1. type: NEWLINE, value: '\n'
+        1. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        2. comment (2)
+          0. type: COMMENT, value: '# import_stmt ::='
+          1. type: NEWLINE, value: '\n'
+        3. comment (2)
+          0. type: COMMENT, value: '#             import_name | import_from'
+          1. type: NEWLINE, value: '\n'
+        4. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        5. comment (2)
+          0. type: COMMENT, value: '# import_name ::='
+          1. type: NEWLINE, value: '\n'
+        6. comment (2)
+          0. type: COMMENT, value: "#             'import' dotted_as_names"
+          1. type: NEWLINE, value: '\n'
+        7. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        8. comment (2)
+          0. type: COMMENT, value: '# import_from ::='
+          1. type: NEWLINE, value: '\n'
+        9. comment (2)
+          0. type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
+          1. type: NEWLINE, value: '\n'
+        10. comment (2)
+          0. type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
+          1. type: NEWLINE, value: '\n'
+        11. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        12. comment (2)
+          0. type: COMMENT, value: '# import_as_name ::='
+          1. type: NEWLINE, value: '\n'
+        13. comment (2)
+          0. type: COMMENT, value: "#             NAME ['as' NAME]"
+          1. type: NEWLINE, value: '\n'
+        14. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        15. comment (2)
+          0. type: COMMENT, value: '# dotted_as_name ::='
+          1. type: NEWLINE, value: '\n'
+        16. comment (2)
+          0. type: COMMENT, value: "#             dotted_name ['as' NAME]"
+          1. type: NEWLINE, value: '\n'
+        17. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        18. comment (2)
+          0. type: COMMENT, value: '# import_as_names ::='
+          1. type: NEWLINE, value: '\n'
+        19. comment (2)
+          0. type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
+          1. type: NEWLINE, value: '\n'
+        20. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        21. comment (2)
+          0. type: COMMENT, value: '# dotted_as_names ::='
+          1. type: NEWLINE, value: '\n'
+        22. comment (2)
+          0. type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
+          1. type: NEWLINE, value: '\n'
+        23. comment (2)
+          0. type: COMMENT, value: '#'
+          1. type: NEWLINE, value: '\n'
+        24. comment (2)
+          0. type: COMMENT, value: '# dotted_name ::='
+          1. type: NEWLINE, value: '\n'
+        25. comment (2)
+          0. type: COMMENT, value: "#             NAME ('.' NAME)*\n"
+          1. type: NEWLINE, value: '\n'
+    1. newline_or_stmt
+      import_from (3)
+        0. type: FROM, value: 'from'
+        1. dots_dotted_name_or_dots (2)
+          0. dots
+          1. dotted_name
             type: NAME, value: 'os'
-   newline_or_stmt
+        2. import_list (2)
+          0. type: IMPORT, value: 'import'
+          1. import_as_name
+            type: NAME, value: 'path'
+    2. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_name
-         type: IMPORT, value: 'import'
-         dotted_as_names
-            dotted_as_name
-               type: NAME, value: 'sys'
-            comma_dotted_as_names
-               comma_dotted_as_names
-               type: COMMA, value: ','
-               dotted_as_name
-                  type: NAME, value: 'os'
-   newline_or_stmt
+    3. newline_or_stmt
+      import_from (3)
+        0. type: FROM, value: 'from'
+        1. dots_dotted_name_or_dots
+          type: DOT, value: '.'
+        2. import_list (2)
+          0. type: IMPORT, value: 'import'
+          1. import_as_name
+            type: NAME, value: 'path'
+    4. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_name
-         type: IMPORT, value: 'import'
-         dotted_as_name
-            dotted_name
-               type: NAME, value: 'os'
-               dot_names
-                  type: DOT, value: '.'
-                  type: NAME, value: 'path'
-   newline_or_stmt
+    5. newline_or_stmt
+      import_from (3)
+        0. type: FROM, value: 'from'
+        1. dots_dotted_name_or_dots (2)
+          0. type: DOT, value: '.'
+          1. dots
+            type: DOT, value: '.'
+        2. import_list (2)
+          0. type: IMPORT, value: 'import'
+          1. import_as_name
+            type: NAME, value: 'path'
+    6. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_name
-         type: IMPORT, value: 'import'
-         dotted_as_names
-            dotted_as_name
-               dotted_name
-                  type: NAME, value: 'os'
-                  dot_names
-                     type: DOT, value: '.'
-                     type: NAME, value: 'path'
-               type: AS, value: 'as'
-               type: NAME, value: 'path2'
-   newline_or_stmt
+    7. newline_or_stmt
+      import_from (3)
+        0. type: FROM, value: 'from'
+        1. dots_dotted_name_or_dots (2)
+          0. dots (2)
+            0. type: DOT, value: '.'
+            1. type: DOT, value: '.'
+          1. dotted_name
+            type: NAME, value: 'foo'
+        2. import_list (2)
+          0. type: IMPORT, value: 'import'
+          1. import_as_name
+            type: NAME, value: 'path'
+    8. newline_or_stmt
       type: NEWLINE, value: '\n'
-   newline_or_stmt
-      import_name
-         type: IMPORT, value: 'import'
-         dotted_as_names
-            dotted_as_name
-               dotted_name
-                  type: NAME, value: 'os'
-                  dot_names
-                     type: DOT, value: '.'
-                     type: NAME, value: 'path'
-            comma_dotted_as_names
-               comma_dotted_as_names
-               type: COMMA, value: ','
-               dotted_as_name
-                  dotted_name
-                     type: NAME, value: 'dir'
-                     dot_names
-                        type: DOT, value: '.'
-                        type: NAME, value: 'foo'
-   newline_or_stmt
+    9. newline_or_stmt
+      import_from (3)
+        0. type: FROM, value: 'from'
+        1. dots_dotted_name_or_dots (2)
+          0. dots
+          1. dotted_name
+            type: NAME, value: 'os'
+        2. import_list (2)
+          0. type: IMPORT, value: 'import'
+          1. import_as_names
+            import_as_name (3)
+              0. type: NAME, value: 'path'
+              1. type: AS, value: 'as'
+              2. type: NAME, value: 'shmath'
+    10. newline_or_stmt
       type: NEWLINE, value: '\n'
-type: ENDMARKER, value: '\x04'
+    11. newline_or_stmt
+      import_name (2)
+        0. type: IMPORT, value: 'import'
+        1. dotted_as_name
+          type: NAME, value: 'os'
+    12. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    13. newline_or_stmt
+      import_name (2)
+        0. type: IMPORT, value: 'import'
+        1. dotted_as_names (2)
+          0. dotted_as_name
+            type: NAME, value: 'sys'
+          1. comma_dotted_as_names (3)
+            0. comma_dotted_as_names
+            1. type: COMMA, value: ','
+            2. dotted_as_name
+              type: NAME, value: 'os'
+    14. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    15. newline_or_stmt
+      import_name (2)
+        0. type: IMPORT, value: 'import'
+        1. dotted_as_name
+          dotted_name (2)
+            0. type: NAME, value: 'os'
+            1. dot_names (2)
+              0. type: DOT, value: '.'
+              1. type: NAME, value: 'path'
+    16. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    17. newline_or_stmt
+      import_name (2)
+        0. type: IMPORT, value: 'import'
+        1. dotted_as_names
+          dotted_as_name (3)
+            0. dotted_name (2)
+              0. type: NAME, value: 'os'
+              1. dot_names (2)
+                0. type: DOT, value: '.'
+                1. type: NAME, value: 'path'
+            1. type: AS, value: 'as'
+            2. type: NAME, value: 'path2'
+    18. newline_or_stmt
+      type: NEWLINE, value: '\n'
+    19. newline_or_stmt
+      import_name (2)
+        0. type: IMPORT, value: 'import'
+        1. dotted_as_names (2)
+          0. dotted_as_name
+            dotted_name (2)
+              0. type: NAME, value: 'os'
+              1. dot_names (2)
+                0. type: DOT, value: '.'
+                1. type: NAME, value: 'path'
+          1. comma_dotted_as_names (3)
+            0. comma_dotted_as_names
+            1. type: COMMA, value: ','
+            2. dotted_as_name
+              dotted_name (2)
+                0. type: NAME, value: 'dir'
+                1. dot_names (2)
+                  0. type: DOT, value: '.'
+                  1. type: NAME, value: 'foo'
+    20. newline_or_stmt
+      type: NEWLINE, value: '\n'
+  1. type: ENDMARKER, value: '\x04'
