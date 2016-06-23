@@ -702,10 +702,10 @@ class GenericParser(object):
         lhs, rhs, tokens, right_recursive = self.checkSets()
         if len(lhs) > 0:
             print("LHS symbols not used on the RHS:")
-            print(lhs)
+            print(sorted(lhs))
         if len(rhs) > 0:
             print("RHS symbols not used on the LHS:")
-            print(rhs)
+            print(sorted(rhs))
         if len(right_recursive) > 0:
             print("Right recursive rules:")
             for rule in right_recursive:

@@ -199,6 +199,9 @@ class Python2Formatter(GenericASTTraversal, object):
         self.pending_newlines = p
         return result
 
+    # FIXME: this is code left over from uncompyle6.
+    # It can be simplified and probalby made appropriate
+    # for this use by removing the pending lines.
     def write(self, *data):
         if (len(data) == 0) or (len(data) == 1 and data[0] == ''):
             return
@@ -235,67 +238,6 @@ class Python2Formatter(GenericASTTraversal, object):
         if data and not(len(data) == 1 and data[0] ==''):
             self.write(*data)
         self.pending_newlines = max(self.pending_newlines, 1)
-
-    def print_docstring(self, indent, docstring):
-        quote = '"""'
-        self.write(indent)
-        if not PYTHON3 and not isinstance(docstring, str):
-            # Must be unicode in Python2
-            self.write('u')
-            docstring = repr(docstring.expandtabs())[2:-1]
-        else:
-            docstring = repr(docstring.expandtabs())[1:-1]
-
-        for (orig, replace) in (('\\\\', '\t'),
-                                ('\\r\\n', '\n'),
-                                ('\\n', '\n'),
-                                ('\\r', '\n'),
-                                ('\\"', '"'),
-                                ("\\'", "'")):
-            docstring = docstring.replace(orig, replace)
-
-        # Do a raw string if there are backslashes but no other escaped characters:
-        # also check some edge cases
-        if ('\t' in docstring
-            and '\\' not in docstring
-            and len(docstring) >= 2
-            and docstring[-1] != '\t'
-            and (docstring[-1] != '"'
-                 or docstring[-2] == '\t')):
-            self.write('r') # raw string
-            # restore backslashes unescaped since raw
-            docstring = docstring.replace('\t', '\\')
-        else:
-            # Escape '"' if it's the last character, so it doesn't
-            # ruin the ending triple quote
-            if len(docstring) and docstring[-1] == '"':
-                docstring = docstring[:-1] + '\\"'
-            # Escape triple quote anywhere
-            docstring = docstring.replace('"""', '\\"\\"\\"')
-            # Restore escaped backslashes
-            docstring = docstring.replace('\t', '\\\\')
-        lines = docstring.split('\n')
-        calculate_indent = maxint
-        for line in lines[1:]:
-            stripped = line.lstrip()
-            if len(stripped) > 0:
-                calculate_indent = min(calculate_indent, len(line) - len(stripped))
-        calculate_indent = min(calculate_indent, len(lines[-1]) - len(lines[-1].lstrip()))
-        # Remove indentation (first line is special):
-        trimmed = [lines[0]]
-        if calculate_indent < maxint:
-            trimmed += [line[calculate_indent:] for line in lines[1:]]
-
-        self.write(quote)
-        if len(trimmed) == 0:
-            self.println(quote)
-        elif len(trimmed) == 1:
-            self.println(trimmed[0], quote)
-        else:
-            self.println(trimmed[0])
-            for line in trimmed[1:-1]:
-                self.println( indent, line )
-            self.println(indent, trimmed[-1], quote)
 
     OTHER_SYM = {'{': '}', '[': ']', '(': ')', '`': '`'}
 

@@ -1,3 +1,193 @@
+2016-06-22  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	spark_parser/spark.py, spark_parser/version.py: Get ready for
+	release 1.4.0
+
+2016-06-18  rocky <rb@dustyfeet.com>
+
+	* example/python2/test/parse/assert.right,
+	example/python2/test/parse/def.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/global.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/parse/while.right, spark_parser/ast.py: Show
+	child count and sibling index in AST
+
+2016-06-16  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_scan.py,
+	example/python2/reflow.py, example/python2/test/format/expr.right,
+	example/python2/test/format/with.py,
+	example/python2/test/format/with.right: improve Python 2 example Add with and subscript.  Add augassign operators
+
+2016-06-16  rocky <rb@dustyfeet.com>
+
+	* example/expr2/parser.py, example/python2/py2_parser.py,
+	spark_parser/spark.py, test/test_checker.py, test/test_spark.py: Add
+	grammar checker and use it on our grammars py2_parser.py: fill in more grammar
+
+2016-06-13  rocky <rb@dustyfeet.com>
+
+	* example/expr2/README.md, example/expr2/eval.py,
+	example/expr2/parser.py, example/expr2/scanner.py,
+	example/python2/.gitignore, example/python2/py2_format.py: Add expr2
+	expression evaluator
+
+2016-06-12  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py, example/python2/py2_scan.py,
+	example/python2/test/format/if.py,
+	example/python2/test/format/if.right,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/parse/while.right: Python 2 start Handlin '=='
+	and subscripts
+
+2016-06-12  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, example/python2/reflow.py,
+	example/python2/test/parse/def.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/parse/while.right: Python 2 example work * Start handling """ and ''' comments * Correct python 2 import_as_name.  * Add print statement rule
+
+2016-06-12  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_scan.py,
+	example/python2/reflow.py, example/python2/test/format/def.py,
+	example/python2/test/format/def.right: Fix bugs in if/else
+	formatting
+
+2016-06-12  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py,
+	example/python2/test/format/assert.right,
+	example/python2/test/format/exec.right,
+	example/python2/test/format/global.right,
+	example/python2/test/format/imports.right,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/global.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/scan/syms.right: Preserve comments in output
+
+2016-06-10  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/expr/README.md,
+	example/expr2/README.md, example/python2/README.md: improve example
+	program README formatting
+
+2016-06-10  rocky <rb@dustyfeet.com>
+
+	* spark_parser/__init__.py, spark_parser/ast.py,
+	spark_parser/spark.py: Move AST tree routines from parser to ast.py
+
+2016-06-10  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, example/python2/test/format/expr.right: 
+	Almost all of the grammar added.  py2_scan.py: add "and" and "or" reserved words
+
+2016-06-10  rocky <rb@dustyfeet.com>
+
+	* example/python2/test/format/expr.right: Correct test output
+
+2016-06-10  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, example/python2/test/format/expr.py,
+	example/python2/test/format/expr.right,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/while.right,
+	example/python2/test/scan/expr1.right: Bang on expressions. Not
+	quite perfect
+
+2016-06-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/reflow.py, example/python2/test/format/def.py,
+	example/python2/test/format/def.right,
+	example/python2/test/format/expr.py,
+	example/python2/test/format/expr.right: Work on subroutine
+	parameters. Add class Add standalone routine to reflow Python
+
+2016-06-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py: Add expr_stmnt
+
+2016-06-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/parse/while.right: Remove some epsilon nodes
+	from AST tree
+
+2016-06-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py: More grammar arglist, fix some grammar
+	parser bugs
+
+2016-06-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/while.right,
+	example/python2/test/scan/expr1.right,
+	example/python2/test/scan/syms.right,
+	example/python2/test/scan/sys.right: Follow grammar closer - Start arith operations - Start using atom.  - testlist -> testlist1 - add backtick
+
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py, example/python2/py2_scan.py,
+	example/python2/test/helper.py,
+	example/python2/test/parse/assert.right,
+	example/python2/test/parse/def.right,
+	example/python2/test/parse/exec.right,
+	example/python2/test/parse/global.right,
+	example/python2/test/parse/if.right,
+	example/python2/test/parse/imports.right,
+	example/python2/test/parse/while.right,
+	example/python2/test/scan/expr1.right,
+	example/python2/test/scan/indent1.right,
+	example/python2/test/scan/syms.right,
+	example/python2/test/test_parse_inline.py: ENDMARKER fixes
+
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_scan.py: DRY scanner and add ENDMARKER as per
+	grammar
+
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* example/README.md: Another grammar typo
+
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* README.rst: Date correction
+
+2016-06-08  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, example/python2/test/format/def.py,
+	example/python2/test/format/def.right,
+	example/python2/test/parse/def.py,
+	example/python2/test/parse/def.right: Add python2 def tests
+
 2016-06-08  rocky <rb@dustyfeet.com>
 
 	* ChangeLog, MANIFEST.in, NEWS, TODO.rst,

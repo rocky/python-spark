@@ -258,7 +258,7 @@ class PythonParser(GenericASTBuilder):
         test_params_or_redirect ::= test comma_test_opt comma_opt
 
         # FIXME: go over Not quite right as there is one or more..
-        test_params_or_redirect ::= REDIRECT test comma_test_opt  comma_opt
+        test_params_or_redirect ::= REDIRECT test comma_test_opt comma_opt
 
         comma_test_opt ::= COMMA test
         comma_test_opt ::=

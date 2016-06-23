@@ -1,3 +1,12 @@
+spark 1.4.0 2016-06-228
+
+- Add a grammar checker
+- Improve AST printing
+- More complete examples
+  * More complete Python 2 example
+  * expr2 example does evaluation
+
+
 spark 1.3.0 2016-06-08
 
 - Incompatible change: error now returns token stack
