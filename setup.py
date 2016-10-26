@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Setup script for the 'uncompyle6' distribution."""
+"""Setup script for the 'spark_parser' distribution."""
 
 # To the extent possible we make this file look more like a
 # configuration file rather than code like setup.py. I find putting
