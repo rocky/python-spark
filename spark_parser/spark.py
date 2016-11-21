@@ -66,10 +66,19 @@ class GenericParser(object):
         self.rules = {}
         self.rule2func = {}
         self.rule2name = {}
+
+        # When set, shows additional debug output
+        self.debug = debug
+
         self.collectRules()
         self.augment(start)
         self.ruleschanged = True
-        self.debug = debug
+
+
+        # The entries here should be tuples of LHS string name
+        # and a function to call that can perform additonal checks
+        # on the reduction. That function is passed (self, lhs, sets)
+        self.check_reduce = []
 
     _NULLABLE = '\e_'
     _START = 'START'
@@ -156,6 +165,11 @@ class GenericParser(object):
                 rule, fn = self.preprocess(rule, func)
 
             if lhs in self.rules:
+                if rule in self.rules[lhs]:
+                    if self.debug['rules']:
+                        print("Duplicate rule\n\t:%s ::= %s" %
+                              (rule[0], ' '.join(rule[1])))
+                    continue
                 self.rules[lhs].append(rule)
             else:
                 self.rules[lhs] = [ rule ]
@@ -329,7 +343,7 @@ class GenericParser(object):
 
             if sets[i] == []:
                 break
-            self.makeSet(tokens[i], sets, i)
+            self.makeSet(tokens, sets, i)
         else:
             sets.append([])
             self.makeSet(None, sets, len(tokens))
@@ -479,10 +493,15 @@ class GenericParser(object):
                 set.append(item)
             self.links[key].append((predecessor, causal))
 
-    def makeSet(self, token, sets, i):
+    def makeSet(self, tokens, sets, i):
         cur, next = sets[i], sets[i+1]
 
-        ttype = token is not None and self.typestring(token) or None
+        if tokens is not None:
+            token = tokens[i]
+            ttype = self.typestring(token)
+        else:
+            ttype = None
+            token = None
         if ttype is not None:
             fn, arg = self.gotoT, ttype
         else:
@@ -504,6 +523,10 @@ class GenericParser(object):
 
             for rule in self.states[state].complete:
                 lhs, rhs = rule
+                if lhs in self.check_reduce:
+                    if not self.reduce_check[lhs](self, lhs, sets):
+                        continue
+                    pass
                 if self.debug['reduce']:
                     print("%s ::= %s" % (lhs, ' '.join(rhs)))
                 for pitem in sets[parent]:

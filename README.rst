@@ -1,4 +1,4 @@
-|buildstatus|
+|buildstatus| |Supported Python Versions|
 
 SPARK
 =====
@@ -10,7 +10,8 @@ scanner which does its job by combining Python regular expressions.
 
 The original version of this was written by John Aycock and was
 described in his 1998 paper: "Compiling Little Languages in Python" at
-the 7th International Python Conference.
+the 7th International Python Conference. The current incarnation of
+this code is maintained (or not) by Rocky Bernstein.
 
 Note: Early algorithm parsers are almost linear when given an LR grammar.
 These are grammars which are left-recursive.
@@ -43,3 +44,4 @@ See Also
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
 .. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
 		 :target: https://travis-ci.org/rocky/python-spark
+.. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/spark_parser.svg

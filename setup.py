@@ -73,6 +73,6 @@ setup(
        name               = name,
        test_suite         = 'nose.collector',
        url                = web,
-       test_requires     = ['nose>=1.0'],
+       tests_require     = ['nose>=1.0'],
        version            = VERSION,
        zip_safe           = zip_safe)
