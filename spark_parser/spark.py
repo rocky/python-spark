@@ -280,7 +280,10 @@ class GenericParser(object):
         print("Syntax error at or near token %d: `%s'" % (index, tokens[index]))
 
         if 'context' in self.debug and self.debug['context']:
-            start = index - 2 if index - 2 >= 0 else 0
+            if index - 2 >= 0:
+                start = index - 2
+            else:
+                start = 0
             tokens = [str(tokens[i]) for i in range(start, index+1)]
             print("Token context:\n\t%s" % ("\n\t".join(tokens)))
         raise SystemExit

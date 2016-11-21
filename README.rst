@@ -1,4 +1,4 @@
-|buildstatus| |Supported Python Versions|
+|Supported Python Versions|
 
 SPARK
 =====
@@ -42,6 +42,4 @@ See Also
 .. _directory: https://github.com/rocky/python-spark/tree/master/example
 .. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
-.. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
-		 :target: https://travis-ci.org/rocky/python-spark
 .. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/spark_parser.svg

@@ -1,10 +1,6 @@
 machine:
     python:
         version: 2.7.12
-    environment:
-        COMPILE: --compile
-    post:
-      - pyenv global 2.7.12 3.4.4
 
 
 dependencies:
