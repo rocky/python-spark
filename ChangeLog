@@ -1,8 +1,41 @@
-2016-06-22  rocky <rb@dustyfeet.com>
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* setup.py, spark_parser/version.py: Get ready for release 1.4.1
+
+2016-11-21  rocky <rb@dustyfeet.com>
 
 	* example/python2/py2_format.py, example/python2/py2_parser.py,
-	spark_parser/spark.py, spark_parser/version.py: Get ready for
-	release 1.4.0
+	example/python2/py2_scan.py, example/python2/test/helper.py,
+	spark_parser/spark.py: Python 2.5 tolerance
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* circle.yml, requirements-dev.txt, requirements.txt, tox.ini: Try
+	CircleCI
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* README.rst, setup.py, spark_parser/spark.py: dup rules, add python
+	badges, fix setup.py...  * setup.py: test_requires->tests_require * spark.py:   - Eliminate duplicate grammar rules   - Allow hook for additional reduction testing * README.rst:   - Supported Python badges
+
+2016-11-13  rocky <rb@dustyfeet.com>
+
+	* : commit ce4789ad4259b7fe3c3376f686e73de7212f0693 Author: rocky
+	<rb@dustyfeet.com> Date:   Sun Nov 13 13:23:12 2016 -0500
+
+2016-10-26  rocky <rb@dustyfeet.com>
+
+	* setup.py: Cut-n-paste artifact
+
+2016-06-23  rocky <rb@dustyfeet.com>
+
+	* example/python2/README.md: Update example doc
+
+2016-06-22  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, example/python2/py2_format.py,
+	example/python2/py2_parser.py, spark_parser/spark.py,
+	spark_parser/version.py: Get ready for release 1.4.0
 
 2016-06-18  rocky <rb@dustyfeet.com>
 

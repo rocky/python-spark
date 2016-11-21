@@ -1,4 +1,12 @@
-spark 1.4.0 2016-06-228
+spark 1.4.1 2016-11-21
+
+- Elimiate duplicate grammar rules
+- Allow hook for additional reduction testing
+- Fix up setup.py: tests_require not test_requires
+- Python 2.5 tolerance
+- update example doc
+
+spark 1.4.0 2016-06-22
 
 - Add a grammar checker
 - Improve AST printing
