@@ -3,7 +3,7 @@ Simple SPARK-style scanner
 Copyright (c) 2016 Rocky Bernstein
 """
 
-from __future__ import print_function
+# from __future__ import print_function
 from spark_parser.scanner import GenericScanner, GenericToken
 
 import re

@@ -1,5 +1,6 @@
 import sys, os, difflib
 
+
 def helper_init(file, subdir):
     # I hate how clumsy Python is here
     dirname = os.path.join(".", os.path.dirname(file))
@@ -11,29 +12,30 @@ def compare_one(func, python_file, verbose=True):
     from py2_scan import ENDMARKER
     right_file = python_file[:-2] + 'right'
     got_file = python_file[:-2] + 'got'
-    with open(python_file, 'r') as py_fp:
-        input_data = py_fp.read() + ENDMARKER
-        items = func(input_data)
-        got = [str(t)+"\n" for t in items]
-        same = True
-        with open(right_file, 'r') as right_fp:
-            right_data = right_fp.readlines()
-            lines = difflib.unified_diff(got, right_data,
-                                         fromfile=right_file, tofile=got_file)
-            for line in lines:
-                same = False
-                sys.stdout.write(line)
-                pass
-            pass
-        if not same:
-            with open(got_file, "w") as got_fp:
-                got_fp.writelines(got)
-                pass
-            pass
-        else:
-            if verbose: print("Yay! %s matches" % python_file)
+    # Python 2.5 tolerance
+    py_fp = open(python_file, 'r')
+    input_data = py_fp.read() + ENDMARKER
+    items = func(input_data)
+    got = [str(t)+"\n" for t in items]
+    same = True
+    right_fp = open(right_file, 'r')
+    right_data = right_fp.readlines()
+    lines = difflib.unified_diff(got, right_data,
+                                 fromfile=right_file, tofile=got_file)
+    for line in lines:
+        same = False
+        sys.stdout.write(line)
+        pass
+    if not same:
+        got_fp = open(got_file, "w")
+        got_fp.writelines(got)
+        got_fp.close()
+    else:
+        if verbose: print("Yay! %s matches" % python_file)
         if verbose: print('-' * 30)
-        return same
+    py_fp.close()
+    right_fp.close()
+    return same
 
 
 def run_tests(func, test_dir, match_files=None):

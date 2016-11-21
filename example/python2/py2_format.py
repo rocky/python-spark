@@ -54,7 +54,7 @@ methods implement most of the below.
   The '%' may optionally be followed by a number (C) in square brackets, which
   makes the engine walk down to N[C] before evaluating the escape code.
 """
-from __future__ import print_function
+# from __future__ import print_function
 
 import re, sys
 
