@@ -149,8 +149,11 @@ class Python2Scanner(GenericScanner):
     # We can't have two separate defs because then it would be indeterminate
     # whether we get two single stars or one double star.
     def t_star_star(self, s):
-        r"\*\*?"
-        token_name = "STARSTAR" if len(s) == 2 else "STAR"
+        r'\*\*?'
+        if len(s) == 2:
+            token_name = "STARSTAR"
+        else:
+            token_name = 'STAR'
         self.add_token(token_name, s)
 
     # CONSTANTS

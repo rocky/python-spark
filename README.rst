@@ -1,4 +1,4 @@
-|buildstatus| |Pypi Installs| |Latest Version| |Supported Python Versions|
+|Supported Python Versions|
 
 |packagestatus|
 
@@ -51,8 +51,6 @@ See Also
 .. _directory: https://github.com/rocky/python-spark/tree/master/example
 .. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
-.. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
-		 :target: https://travis-ci.org/rocky/python-spark
 .. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/spark_parser.svg
 .. |Latest Version| image:: https://badge.fury.io/py/spark-parser.svg
 		 :target: https://badge.fury.io/py/spark-parser

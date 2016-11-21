@@ -62,7 +62,7 @@ class AST(UserList):
             i += 1
         return rv
 
-class GenericASTTraversalPruningException(BaseException):
+class GenericASTTraversalPruningException:
     pass
 
 class GenericASTTraversal:
