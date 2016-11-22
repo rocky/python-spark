@@ -74,7 +74,6 @@ class GenericParser(object):
         self.augment(start)
         self.ruleschanged = True
 
-
         # The entries here should be tuples of LHS string name
         # and a function to call that can perform additonal checks
         # on the reduction. That function is passed (self, lhs, sets)

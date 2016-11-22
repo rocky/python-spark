@@ -1,6 +1,20 @@
+2016-11-22  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.4.2
+
+2016-11-22  rocky <rb@dustyfeet.com>
+
+	* example/python2/test/helper.py, spark_parser/spark.py: Fix bug
+	introdoced in last release...  guard agains self.debug == None Reinstate "with ..." will handle 2.4-2.5 in a branch
+
 2016-11-21  rocky <rb@dustyfeet.com>
 
-	* setup.py, spark_parser/version.py: Get ready for release 1.4.1
+	* requirements-dev.txt: We don't need flake8
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, setup.py, spark_parser/version.py: Get ready for
+	release 1.4.1
 
 2016-11-21  rocky <rb@dustyfeet.com>
 
