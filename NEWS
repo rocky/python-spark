@@ -1,3 +1,8 @@
+spark 1.4.2 2016-11-22
+
+- Fix botched release
+- handle Python 2.5 via the 2.4 branch
+
 spark 1.4.1 2016-11-21
 
 - Elimiate duplicate grammar rules
