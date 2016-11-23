@@ -1,5 +1,5 @@
 """
-Copyright (c) 2015-2017, 2020, 2023 Rocky Bernstein
+Copyright (c) 2015-2017, 2020, 2023-2024 Rocky Bernstein
 Copyright (c) 1998-2002 John Aycock
 
   Permission is hereby granted, free of charge, to any person obtaining
@@ -34,7 +34,6 @@ if sys.version[0:3] <= "2.3":
         temp = [x for x in iterable]
         temp.sort()
         return temp
-
 
 def _namelist(instance):
     namelist, namedict, classlist = [], {}, [instance.__class__]
@@ -257,8 +256,9 @@ class GenericParser(object):
 
             if lhs in self.rules:
                 if rule in self.rules[lhs]:
-                    if "dups" in self.debug and self.debug["dups"]:
-                        self.duplicate_rule(rule)
+                    if 'dups' in self.debug and self.debug['dups']:
+                        print("Duplicate rule:\n\t%s ::= %s" %
+                              (rule[0], ' '.join(rule[1])))
                     continue
                 self.rules[lhs].append(rule)
             else:

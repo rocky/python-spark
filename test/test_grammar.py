@@ -1,7 +1,7 @@
 import unittest
 from spark_parser import GenericParser
 
-from io import StringIO
+from StringIO import StringIO
 
 class BadExpr(GenericParser):
     """Testing grammar_checking"""

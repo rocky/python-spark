@@ -1,4 +1,4 @@
-#  Copyright (c) 2016-2017 by Rocky Bernstein
+#  Copyright (c) 2016-2017, 2024 by Rocky Bernstein
 #  Based on decompyle.py
 #  Copyright (c) 1999 John Aycock
 
@@ -97,21 +97,13 @@ evaluating the escape code.
 import re
 import sys
 
-from spark_parser.example.python2.py2_parser import parse_python2
+from py2_parser import parse_python2
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
-PYTHON3 = sys.version_info >= (3, 0)
+from StringIO import StringIO
 
-if PYTHON3:
-    from io import StringIO
-
-    minint = -sys.maxsize - 1
-    maxint = sys.maxsize
-else:
-    from StringIO import StringIO
-
-    minint = -sys.maxint - 1
-    maxint = sys.maxint
+minint = -sys.maxint - 1
+maxint = sys.maxint
 
 TAB = " " * 4  # is less spacy than "\t"
 INDENT_PER_LEVEL = " "  # additional intent per pretty-print level

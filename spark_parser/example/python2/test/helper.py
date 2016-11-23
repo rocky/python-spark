@@ -2,7 +2,6 @@ import difflib
 import os
 import sys
 
-
 def helper_init(file, subdir):
     # I hate how clumsy Python is here
     dirname = os.path.join(".", os.path.dirname(file))
@@ -12,7 +11,7 @@ def helper_init(file, subdir):
 
 
 def compare_one(func, python_file, verbose=True):
-    from spark_parser.example.python2.py2_scan import ENDMARKER
+    from py2_scan import ENDMARKER
 
     right_file = python_file[:-2] + "right"
     got_file = python_file[:-2] + "got"
@@ -64,7 +63,11 @@ def run_tests_unit(cls, func, test_dir, match_files=None, verbose=False):
         if python_file.endswith(".py"):
             print(python_file)
             if not match_files or python_file in match_files:
-                cls.assertTrue(compare_one(func, python_file, verbose), python_file)
+                if sys.version[0:3] <= '2.3':
+                    assert compare_one(func, python_file, verbose), python_file
+                else:
+                    cls.assertTrue(compare_one(func, python_file, verbose),
+                                   python_file)
                 pass
             pass
         pass

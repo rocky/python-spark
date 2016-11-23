@@ -1,11 +1,11 @@
 """
 Simple SPARK-style scanner
-Copyright (c) 2016 Rocky Bernstein
+Copyright (c) 2016 2024 Rocky Bernstein
 """
 
 import re
 
-from spark_parser.example.python2.py2_token import PythonToken
+from py2_token import PythonToken
 
 # from __future__ import print_function
 from spark_parser.scanner import GenericScanner

@@ -5,7 +5,7 @@ import unittest
 from helper import helper_init, run_tests_unit
 
 format_dir = helper_init(__file__, "format")
-from spark_parser.example.python2.py2_format import format_python2_stmts
+from py2_format import format_python2_stmts
 
 
 def run_format(python2_stmts):

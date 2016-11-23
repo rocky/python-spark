@@ -5,7 +5,7 @@ import unittest
 from helper import helper_init, run_tests_unit
 
 parse_dir = helper_init(__file__, "parse")
-from spark_parser.example.python2.py2_parser import parse_python2
+from py2_parser import parse_python2
 
 
 def run_parse(python2_stmts):
