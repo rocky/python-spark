@@ -21,9 +21,16 @@ Copyright (c) 1998-2002 John Aycock
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-# from __future__ import print_function
 
-import os, re
+import os, re, sys
+
+if sys.version[0:3] <= '2.3':
+    from sets import Set as set
+    def sorted(iterable):
+        temp = [x for x in iterable]
+        temp.sort()
+        return temp
+
 def _namelist(instance):
     namelist, namedict, classlist = [], {}, [instance.__class__]
     for c in classlist:
@@ -44,11 +51,11 @@ class _State:
         self.stateno = stateno
 
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True,
-#                  'errorstack': 'full' }
+#                  'errorstack': 'full', 'dups': False }
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True,
-#                  'errorstack': 'plain' }
+#                  'errorstack': 'plain', 'dups': False }
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False,
-                 'errorstack': None, 'context': True}
+                 'errorstack': None, 'context': True, 'dups': False}
 
 class GenericParser(object):
     '''
@@ -166,8 +173,8 @@ class GenericParser(object):
 
             if lhs in self.rules:
                 if rule in self.rules[lhs]:
-                    if self.debug['rules']:
-                        print("Duplicate rule\n\t:%s ::= %s" %
+                    if 'dups' in self.debug and self.debug['dups']:
+                        print("Duplicate rule:\n\t%s ::= %s" %
                               (rule[0], ' '.join(rule[1])))
                     continue
                 self.rules[lhs].append(rule)
