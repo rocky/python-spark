@@ -130,12 +130,21 @@ class Python2Scanner(GenericScanner):
             raise SystemExit
 
     def t_linesep(self, s):
+<<<<<<< HEAD:spark_parser/example/python2/py2_scan.py
         r";"
         self.add_token("SEMICOLON", s)
 
     def t_nl(self, s):
         r"\n"
         self.add_token("NEWLINE", s, is_newline=True)
+=======
+        r';'
+        self.add_token('SEMICOLON', s)
+
+    def t_nl(self, s):
+        r'\n'
+        self.add_token('NEWLINE', s, is_newline=True)
+>>>>>>> 19c6fc4 (Get ready for release 1.4.3):example/python2/py2_scan.py
 
     def t_name(self, s):
         r"[A-Za-z_][A-Za-z_0-9]*"
