@@ -1,6 +1,32 @@
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* .travis.yml, README2.rst, setup.py, spark_parser/version.py: Get
+	ready for release 1.4.3
+
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/test/helper.py,
+	spark_parser/spark.py, test/test_checker.py: Make it work with
+	Python 2.3
+
+2016-11-22  rocky <rb@dustyfeet.com>
+
+	* NEWS, spark_parser/version.py: Get ready for release 1.4.2
+
 2016-11-21  rocky <rb@dustyfeet.com>
 
-	* setup.py, spark_parser/version.py: Get ready for release 1.4.1
+	* .travis.yml, README.rst, README2.rst, circle.yml,
+	example/python2/py2_scan.py, spark_parser/ast.py,
+	spark_parser/spark.py: Try Python 2.4
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* requirements-dev.txt: We don't need flake8
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, setup.py, spark_parser/version.py: Get ready for
+	release 1.4.1
 
 2016-11-21  rocky <rb@dustyfeet.com>
 

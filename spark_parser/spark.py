@@ -26,6 +26,7 @@ import os, re, sys
 
 if sys.version[0:3] <= '2.3':
     from sets import Set as set
+
     def sorted(iterable):
         temp = [x for x in iterable]
         temp.sort()
@@ -80,7 +81,6 @@ class GenericParser(object):
         self.collectRules()
         self.augment(start)
         self.ruleschanged = True
-
 
         # The entries here should be tuples of LHS string name
         # and a function to call that can perform additonal checks

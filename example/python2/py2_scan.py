@@ -81,7 +81,6 @@ x = 2y + z
     # These can a appear as unary operators. Some are also binary operators
     UNOP2NAME = {'+': 'PLUS', '-': 'MINUS', '~': 'TILDE'}
 
-
     def t_op(self, s):
         r'\+=|-=|\*=|/=|%=|&=|\|=|^=|<<=|>>=|\*\*=|//=|//|==|<=|>=|<<|>>|[<>%^&+/=~-]'
 
@@ -104,12 +103,12 @@ x = 2y + z
             raise SystemExit
 
     def t_linesep(self, s):
-         r';'
-         self.add_token('SEMICOLON', s)
+        r';'
+        self.add_token('SEMICOLON', s)
 
     def t_nl(self, s):
-         r'\n'
-         self.add_token('NEWLINE', s, is_newline=True)
+        r'\n'
+        self.add_token('NEWLINE', s, is_newline=True)
 
     def t_name(self, s):
         r'[A-Za-z_][A-Za-z_0-9]*'
@@ -186,6 +185,7 @@ x = 2y + z
 
 if __name__ == "__main__":
     scan = Python2Scanner()
+
     def showit(expr):
         print(expr)
         tokens = scan.tokenize(expr + ENDMARKER)
