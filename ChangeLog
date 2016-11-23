@@ -1,6 +1,14 @@
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* README2.rst, example/python2/py2_format.py, setup.py,
+	spark_parser/spark.py, spark_parser/version.py,
+	test/test_checker.py, tox.ini: Get ready for release 1.4.3
+
 2016-11-22  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.4.2
+	* ChangeLog, NEWS, example/python2/py2_scan.py,
+	requirements-dev.txt, setup.py, spark_parser/spark.py,
+	spark_parser/version.py: Get ready for release 1.4.2
 
 2016-11-22  rocky <rb@dustyfeet.com>
 

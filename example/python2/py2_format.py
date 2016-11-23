@@ -148,6 +148,9 @@ escape = re.compile(r'''
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
 
+def _get_mapping(node):
+    return MAP.get(node, MAP_DIRECT)
+
 class Python2FormatterError(Exception):
     def __init__(self, errmsg):
         self.errmsg = errmsg
@@ -205,7 +208,7 @@ class Python2Formatter(GenericASTTraversal, object):
     def write(self, *data):
         if (len(data) == 0) or (len(data) == 1 and data[0] == ''):
             return
-        out = ''.join((str(j) for j in data))
+        out = ''.join([str(j) for j in data])
         n = 0
         for i in out:
             if i == '\n':
@@ -609,7 +612,7 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write(fmt[i:])
 
     def default(self, node):
-        mapping = self._get_mapping(node)
+        mapping = _get_mapping(node)
         table = mapping[0]
         key = node
 
@@ -624,9 +627,6 @@ class Python2Formatter(GenericASTTraversal, object):
         """convert AST to Python2 source code"""
         return self.traverse(ast)
 
-    @classmethod
-    def _get_mapping(cls, node):
-        return MAP.get(node, MAP_DIRECT)
 
 
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
