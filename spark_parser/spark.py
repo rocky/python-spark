@@ -173,8 +173,8 @@ class GenericParser(object):
 
             if lhs in self.rules:
                 if rule in self.rules[lhs]:
-                    if self.debug and self.debug['rules']:
-                        print("Duplicate rule\n\t:%s ::= %s" %
+                    if 'dups' in self.debug and self.debug['dups']:
+                        print("Duplicate rule:\n\t%s ::= %s" %
                               (rule[0], ' '.join(rule[1])))
                     continue
                 self.rules[lhs].append(rule)
