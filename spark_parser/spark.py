@@ -82,10 +82,14 @@ class GenericParser(object):
         self.augment(start)
         self.ruleschanged = True
 
-        # The entries here should be tuples of LHS string name
-        # and a function to call that can perform additonal checks
-        # on the reduction. That function is passed (self, lhs, sets)
-        self.check_reduce = []
+        # The key is an LHS non-terminal string. The value
+        # should be AST if you want to pass an AST to the routine
+        # to do the checking. The routine called is
+        # self.reduce_is_invalid and is passed the rule,
+        # the list of tokens, the current state item,
+        # and index of the next last token index and
+        # the first token index for the reduction.
+        self.check_reduce = {}
 
     _NULLABLE = '\e_'
     _START = 'START'
@@ -530,12 +534,21 @@ class GenericParser(object):
 
             for rule in self.states[state].complete:
                 lhs, rhs = rule
-                if lhs in self.check_reduce:
-                    if not self.reduce_check[lhs](self, lhs, sets):
+                if self.debug['reduce']:
+                    self.debug_reduce(rule, tokens, parent, i)
+                if lhs in self.check_reduce and tokens:
+                    if self.check_reduce[lhs] == 'AST':
+                        ast = self.reduce_ast(rule, tokens, item, i, sets)
+                    else:
+                        ast = None
+                    invalid = self.reduce_is_invalid(rule, ast, tokens, parent, i)
+                    if ast:
+                        del ast
+                    if invalid:
+                        if self.debug['reduce']:
+                            print("Reduce %s invalid by check" % lhs)
                         continue
                     pass
-                if self.debug['reduce']:
-                    print("%s ::= %s" % (lhs, ' '.join(rhs)))
                 for pitem in sets[parent]:
                     pstate, pparent = pitem
                     k = self.goto(pstate, lhs)
@@ -773,6 +786,31 @@ class GenericParser(object):
         missing_lhs = lhs_set - rhs_set
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
+
+    def debug_reduce(self, rule, tokens, parent, i):
+        print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+
+    def reduce_ast(self, rule, tokens, item, k, sets):
+        rhs = rule[1]
+        ast = [None] * len(rhs)
+        for i in range(len(rhs)-1, -1, -1):
+            sym = rhs[i]
+            if sym not in self.newrules:
+                if sym != self._BOF:
+                    ast[i] = tokens[k-1]
+                    key = (item, k)
+                    item, k = self.predecessor(key, None)
+            elif self._NULLABLE == sym[0:len(self._NULLABLE)]:
+                ast[i] = self.deriveEpsilon(sym)
+            else:
+                key = (item, k)
+                why = self.causal(key)
+                ast[i] = self.buildTree(sym, why[0],
+                                        tokens, why[1])
+                item, k = self.predecessor(key, why)
+                pass
+            pass
+        return ast
 
 #
 #
