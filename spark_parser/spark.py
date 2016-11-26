@@ -305,8 +305,7 @@ class GenericParser(object):
         show the entire rule with the dot placement.
         Otherwise just the rule up to the dot.
         """
-        print()
-        print("-- Stacks of completed symbols:")
+        print("\n-- Stacks of completed symbols:")
         states = [s for s in self.edges.values() if s]
         # States now has the set of states we are in
         state_stack = set()
