@@ -13,7 +13,7 @@ from py2_scan import Python2Scanner, ENDMARKER
 from spark_parser import GenericASTBuilder #, DEFAULT_DEBUG
 
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : False,
-                     'errorstack': 'full', 'context': True }
+                 'errorstack': 'full', 'context': True, 'dups': True}
 
 class PythonParser(GenericASTBuilder):
     """A more complete spark example: a Python 2 Parser.
@@ -26,15 +26,28 @@ class PythonParser(GenericASTBuilder):
         self.start = start
         self.debug = debug
 
+    def debug_reduce(self, rule, tokens, parent, i):
+        """Customized format and print for our kind of tokens
+        which gets called in debugging grammar reduce rules
+        """
+        prefix = '           '
+        if parent and tokens:
+            p_token = tokens[parent]
+            if hasattr(p_token, 'line'):
+                prefix = 'L.%3d.%03d: ' % (p_token.line, p_token.column)
+                pass
+            pass
+        print("%s%s ::= %s" % (prefix, rule[0], ' '.join(rule[1])))
+
     def nonterminal(self, nt, args):
         # Put left-recursive list non-terminals:
         # x ::= x y
         # x ::=
         collect = ('stmts', 'comments', 'dot_names', 'dots',
                    'comp_op_exprs', 'newline_or_stmts',
-                   'comma_names'
+                   'comma_names', 'comma_fpdef_opt_eqtests',
                    )
-        # nonterminal with a (reserved0 single word derivation
+        # nonterminal with a (reserved) single word derivation
         no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt', 'return_stmt')
 
         has_len = hasattr(args, '__len__')
@@ -87,19 +100,19 @@ class PythonParser(GenericASTBuilder):
         # The grammar is vague on how NEWLINE, INDENT, and DEDENT are computed.
 
         newline_or_stmt ::= sep
-        newline_or_stmt ::= stmt
+        newline_or_stmt ::= stmt_plus
         newline_or_stmt ::= comment sep
 
         stmts      ::= stmts stmt
         stmts      ::= stmt sep
         stmts      ::=
 
-        stmt_plus  ::= stmt_plus sep stmt
+        stmt_plus  ::= stmt_plus stmt
         stmt_plus  ::= stmt
 
         eval_input ::= testlist newlines ENDMAKER
 
-        newlines ::= newlines NEWLINE
+        newlines ::= NEWLINE newlines
         newlines ::=
 
         decorator ::= AT dotted_name arglist_opt NEWLINE
@@ -232,24 +245,13 @@ class PythonParser(GenericASTBuilder):
         small_stmt ::= exec_stmt
         small_stmt ::= assert_stmt
 
-        # Grammar has:
         ##  expr_stmt ::= testlist (augassign (yield_expr|testlist)
         ##          | ('=' (yield_expr|testlist))*)
-        # This misses things just expressions. So I've made the first leg
-        # optional
-        expr_stmt ::= testlist augassign_or_equal_opt
-
-        augassign_or_equal_opt ::= augassign_or_equal
-        augassign_or_equal_opt ::=
-
-        augassign_or_equal ::=  augassign_yield_expr_or_testlist
-        augassign_or_equal ::=  EQUAL yield_expr_or_testlists
-
-        augassign_yield_expr_or_testlist ::= AUGASSIGN yield_expr_or_testlist
-        augassign_yield_expr_or_testlist ::= EQUAL yield_expr_or_testlists
+        expr_stmt ::= testlist AUGASSIGN yield_expr_or_testlist
+        expr_stmt ::= testlist EQUAL yield_expr_or_testlists
 
         yield_expr_or_testlists ::= yield_expr_or_testlists yield_expr_or_testlist
-        yield_expr_or_testlists ::=
+        yield_expr_or_testlists ::= yield_expr_or_testlist
 
         yield_expr_or_testlist ::= yield_expr
         yield_expr_or_testlist ::= testlist
@@ -303,8 +305,6 @@ class PythonParser(GenericASTBuilder):
         assert_stmt ::= ASSERT test
         assert_stmt ::= ASSERT test COMMA test
 
-        sliceop ::= COLON test_opt
-
         test_opt ::= test
         test_opt ::=
 
@@ -347,7 +347,6 @@ class PythonParser(GenericASTBuilder):
         ## old_lambdef ::= 'lambda' [varargslist] ':' old_test
         old_lambdef ::= LAMBDA varargslist_opt COLON old_test
 
-        test ::= or_test IF or_test ELSE test
         test ::= or_test IF or_test ELSE test
         test ::= or_test
         test ::= lambdef
@@ -501,7 +500,6 @@ class PythonParser(GenericASTBuilder):
 
         sep       ::= comments
         sep       ::= NEWLINE
-        sep       ::= NEWLINE DEDENT
         sep       ::= SEMICOLON
 
         comments ::= comments comment
@@ -576,6 +574,8 @@ class PythonParser(GenericASTBuilder):
         compound_stmt ::= decorated
 
         if_stmt ::= IF test COLON suite elif_suites else_suite_opt
+        if_stmt ::= IF test COLON NEWLINE suite elif_suites else_suite_opt
+
         elif_suites ::= elif_suites ELIF test COLON suite
         elif_suites ::=
         else_suite_opt ::= ELSE COLON suite
@@ -601,21 +601,15 @@ class PythonParser(GenericASTBuilder):
         with_stmt ::= WITH test with_var_opt COLON suite
 
         with_var_opt ::= with_var
-        with_var_opt ::= with_var
+        with_var_opt ::=
 
         ## with_var ::= 'as' expr
         with_var ::= AS expr
 
-        suite ::= simple_stmt
-        suite ::= sep stmt_plus
+        suite ::= stmt_plus
 
-        # The python grammar has a single DEDENT rather than NEWLINE DEDENT
-        # but a DEDENT implies a NEWLINE and it is easier for our scanner
-        # to include both rather than remove the NEWLINE token.
-        # Also it makes the rule more symmetric.
-
-        suite ::=  indent stmt_plus DEDENT
         suite ::=  NEWLINE indent stmt_plus NEWLINE DEDENT
+        suite ::=  NEWLINE indent stmt_plus DEDENT
         indent ::= INDENT comments
         indent ::= INDENT
         """
@@ -631,10 +625,10 @@ def parse_python2(python_stmts, start='file_input',
 
     # For heavy grammar debugging:
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #               'errorstack': 'full', 'context': True}
+    #               'errorstack': 'full', 'context': True, 'dups': True}
     # Normal debugging:
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
-    #                'errorstack': 'full', 'context': True}
+    #                'errorstack': 'full', 'context': True, 'dups': True}
     parser = PythonParser(start=start, debug=parser_debug)
     if check:
         parser.checkGrammar()

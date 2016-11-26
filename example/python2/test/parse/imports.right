@@ -3,215 +3,215 @@ file_input (2)
     0. newline_or_stmt
       comments (26)
         0. comment (2)
-          0. type: COMMENT, value: '# Parsing and formatting tests for'
-          1. type: NEWLINE, value: '\n'
+          0. L1.34: COMMENT: '# Parsing and formatting tests for'
+          1. L1.35: NEWLINE: '\n'
         1. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.36: COMMENT: '#'
+          1. L1.37: NEWLINE: '\n'
         2. comment (2)
-          0. type: COMMENT, value: '# import_stmt ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.54: COMMENT: '# import_stmt ::='
+          1. L1.55: NEWLINE: '\n'
         3. comment (2)
-          0. type: COMMENT, value: '#             import_name | import_from'
-          1. type: NEWLINE, value: '\n'
+          0. L1.94: COMMENT: '#             import_name | import_from'
+          1. L1.95: NEWLINE: '\n'
         4. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.96: COMMENT: '#'
+          1. L1.97: NEWLINE: '\n'
         5. comment (2)
-          0. type: COMMENT, value: '# import_name ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.114: COMMENT: '# import_name ::='
+          1. L1.115: NEWLINE: '\n'
         6. comment (2)
-          0. type: COMMENT, value: "#             'import' dotted_as_names"
-          1. type: NEWLINE, value: '\n'
+          0. L1.153: COMMENT: "#             'import' dotted_as_names"
+          1. L1.154: NEWLINE: '\n'
         7. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.155: COMMENT: '#'
+          1. L1.156: NEWLINE: '\n'
         8. comment (2)
-          0. type: COMMENT, value: '# import_from ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.173: COMMENT: '# import_from ::='
+          1. L1.174: NEWLINE: '\n'
         9. comment (2)
-          0. type: COMMENT, value: "#             ('from' ('.'* dotted_name | '.'+)"
-          1. type: NEWLINE, value: '\n'
+          0. L1.221: COMMENT: "#             ('from' ('.'* dotted_name | '.'+)"
+          1. L1.222: NEWLINE: '\n'
         10. comment (2)
-          0. type: COMMENT, value: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
-          1. type: NEWLINE, value: '\n'
+          0. L1.295: COMMENT: "#             'import' ('*' | '(' import_as_names ')' | import_as_names))"
+          1. L1.296: NEWLINE: '\n'
         11. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.297: COMMENT: '#'
+          1. L1.298: NEWLINE: '\n'
         12. comment (2)
-          0. type: COMMENT, value: '# import_as_name ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.318: COMMENT: '# import_as_name ::='
+          1. L1.319: NEWLINE: '\n'
         13. comment (2)
-          0. type: COMMENT, value: "#             NAME ['as' NAME]"
-          1. type: NEWLINE, value: '\n'
+          0. L1.349: COMMENT: "#             NAME ['as' NAME]"
+          1. L1.350: NEWLINE: '\n'
         14. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.351: COMMENT: '#'
+          1. L1.352: NEWLINE: '\n'
         15. comment (2)
-          0. type: COMMENT, value: '# dotted_as_name ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.372: COMMENT: '# dotted_as_name ::='
+          1. L1.373: NEWLINE: '\n'
         16. comment (2)
-          0. type: COMMENT, value: "#             dotted_name ['as' NAME]"
-          1. type: NEWLINE, value: '\n'
+          0. L1.410: COMMENT: "#             dotted_name ['as' NAME]"
+          1. L1.411: NEWLINE: '\n'
         17. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.412: COMMENT: '#'
+          1. L1.413: NEWLINE: '\n'
         18. comment (2)
-          0. type: COMMENT, value: '# import_as_names ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.434: COMMENT: '# import_as_names ::='
+          1. L1.435: NEWLINE: '\n'
         19. comment (2)
-          0. type: COMMENT, value: "#             import_as_name (',' import_as_name)* [',']"
-          1. type: NEWLINE, value: '\n'
+          0. L1.491: COMMENT: "#             import_as_name (',' import_as_name)* [',']"
+          1. L1.492: NEWLINE: '\n'
         20. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.493: COMMENT: '#'
+          1. L1.494: NEWLINE: '\n'
         21. comment (2)
-          0. type: COMMENT, value: '# dotted_as_names ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.515: COMMENT: '# dotted_as_names ::='
+          1. L1.516: NEWLINE: '\n'
         22. comment (2)
-          0. type: COMMENT, value: "#             dotted_as_name (',' dotted_as_name)*"
-          1. type: NEWLINE, value: '\n'
+          0. L1.566: COMMENT: "#             dotted_as_name (',' dotted_as_name)*"
+          1. L1.567: NEWLINE: '\n'
         23. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.568: COMMENT: '#'
+          1. L1.569: NEWLINE: '\n'
         24. comment (2)
-          0. type: COMMENT, value: '# dotted_name ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.586: COMMENT: '# dotted_name ::='
+          1. L1.587: NEWLINE: '\n'
         25. comment (2)
-          0. type: COMMENT, value: "#             NAME ('.' NAME)*\n"
-          1. type: NEWLINE, value: '\n'
+          0. L1.618: COMMENT: "#             NAME ('.' NAME)*\n"
+          1. L1.619: NEWLINE: '\n'
     1. newline_or_stmt
       import_from (3)
-        0. type: FROM, value: 'from'
+        0. L1.623: FROM: 'from'
         1. dots_dotted_name_or_dots (2)
           0. dots
           1. dotted_name
-            type: NAME, value: 'os'
+            L1.625: NAME: 'os'
         2. import_list (2)
-          0. type: IMPORT, value: 'import'
+          0. L1.631: IMPORT: 'import'
           1. import_as_name
-            type: NAME, value: 'path'
+            L1.635: NAME: 'path'
     2. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L1.636: NEWLINE: '\n'
     3. newline_or_stmt
       import_from (3)
-        0. type: FROM, value: 'from'
+        0. L2.4: FROM: 'from'
         1. dots_dotted_name_or_dots
-          type: DOT, value: '.'
+          L2.5: DOT: '.'
         2. import_list (2)
-          0. type: IMPORT, value: 'import'
+          0. L2.11: IMPORT: 'import'
           1. import_as_name
-            type: NAME, value: 'path'
+            L2.15: NAME: 'path'
     4. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L2.16: NEWLINE: '\n'
     5. newline_or_stmt
       import_from (3)
-        0. type: FROM, value: 'from'
+        0. L3.4: FROM: 'from'
         1. dots_dotted_name_or_dots (2)
-          0. type: DOT, value: '.'
+          0. L3.5: DOT: '.'
           1. dots
-            type: DOT, value: '.'
+            L3.6: DOT: '.'
         2. import_list (2)
-          0. type: IMPORT, value: 'import'
+          0. L3.12: IMPORT: 'import'
           1. import_as_name
-            type: NAME, value: 'path'
+            L3.16: NAME: 'path'
     6. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L3.17: NEWLINE: '\n'
     7. newline_or_stmt
       import_from (3)
-        0. type: FROM, value: 'from'
+        0. L4.4: FROM: 'from'
         1. dots_dotted_name_or_dots (2)
           0. dots (2)
-            0. type: DOT, value: '.'
-            1. type: DOT, value: '.'
+            0. L4.5: DOT: '.'
+            1. L4.6: DOT: '.'
           1. dotted_name
-            type: NAME, value: 'foo'
+            L4.9: NAME: 'foo'
         2. import_list (2)
-          0. type: IMPORT, value: 'import'
+          0. L4.15: IMPORT: 'import'
           1. import_as_name
-            type: NAME, value: 'path'
+            L4.19: NAME: 'path'
     8. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L4.20: NEWLINE: '\n'
     9. newline_or_stmt
       import_from (3)
-        0. type: FROM, value: 'from'
+        0. L5.4: FROM: 'from'
         1. dots_dotted_name_or_dots (2)
           0. dots
           1. dotted_name
-            type: NAME, value: 'os'
+            L5.6: NAME: 'os'
         2. import_list (2)
-          0. type: IMPORT, value: 'import'
+          0. L5.12: IMPORT: 'import'
           1. import_as_names
             import_as_name (3)
-              0. type: NAME, value: 'path'
-              1. type: AS, value: 'as'
-              2. type: NAME, value: 'shmath'
+              0. L5.16: NAME: 'path'
+              1. L5.18: AS: 'as'
+              2. L5.24: NAME: 'shmath'
     10. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L5.25: NEWLINE: '\n'
     11. newline_or_stmt
       import_name (2)
-        0. type: IMPORT, value: 'import'
+        0. L6.6: IMPORT: 'import'
         1. dotted_as_name
-          type: NAME, value: 'os'
+          L6.8: NAME: 'os'
     12. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L6.9: NEWLINE: '\n'
     13. newline_or_stmt
       import_name (2)
-        0. type: IMPORT, value: 'import'
+        0. L7.6: IMPORT: 'import'
         1. dotted_as_names (2)
           0. dotted_as_name
-            type: NAME, value: 'sys'
+            L7.9: NAME: 'sys'
           1. comma_dotted_as_names (3)
             0. comma_dotted_as_names
-            1. type: COMMA, value: ','
+            1. L7.10: COMMA: ','
             2. dotted_as_name
-              type: NAME, value: 'os'
+              L7.12: NAME: 'os'
     14. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L7.13: NEWLINE: '\n'
     15. newline_or_stmt
       import_name (2)
-        0. type: IMPORT, value: 'import'
+        0. L8.6: IMPORT: 'import'
         1. dotted_as_name
           dotted_name (2)
-            0. type: NAME, value: 'os'
+            0. L8.8: NAME: 'os'
             1. dot_names (2)
-              0. type: DOT, value: '.'
-              1. type: NAME, value: 'path'
+              0. L8.9: DOT: '.'
+              1. L8.13: NAME: 'path'
     16. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L8.14: NEWLINE: '\n'
     17. newline_or_stmt
       import_name (2)
-        0. type: IMPORT, value: 'import'
+        0. L9.6: IMPORT: 'import'
         1. dotted_as_names
           dotted_as_name (3)
             0. dotted_name (2)
-              0. type: NAME, value: 'os'
+              0. L9.8: NAME: 'os'
               1. dot_names (2)
-                0. type: DOT, value: '.'
-                1. type: NAME, value: 'path'
-            1. type: AS, value: 'as'
-            2. type: NAME, value: 'path2'
+                0. L9.9: DOT: '.'
+                1. L9.13: NAME: 'path'
+            1. L9.15: AS: 'as'
+            2. L9.20: NAME: 'path2'
     18. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L9.21: NEWLINE: '\n'
     19. newline_or_stmt
       import_name (2)
-        0. type: IMPORT, value: 'import'
+        0. L10.6: IMPORT: 'import'
         1. dotted_as_names (2)
           0. dotted_as_name
             dotted_name (2)
-              0. type: NAME, value: 'os'
+              0. L10.8: NAME: 'os'
               1. dot_names (2)
-                0. type: DOT, value: '.'
-                1. type: NAME, value: 'path'
+                0. L10.9: DOT: '.'
+                1. L10.13: NAME: 'path'
           1. comma_dotted_as_names (3)
             0. comma_dotted_as_names
-            1. type: COMMA, value: ','
+            1. L10.14: COMMA: ','
             2. dotted_as_name
               dotted_name (2)
-                0. type: NAME, value: 'dir'
+                0. L10.17: NAME: 'dir'
                 1. dot_names (2)
-                  0. type: DOT, value: '.'
-                  1. type: NAME, value: 'foo'
+                  0. L10.18: DOT: '.'
+                  1. L10.21: NAME: 'foo'
     20. newline_or_stmt
-      type: NEWLINE, value: '\n'
-  1. type: ENDMARKER, value: '\x04'
+      L10.22: NEWLINE: '\n'
+  1. L11.1: ENDMARKER: '\x04'

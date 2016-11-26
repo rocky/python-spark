@@ -1,8 +1,7 @@
+import os, sys
+i = 0
 if sys.argv[i] == '--scan':
-    do_scan_only = True
-    scan = Python2Scanner()
-    do_format = False
-    i += 1
+    scan = os.path.join('a', 'b')
 for path in sys.argv[i:]:
     if os.path.exists(path):
         continue

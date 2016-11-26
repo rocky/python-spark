@@ -54,6 +54,7 @@ def run_tests_unit(cls, func, test_dir, match_files=None, verbose=False):
     os.chdir(test_dir)
     for python_file in os.listdir(os.getcwd()):
         if python_file.endswith(".py"):
+            print(python_file)
             if not match_files or python_file in match_files:
                 cls.assertTrue(compare_one(func, python_file, verbose), python_file)
                 pass

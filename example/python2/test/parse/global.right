@@ -3,38 +3,38 @@ file_input (2)
     0. newline_or_stmt
       comments (4)
         0. comment (2)
-          0. type: COMMENT, value: '# Parsing and formatting tests for:'
-          1. type: NEWLINE, value: '\n'
+          0. L1.35: COMMENT: '# Parsing and formatting tests for:'
+          1. L1.36: NEWLINE: '\n'
         1. comment (2)
-          0. type: COMMENT, value: '#'
-          1. type: NEWLINE, value: '\n'
+          0. L1.37: COMMENT: '#'
+          1. L1.38: NEWLINE: '\n'
         2. comment (2)
-          0. type: COMMENT, value: '# global_stmt ::='
-          1. type: NEWLINE, value: '\n'
+          0. L1.55: COMMENT: '# global_stmt ::='
+          1. L1.56: NEWLINE: '\n'
         3. comment (2)
-          0. type: COMMENT, value: "#             'global' NAME (',' NAME)*\n"
-          1. type: NEWLINE, value: '\n'
+          0. L1.96: COMMENT: "#             'global' NAME (',' NAME)*\n"
+          1. L1.97: NEWLINE: '\n'
     1. newline_or_stmt
       global_stmt (3)
-        0. type: GLOBAL, value: 'global'
-        1. type: NAME, value: 'a'
+        0. L1.103: GLOBAL: 'global'
+        1. L1.104: NAME: 'a'
         2. comma_names (3)
           0. comma_name (2)
-            0. type: COMMA, value: ','
-            1. type: NAME, value: 'b'
+            0. L1.105: COMMA: ','
+            1. L1.106: NAME: 'b'
           1. comma_name (2)
-            0. type: COMMA, value: ','
-            1. type: NAME, value: 'c'
+            0. L1.107: COMMA: ','
+            1. L1.108: NAME: 'c'
           2. comma_name (2)
-            0. type: COMMA, value: ','
-            1. type: NAME, value: 'd'
+            0. L1.109: COMMA: ','
+            1. L1.110: NAME: 'd'
     2. newline_or_stmt
-      type: NEWLINE, value: '\n'
+      L1.111: NEWLINE: '\n'
     3. newline_or_stmt
       global_stmt (3)
-        0. type: GLOBAL, value: 'global'
-        1. type: NAME, value: 'a'
+        0. L2.6: GLOBAL: 'global'
+        1. L2.7: NAME: 'a'
         2. comma_names
     4. newline_or_stmt
-      type: NEWLINE, value: '\n'
-  1. type: ENDMARKER, value: '\x04'
+      L2.8: NEWLINE: '\n'
+  1. L3.1: ENDMARKER: '\x04'
