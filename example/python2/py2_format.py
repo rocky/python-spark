@@ -5,7 +5,7 @@
 Semantic action rules for nonterminal symbols can be specified here by
 creating a method prefaced with "n_" for that nonterminal. For
 example, "n_exec_stmt" handles the semantic actions for the
-"exec_smnt" nonterminal symbol. Similarly if a method with the name
+"exec_stmt" nonterminal symbol. Similarly if a method with the name
 of the nontermail is suffixed with "_exit" it will be called after
 all of its children are called.
 
@@ -85,7 +85,7 @@ TABLE_DIRECT = {
     'break_stmt':       ( '%|break\n', ),
     'continue_stmt':    ( '%|continue\n', ),
     'del_stmt':	        ( '%|del %c\n', 1),
-    'expr_stmt':	( '%|%c%c\n', 0, 1),
+    'expr_stmt':	( '%|%c %c %c\n', 0, 1, 2),
     'global_stmt':	( '%|global %C\n', (1, maxint, '')),
     'print_stmt':       ( '%|print %c\n', 1),
     'pass_stmt':        ( '%|pass\n', ),
@@ -102,7 +102,6 @@ TABLE_DIRECT = {
     'or_and_test':      ( ' %c %c', 0, 1 ),
     'comma_import_as_name': (', %c', 1 ),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
-    'augassign_yield_expr_or_testlist' : ( ' %c %c', 0, 1 ),
 
     'NAME':	 ( '%{attr}', ),
     'STRING':	 ( '%{attr}', ),
@@ -444,11 +443,11 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'comma_fpdef_opt_eqtests": ( '%?%c, %c%c', 0, 2, 3),
     def n_comma_fpdef_opt_eqtests(self, node):
         if len(node) > 0:
-            self.preorder(node[0])
-            assert node[1] == 'COMMA'
-            self.write(', ')
-            self.preorder(node[2])
-            self.preorder(node[3])
+            j = 1
+            while j < len(node):
+                self.write(', ')
+                self.preorder(node[j])
+                j += 3
             self.prune()
 
     # redo as
@@ -511,6 +510,11 @@ class Python2Formatter(GenericASTTraversal, object):
         self.preorder(node[5])
         self.indentLess()
         self.prune()
+
+    def n_yield_expr_or_testlistt(self, node):
+        self.preorder(node[0])
+        if len(node) > 1:
+            self.preorter(node[1])
 
     # def n_stmt_plus(self, node):
     #     if len(node) > 1:
@@ -637,7 +641,7 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
 
     parser_debug = {'rules': False, 'transition': False,
                     'reduce': showgrammar,
-                    'errorstack': True, 'context': True }
+                    'errorstack': True, 'context': True, 'dups': True }
     parsed = parse_python2(python_stmts, show_tokens=show_tokens,
                            parser_debug=parser_debug)
     assert parsed == 'file_input', 'Should have parsed grammar start'
@@ -652,25 +656,37 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
 
     return python2_formatted_str
 
+def main(string, show_tokens=True, show_ast=True, show_grammar=True):
+    from py2_scan import ENDMARKER
+    formatted = format_python2_stmts(string + ENDMARKER, show_tokens, show_ast, show_grammar)
+    print('=' * 30)
+    print(formatted)
+    return
+
+
 if __name__ == '__main__':
-    def format_test(python2_stmts):
-        from py2_scan import ENDMARKER
-        formatted = format_python2_stmts(python2_stmts + ENDMARKER,
-                                         show_tokens=False, showast=True,
-                                         showgrammar=False)
-        print('=' * 30)
-        print(formatted)
-        return
-    # format_test("from os import path")
-    # format_test("pass")
-    format_test("""
+    if len(sys.argv) == 1:
+        # main("from os import path")
+        # format_test("pass")
+        main(
+"""
 x = 1 + 2
 y = 3 // 4
+z += 4
 """)
-#     format_test("""
+        main(
+"""
+if True:
+    pass
+""")
+#         main(
+# """
 # if True:
-#   if True:
-#      pass
+#     if True:
+#         pass
+#     pass
 # pass
-
 # """)
+    else:
+        string = open(sys.argv[1]).read()
+        main(string)
