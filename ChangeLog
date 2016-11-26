@@ -1,23 +1,27 @@
+2016-11-26  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.5.0
+
 2016-11-23  rocky <rb@dustyfeet.com>
 
-	* .travis.yml, README2.rst, setup.py, spark_parser/version.py: Get
-	ready for release 1.4.3
+	* spark_parser/spark.py: Fix up debug['dup'] test and output
 
 2016-11-23  rocky <rb@dustyfeet.com>
 
-	* example/python2/py2_format.py, example/python2/test/helper.py,
-	spark_parser/spark.py, test/test_checker.py: Make it work with
-	Python 2.3
+	* ChangeLog, NEWS, README2.rst, example/python2/py2_format.py,
+	setup.py, spark_parser/spark.py, spark_parser/version.py,
+	test/test_checker.py, tox.ini: Get ready for release 1.4.3
 
 2016-11-22  rocky <rb@dustyfeet.com>
 
-	* NEWS, spark_parser/version.py: Get ready for release 1.4.2
+	* ChangeLog, NEWS, example/python2/py2_scan.py,
+	requirements-dev.txt, setup.py, spark_parser/spark.py,
+	spark_parser/version.py: Get ready for release 1.4.2
 
-2016-11-21  rocky <rb@dustyfeet.com>
+2016-11-22  rocky <rb@dustyfeet.com>
 
-	* .travis.yml, README.rst, README2.rst, circle.yml,
-	example/python2/py2_scan.py, spark_parser/ast.py,
-	spark_parser/spark.py: Try Python 2.4
+	* example/python2/test/helper.py, spark_parser/spark.py: Fix bug
+	introdoced in last release...  guard agains self.debug == None Reinstate "with ..." will handle 2.4-2.5 in a branch
 
 2016-11-21  rocky <rb@dustyfeet.com>
 
@@ -150,7 +154,7 @@
 2016-06-10  rocky <rb@dustyfeet.com>
 
 	* example/python2/py2_format.py, example/python2/py2_parser.py,
-	example/python2/py2_scan.py, example/python2/test/format/expr.right: 
+	example/python2/py2_scan.py, example/python2/test/format/expr.right:
 	Almost all of the grammar added.  py2_scan.py: add "and" and "or" reserved words
 
 2016-06-10  rocky <rb@dustyfeet.com>
@@ -515,7 +519,7 @@
 2016-04-28  rocky <rb@dustyfeet.com>
 
 	* NEWS, example/expr/expr.py, setup.py, spark/__init__.py,
-	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py: 
+	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py:
 	Get ready for release 1.0.2
 
 2016-04-27  rocky <rb@dustyfeet.com>
@@ -607,4 +611,3 @@
 2016-04-20  rocky <rb@dustyfeet.com>
 
 	* Initial guess at Spark package
-

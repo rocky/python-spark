@@ -1,3 +1,20 @@
+spark 1.5.0 2016-11-26
+
+- User-definable reduction check. This
+  allows one to specify an additional check before
+  a rediction is made. For example in uncompyle6 we
+  check whether a SETUP_LOOP target jumps to the last
+  token of the rule. Or that an augmented assignment statement
+  doesn't have inplace-binary operators
+
+- User defined reduce printing rule. For example, the uncompyle6 token
+  class has line numbers and offsets associated with them. We can
+  show these as part of the reduction rule.
+
+- Go over python 2 grammar and improve, but some indentation things are slightly worse. Sigh.
+
+- spark.py Fix small python2 print bug
+
 spark 1.4.3 2016-11-22
 
 - handle Python 2.3 via the 2.4 branch

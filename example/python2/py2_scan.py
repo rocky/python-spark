@@ -4,12 +4,13 @@ Copyright (c) 2016 Rocky Bernstein
 """
 
 # from __future__ import print_function
-from spark_parser.scanner import GenericScanner, GenericToken
+from spark_parser.scanner import GenericScanner
+from py2_token import PythonToken
 
 import re
 RESERVED_WORDS = re.split("\s+",
 """and as assert break class continue def del eval exec else elif for from global
-if in import lambda or pass print return self while with yield""")
+if in import lambda or pass print return while with yield None""")
 
 BRACKET2NAME = {
     '(': 'LPAREN',   ')': 'RPAREN',
@@ -41,20 +42,25 @@ x = 2y + z
     def __init__(self):
         self.is_newline = True
         self.indents = [0]
+        self.lineno = 1
+        self.column = 0
         GenericScanner.__init__(self)
 
-    def tokenize(self, input):
+    def tokenize(self, string):
         self.rv = []
-        GenericScanner.tokenize(self, input)
+        GenericScanner.tokenize(self, string)
         return self.rv
 
     def add_token(self, name, s, is_newline=False):
-        t = GenericToken(kind=name, attr=s)
+        self.column += len(s)
+        t = PythonToken(name, s, self.lineno, self.column)
+        if is_newline:
+            self.lineno += 1
+            self.column = 0
         if self.is_newline and name not in ['DEDENT', 'INDENT']:
             while 0 < self.indents[-1]:
                 self.indents = self.indents[0:-1]
-                self.rv.append(GenericToken(kind='DEDENT', attr=''))
-                self.rv.append(GenericToken(kind='NEWLINE', attr=''))
+                self.rv.append(PythonToken('DEDENT', '', self.lineno, self.column))
                 pass
         self.is_newline = is_newline
         self.rv.append(t)
@@ -161,7 +167,6 @@ x = 2y + z
                 pass
             pass
         return
-
 
     # Combine comment and whitespace because we want to
     # capture the space before a comment.
