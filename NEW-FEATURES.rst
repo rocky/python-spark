@@ -108,7 +108,7 @@ printing program. The same can be done for duplicate-rule printing
 and other things like that.
 
 More recently, I the ability to callback before each reduction so
-additional checks can be peformed before a reduction. In an amgiguous
+additional checks can be peformed before a reduction. In an ambiguous
 grammar useful as it helps distinguish which rule should be used among
 many.
 
