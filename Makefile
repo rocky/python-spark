@@ -18,7 +18,7 @@ check-full: check
 
 #: Run tests (one version of Python)
 check:
-	$(PYTHON) ./setup.py nosetests
+	(cd test && nosetests -v *.py)
 	$(MAKE) -C example/python2 check
 
 #: Clean up temporary files

@@ -93,8 +93,7 @@ class PythonParser(GenericASTBuilder):
         single_input ::= compound_stmt NEWLINE
 
         file_input ::= newline_or_stmts ENDMARKER
-        newline_or_stmts ::= newline_or_stmts newline_or_stmt
-        newline_or_stmts ::=
+        newline_or_stmts ::= newline_or_stmt*
 
         # Grammar uses NEWLINE instead of 'sep', but ; does separate statements.
         # The grammar is vague on how NEWLINE, INDENT, and DEDENT are computed.
@@ -103,14 +102,12 @@ class PythonParser(GenericASTBuilder):
         newline_or_stmt ::= stmt_plus
         newline_or_stmt ::= comment sep
 
-        stmts      ::= stmts stmt
+        stmts      ::= stmt*
         stmts      ::= stmt sep
-        stmts      ::=
 
-        stmt_plus  ::= stmt_plus stmt
-        stmt_plus  ::= stmt
+        stmt_plus  ::= stmt+
 
-        eval_input ::= testlist newlines ENDMAKER
+        eval_input ::= testlist newlines ENDMARKER
 
         newlines ::= NEWLINE newlines
         newlines ::=
@@ -293,8 +290,7 @@ class PythonParser(GenericASTBuilder):
         test_opt3 ::= test
 
         global_stmt ::= GLOBAL NAME comma_names
-        comma_names ::= comma_names comma_name
-        comma_names ::=
+        comma_names ::= comma_name*
 
         comma_name  ::= COMMA NAME
 
@@ -495,15 +491,13 @@ class PythonParser(GenericASTBuilder):
         class_subclass_opt ::=
 
 
-        strings   ::= strings STRING
-        strings   ::= STRING
+        strings   ::= STRING+
 
         sep       ::= comments
         sep       ::= NEWLINE
         sep       ::= SEMICOLON
 
-        comments ::= comments comment
-        comments ::= comment
+        comments  ::= comment+
 
         comment ::= COMMENT
         comment ::= COMMENT NEWLINE
