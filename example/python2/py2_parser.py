@@ -113,8 +113,8 @@ class PythonParser(GenericASTBuilder):
         newlines ::=
 
         decorator ::= AT dotted_name arglist_opt NEWLINE
-        arglist_opt ::= arglist
-        arglist_opt ::=
+
+        arglist_opt ::= arglist?
 
         ## arglist ::= (argument ',')*
         ## (argument [','] | '*' test (',' argument)* [',' '**' test] | '**' test)
@@ -155,8 +155,7 @@ class PythonParser(GenericASTBuilder):
         ## list_if ::= 'if' old_test [list_iter]
         list_if ::= IF old_test list_iter_opt
 
-        gen_for_opt ::= gen_for
-        gen_for_opt ::=
+        gen_for_opt ::= gen_for?
 
         ## gen_iter ::= gen_for | gen_if
         gen_iter ::= gen_for
@@ -165,8 +164,7 @@ class PythonParser(GenericASTBuilder):
         ## gen_for ::= 'for' exprlist 'in' or_test [gen_iter]
         gen_for ::= FOR exprlist IN or_test gen_iter_opt
 
-        gen_iter_opt ::= gen_iter
-        gen_iter_opt ::=
+        gen_iter_opt ::= gen_iter?
 
         ## gen_if ::= 'if' old_test [gen_iter]
         gen_if ::= IF old_test gen_iter_opt
@@ -174,8 +172,7 @@ class PythonParser(GenericASTBuilder):
         ## testlist1 ::= test (',' test)*
         testlist1 ::= test comma_tests
 
-        decorators ::= decorators decorator
-        decorators ::= decorator
+        decorators ::= decorator+
 
         decorated ::= decorators classdef_or_funcdef
         classdef_or_funcdef ::= classdef
@@ -185,8 +182,7 @@ class PythonParser(GenericASTBuilder):
 
         parameters ::= LPAREN varargslist_opt RPAREN
 
-        varargslist_opt ::=  varargslist
-        varargslist_opt ::=
+        varargslist_opt ::=  varargslist?
 
         # FILL IN
         ## varargslist ::= fpdef ['=' test] ',')* ('*' NAME [',' '**' NAME] | '**' NAME)
@@ -205,8 +201,7 @@ class PythonParser(GenericASTBuilder):
         eq_tests ::= eq_tests eq_test
         eq_tests ::=
 
-        eq_test_opt ::= eq_test
-        eq_test_opt ::=
+        eq_test_opt ::= eq_test?
 
         eq_test ::= EQUAL test
 
@@ -224,8 +219,7 @@ class PythonParser(GenericASTBuilder):
         fplist1 ::= fplist COMMA fpdef
         fplist1 ::=
 
-        comma_opt ::= COMMA
-        comma_opt ::=
+        comma_opt ::= COMMA?
 
         stmt ::= simple_stmt
         stmt ::= compound_stmt
@@ -278,8 +272,7 @@ class PythonParser(GenericASTBuilder):
         # return_stmt ::= 'return' [testlist]
         return_stmt ::= RETURN testlist_opt
 
-        testlist_opt ::= testlist
-        testlist_opt ::=
+        testlist_opt ::= testlist?
 
         yield_stmt ::= yield_expr
 
@@ -301,8 +294,7 @@ class PythonParser(GenericASTBuilder):
         assert_stmt ::= ASSERT test
         assert_stmt ::= ASSERT test COMMA test
 
-        test_opt ::= test
-        test_opt ::=
+        test_opt ::= test?
 
         ## exprlist ::= expr (',' expr)* [',']
         exprlist ::= expr comma_exprs comma_opt
@@ -417,16 +409,14 @@ class PythonParser(GenericASTBuilder):
         atom       ::= NAME
         atom       ::= strings
 
-        dictmaker_opt ::= dictmaker
-        dictmaker_opt ::=
+        dictmaker_opt ::= dictmaker?
 
         ## [yield_expr|testlist_gexp]
         yield_expr_or_testlist_gexp_opt ::= yield_expr
         yield_expr_or_testlist_gexp_opt ::= testlist_gexp
         yield_expr_or_testlist_gexp_opt ::=
 
-        listmaker_opt ::= listmaker
-        listmaker_opt ::=
+        listmaker_opt ::= listmaker?
 
         ## listmaker ::= test ( list_for | (',' test)* [','] )
 
@@ -442,8 +432,7 @@ class PythonParser(GenericASTBuilder):
 
         lambdef ::= LAMBDA varargslist_opt COLON test
 
-        trailers   ::= trailers trailer
-        trailers   ::=
+        trailers   ::= trailer*
 
         ## trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
         trailer ::= LPAREN arglist_opt RPAREN

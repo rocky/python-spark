@@ -54,9 +54,10 @@ Checking for duplicate rules was also handy.
 
 The original code showed you the how far you had parsed and that was
 useful. But in production code you often want more. So I added the
-list of rule states of the current state, and the ability to
-dump rules as reductions occurred. Here is an example of that
-from uncompyle6:
+list of rule states of the current state. I won't show that here.
+
+However also added was the ability to dump rules as reductions
+occurred. Here is an example of that from uncompyle6:
 
 .. code-block::
 
@@ -112,12 +113,16 @@ grammar useful as it helps distinguish which rule should be used among
 many.
 
 Lastly, I've added a little syntactic sugar for the Kleene closure
-operators `+` and `*`. It is limited but you can now do things like:
+operators `+`, `*` and optional suffix `?`. It is limited to only one
+nonterminal on the right-hand side, but that does come up often and
+helps a little. So you can now do things like:
 
-.. code-block:: 
+.. code-block::
 
-      stmts ::= stmt+
-      minus ::= MINUS*
+      stmts    ::= stmt+
+      ratings  ::= STAR*
+      opt_comma ::= COMMA?
+
 
 These expand to:
 
@@ -130,7 +135,14 @@ and:
 
 .. code-block::
 
-     minus ::= MINUS
-     minus ::=
+     ratings ::= ratings STAR
+     ratings ::=
+
+and:
+
+.. code-block::
+
+     opt_comma ::= COMMA
+     ratings ::=
 
 respectively.

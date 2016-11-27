@@ -185,21 +185,29 @@ class GenericParser(object):
             if _preprocess:
                 rule, fn = self.preprocess(rule, func)
 
-            # Handle simple form of * and +
-            if len(rule[1]) == 1 and rule[1][-1][-1] in ('*', '+'):
-                new_rule_pair = [rule[0], [rule[0]] + list(rule[1])]
-                repeat = new_rule_pair[1][-1][-1]
-                nt = new_rule_pair[1][-1][:-1]
-                new_rule_pair[1][-1] = nt
-                new_rule = rule2str(new_rule_pair)
-                self.addRule(new_rule, func, _preprocess)
-                if repeat == '*':
-                    repeat_rule_pair = (lhs, tuple())
-                else:
-                    repeat_rule_pair = (lhs, (nt,))
-                new_rule = rule2str(repeat_rule_pair)
-                self.addRule(new_rule, func, _preprocess)
-                continue
+            # Handle a stripped-down form of *, +, and ?:
+            #   allow only one nonterminal on the right-hand side
+            if len(rule[1]) == 1:
+
+                if rule[1][0] == rule[0]:
+                    raise TypeError("Complete recursive rule %s" % rule2str(rule))
+
+                if rule[1][-1][-1] in ('*', '+', '?'):
+                    repeat = rule[1][-1][-1]
+                    nt = rule[1][-1][:-1]
+                    if repeat == '?':
+                        new_rule_pair = [rule[0], list((nt,))]
+                    else:
+                        new_rule_pair = [rule[0], [rule[0]] + list((nt,))]
+                    new_rule = rule2str(new_rule_pair)
+                    self.addRule(new_rule, func, _preprocess)
+                    if repeat == '+':
+                        second_rule_pair = (lhs, (nt,))
+                    else:
+                        second_rule_pair = (lhs, tuple())
+                    new_rule = rule2str(second_rule_pair)
+                    self.addRule(new_rule, func, _preprocess)
+                    continue
 
             if lhs in self.rules:
                 if rule in self.rules[lhs]:
@@ -761,10 +769,8 @@ class GenericParser(object):
         """
         Print grammar rules
         """
-        import collections
-        for rule in collections.OrderedDict(sorted(self.rule2name.items())):
+        for rule in sorted(self.rule2name.items()):
             print("%s" % rule2str(rule))
-            pass
         return
 
     def checkGrammar(self):
