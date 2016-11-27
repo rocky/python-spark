@@ -1,6 +1,6 @@
 The original version of this Early parser is pretty awesome for its
 age.  It was remarkably fast, and small: one Python file. Some care
-was put into making it run fast
+was put into making it run fast.
 
 That made it easy to embed in a project. In fact at one time it was
 added to the Python distribution before it was removed in a later version.
@@ -17,10 +17,15 @@ The first thing I desired when working with a large complex grammar
 and then sets of grammars that I found desirable was the ability to
 comment the grammar. For example:
 
+.. code-block::
+
     # This is a comment
     term := term MULT_OP atom
 
+
 Next, I needed better AST tree display routines. For example:
+
+.. code-block::
 
     expr
       term (3)
@@ -38,7 +43,6 @@ Next, I needed better AST tree display routines. For example:
         2. atom
           type: NUMBER, value: '2'
 
-
 After that it was useful to have grammar checking routines,
 specifically, the ability to find unused left-hand-side nonterminals
 that are not either the start symbol or used on the right-hand side.
@@ -53,6 +57,8 @@ useful. But in production code you often want more. So I added the
 list of rule states of the current state, and the ability to
 dump rules as reductions occurred. Here is an example of that
 from uncompyle6:
+
+.. code-block::
 
     x = 1
     y = x + 5
@@ -108,15 +114,21 @@ many.
 Lastly, I've added a little syntactic sugar for the Kleene closure
 operators `+` and `*`. It is limited but you can now do things like:
 
+.. code-block:: 
+
       stmts ::= stmt+
       minus ::= MINUS*
 
 These expand to:
 
+.. code-block::
+
      stmts ::= stmts stmt
      stmts ::= stmt
 
 and:
+
+.. code-block::
 
      minus ::= MINUS
      minus ::=
