@@ -1,4 +1,4 @@
-The original version of this Early parser is pretty awesome for its
+The original version of this Early parser, circa 2000 is pretty awesome for its
 age.  It was remarkably fast, and small: one Python file. Some care
 was put into making it run fast.
 
