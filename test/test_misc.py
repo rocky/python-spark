@@ -1,5 +1,10 @@
-import unittest
+import sys, unittest
+
 from spark_parser.spark import GenericParser
+
+# Python 2.3 doesn't have sorted
+if sys.version[0:3] <= '2.3':
+    from spark_parser.spark import sorted
 
 class Rules(GenericParser):
     """Testing duplicate rules"""
@@ -38,6 +43,12 @@ class InvalidRule(GenericParser):
     pass
 
 class TestMisc(unittest.TestCase):
+
+    # Python 2.3 doesn't have assertTrue
+    def assertTrue(self, expr):
+        return self.assertEqual(True, expr)
+
+
 
     def test_basic(self):
         # Check duplicate rule detection
