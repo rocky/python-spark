@@ -129,9 +129,7 @@ class PythonParser(GenericASTBuilder):
         arglist2 ::= START test comma_arguments comma_starstar_test_opt
         arglist2 ::= STARSTAR test
 
-        comma_arguments ::= comma_arguments comma_argument
-        comma_arguments ::=
-
+        comma_arguments ::= comma_argument*
         comma_argument ::= COMMA argument
 
         comma_starstar_test_opt ::= COMMA STARSTAR test
@@ -149,8 +147,7 @@ class PythonParser(GenericASTBuilder):
         ## list_for ::= 'for' exprlist 'in' testlist_safe [list_iter]
         list_for ::= FOR exprlist IN testlist_safe list_iter_opt
 
-        list_iter_opt ::= list_iter
-        list_iter_opt ::=
+        list_iter_opt ::= list_iter?
 
         ## list_if ::= 'if' old_test [list_iter]
         list_if ::= IF old_test list_iter_opt
@@ -454,8 +451,7 @@ class PythonParser(GenericASTBuilder):
         subscript ::= test
         subscript ::= test_opt COLON test_opt sliceop_opt
 
-        sliceop_opt ::= sliceop
-        sliceop_opt ::=
+        sliceop_opt ::= sliceop?
 
         ## sliceop ::= ':' [test]
         sliceop ::= COLON test_opt
@@ -514,8 +510,7 @@ class PythonParser(GenericASTBuilder):
 
         dots_dotted_name_or_dots ::= dots dotted_name
         dots_dotted_name_or_dots ::= DOT dots
-        dots ::= dots DOT
-        dots ::=
+        dots ::= DOT*
 
         ## 'import' ('*' | '(' import_as_names ')' | import_as_names))
         import_list ::= IMPORT STAR
@@ -533,8 +528,7 @@ class PythonParser(GenericASTBuilder):
         ##  ',' import_as_name
         comma_import_as_name ::= COMMA import_as_name
 
-        comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
-        comma_dotted_as_names ::= dotted_as_name
+        comma_dotted_as_names ::= comma_dotted_as_name+
 
         dotted_as_names ::= dotted_as_name comma_dotted_as_names
         comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
@@ -583,8 +577,7 @@ class PythonParser(GenericASTBuilder):
         ## with_stmt ::= with' test [ with_var ] ':' suite
         with_stmt ::= WITH test with_var_opt COLON suite
 
-        with_var_opt ::= with_var
-        with_var_opt ::=
+        with_var_opt ::= with_var?
 
         ## with_var ::= 'as' expr
         with_var ::= AS expr
