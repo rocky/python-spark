@@ -109,7 +109,7 @@ class PythonParser(GenericASTBuilder):
 
         eval_input ::= testlist newlines ENDMARKER
 
-        newlines ::= NEWLINE*
+        newlines ::= NEWLINE+
 
         decorator ::= AT dotted_name arglist_opt NEWLINE
 
