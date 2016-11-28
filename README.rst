@@ -26,7 +26,7 @@ This uses `setup.py`, so it follows the standard Python routine:
 
     python setup.py install # may need sudo
     # or if you have pyenv:
-   python setup.py develop
+    python setup.py develop
 
 Example
 -------
