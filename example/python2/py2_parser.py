@@ -109,8 +109,7 @@ class PythonParser(GenericASTBuilder):
 
         eval_input ::= testlist newlines ENDMARKER
 
-        newlines ::= NEWLINE newlines
-        newlines ::=
+        newlines ::= NEWLINE*
 
         decorator ::= AT dotted_name arglist_opt NEWLINE
 
@@ -243,6 +242,9 @@ class PythonParser(GenericASTBuilder):
 
         yield_expr_or_testlist ::= yield_expr
         yield_expr_or_testlist ::= testlist
+
+        ## yield_expr ::= 'yield' [testlist]
+        yield_expr ::= YIELD testlist_opt
 
         print_stmt ::= PRINT test_params_or_redirect
         test_params_or_redirect ::= test comma_test_opt comma_opt
@@ -528,7 +530,7 @@ class PythonParser(GenericASTBuilder):
         ##  ',' import_as_name
         comma_import_as_name ::= COMMA import_as_name
 
-        comma_dotted_as_names ::= comma_dotted_as_name+
+        comma_dotted_as_names ::= dotted_as_name+
 
         dotted_as_names ::= dotted_as_name comma_dotted_as_names
         comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
