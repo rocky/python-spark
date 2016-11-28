@@ -43,6 +43,9 @@ def _namelist(instance):
                 namedict[name] = 1
     return namelist
 
+def rule2str(rule):
+    return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+
 class _State:
     '''
     Extracted from GenericParser and made global so that [un]picking works.
@@ -79,6 +82,8 @@ class GenericParser(object):
         self.debug = debug
 
         self.collectRules()
+        if start not in self.rules:
+            raise TypeError('Start symbol "%s" is not in LHS of any rule' % start)
         self.augment(start)
         self.ruleschanged = True
 
@@ -153,7 +158,14 @@ class GenericParser(object):
         return rule, func
 
     def addRule(self, doc, func, _preprocess=True):
-        """Add a grammar rules to self.rules, self.rule2func and self.rule2name"""
+        """Add a grammar rules to _self.rules_, _self.rule2func_,
+            and _self.rule2name_
+
+        Comments, lines starting with # and blank lines are stripped from
+        doc. We also allow limited form of * and + when there it is of
+        the RHS has a single item, e.g.
+               stmts ::= stmt+
+        """
         fn = func
 
         # remove blanks lines and comment lines, e.g. lines starting with "#"
@@ -175,18 +187,43 @@ class GenericParser(object):
             if _preprocess:
                 rule, fn = self.preprocess(rule, func)
 
+            # Handle a stripped-down form of *, +, and ?:
+            #   allow only one nonterminal on the right-hand side
+            if len(rule[1]) == 1:
+
+                if rule[1][0] == rule[0]:
+                    raise TypeError("Complete recursive rule %s" % rule2str(rule))
+
+                if rule[1][-1][-1] in ('*', '+', '?'):
+                    repeat = rule[1][-1][-1]
+                    nt = rule[1][-1][:-1]
+                    if repeat == '?':
+                        new_rule_pair = [rule[0], list((nt,))]
+                    else:
+                        new_rule_pair = [rule[0], [rule[0]] + list((nt,))]
+                    new_rule = rule2str(new_rule_pair)
+                    self.addRule(new_rule, func, _preprocess)
+                    if repeat == '+':
+                        second_rule_pair = (lhs, (nt,))
+                    else:
+                        second_rule_pair = (lhs, tuple())
+                    new_rule = rule2str(second_rule_pair)
+                    self.addRule(new_rule, func, _preprocess)
+                    continue
+
             if lhs in self.rules:
                 if rule in self.rules[lhs]:
                     if 'dups' in self.debug and self.debug['dups']:
-                        print("Duplicate rule:\n\t%s ::= %s" %
-                              (rule[0], ' '.join(rule[1])))
+                        self.duplicate_rule(rule)
                     continue
                 self.rules[lhs].append(rule)
             else:
                 self.rules[lhs] = [ rule ]
             self.rule2func[rule] = fn
             self.rule2name[rule] = func.__name__[2:]
-        self.ruleschanged = True
+            self.ruleschanged = True
+            pass
+        return
 
     def collectRules(self):
         for name in _namelist(self):
@@ -287,6 +324,9 @@ class GenericParser(object):
     def typestring(self, token):
         return None
 
+    def duplicate_rule(self, rule):
+        print("Duplicate rule:\n\t%s" % rule2str(rule))
+
     def error(self, tokens, index):
         print("Syntax error at or near token %d: `%s'" % (index, tokens[index]))
 
@@ -299,7 +339,7 @@ class GenericParser(object):
             print("Token context:\n\t%s" % ("\n\t".join(tokens)))
         raise SystemExit
 
-    def errorstack(self, full=False):
+    def errorstack(self, tokens, i, full=False):
         """Show the stacks of completed symbols.
         We get this by inspecting the current transitions
         possible and from that extracting the set of states
@@ -365,7 +405,7 @@ class GenericParser(object):
         if finalitem not in sets[-2]:
             if len(tokens) > 0:
                 if self.debug['errorstack']:
-                    self.errorstack(str(self.debug['errorstack']) == 'full')
+                    self.errorstack(tokens, i-1, str(self.debug['errorstack']) == 'full')
                 self.error(tokens, i-1)
             else:
                 self.error(None, None)
@@ -731,13 +771,11 @@ class GenericParser(object):
         return list[0]
 
     def dumpGrammar(self):
-        '''
+        """
         Print grammar rules
-        '''
-        import collections
-        for lhs, rhs in collections.OrderedDict(sorted(self.rule2name.items())):
-            print("%s ::= %s" % (lhs, ' '.join(rhs)))
-            pass
+        """
+        for rule in sorted(self.rule2name.items()):
+            print("%s" % rule2str(rule))
         return
 
     def checkGrammar(self):

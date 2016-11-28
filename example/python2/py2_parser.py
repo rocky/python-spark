@@ -93,8 +93,7 @@ class PythonParser(GenericASTBuilder):
         single_input ::= compound_stmt NEWLINE
 
         file_input ::= newline_or_stmts ENDMARKER
-        newline_or_stmts ::= newline_or_stmts newline_or_stmt
-        newline_or_stmts ::=
+        newline_or_stmts ::= newline_or_stmt*
 
         # Grammar uses NEWLINE instead of 'sep', but ; does separate statements.
         # The grammar is vague on how NEWLINE, INDENT, and DEDENT are computed.
@@ -103,21 +102,18 @@ class PythonParser(GenericASTBuilder):
         newline_or_stmt ::= stmt_plus
         newline_or_stmt ::= comment sep
 
-        stmts      ::= stmts stmt
+        stmts      ::= stmt*
         stmts      ::= stmt sep
-        stmts      ::=
 
-        stmt_plus  ::= stmt_plus stmt
-        stmt_plus  ::= stmt
+        stmt_plus  ::= stmt+
 
-        eval_input ::= testlist newlines ENDMAKER
+        eval_input ::= testlist newlines ENDMARKER
 
-        newlines ::= NEWLINE newlines
-        newlines ::=
+        newlines ::= NEWLINE+
 
         decorator ::= AT dotted_name arglist_opt NEWLINE
-        arglist_opt ::= arglist
-        arglist_opt ::=
+
+        arglist_opt ::= arglist?
 
         ## arglist ::= (argument ',')*
         ## (argument [','] | '*' test (',' argument)* [',' '**' test] | '**' test)
@@ -132,9 +128,7 @@ class PythonParser(GenericASTBuilder):
         arglist2 ::= START test comma_arguments comma_starstar_test_opt
         arglist2 ::= STARSTAR test
 
-        comma_arguments ::= comma_arguments comma_argument
-        comma_arguments ::=
-
+        comma_arguments ::= comma_argument*
         comma_argument ::= COMMA argument
 
         comma_starstar_test_opt ::= COMMA STARSTAR test
@@ -152,14 +146,12 @@ class PythonParser(GenericASTBuilder):
         ## list_for ::= 'for' exprlist 'in' testlist_safe [list_iter]
         list_for ::= FOR exprlist IN testlist_safe list_iter_opt
 
-        list_iter_opt ::= list_iter
-        list_iter_opt ::=
+        list_iter_opt ::= list_iter?
 
         ## list_if ::= 'if' old_test [list_iter]
         list_if ::= IF old_test list_iter_opt
 
-        gen_for_opt ::= gen_for
-        gen_for_opt ::=
+        gen_for_opt ::= gen_for?
 
         ## gen_iter ::= gen_for | gen_if
         gen_iter ::= gen_for
@@ -168,8 +160,7 @@ class PythonParser(GenericASTBuilder):
         ## gen_for ::= 'for' exprlist 'in' or_test [gen_iter]
         gen_for ::= FOR exprlist IN or_test gen_iter_opt
 
-        gen_iter_opt ::= gen_iter
-        gen_iter_opt ::=
+        gen_iter_opt ::= gen_iter?
 
         ## gen_if ::= 'if' old_test [gen_iter]
         gen_if ::= IF old_test gen_iter_opt
@@ -177,8 +168,7 @@ class PythonParser(GenericASTBuilder):
         ## testlist1 ::= test (',' test)*
         testlist1 ::= test comma_tests
 
-        decorators ::= decorators decorator
-        decorators ::= decorator
+        decorators ::= decorator+
 
         decorated ::= decorators classdef_or_funcdef
         classdef_or_funcdef ::= classdef
@@ -188,8 +178,7 @@ class PythonParser(GenericASTBuilder):
 
         parameters ::= LPAREN varargslist_opt RPAREN
 
-        varargslist_opt ::=  varargslist
-        varargslist_opt ::=
+        varargslist_opt ::=  varargslist?
 
         # FILL IN
         ## varargslist ::= fpdef ['=' test] ',')* ('*' NAME [',' '**' NAME] | '**' NAME)
@@ -208,8 +197,7 @@ class PythonParser(GenericASTBuilder):
         eq_tests ::= eq_tests eq_test
         eq_tests ::=
 
-        eq_test_opt ::= eq_test
-        eq_test_opt ::=
+        eq_test_opt ::= eq_test?
 
         eq_test ::= EQUAL test
 
@@ -227,8 +215,7 @@ class PythonParser(GenericASTBuilder):
         fplist1 ::= fplist COMMA fpdef
         fplist1 ::=
 
-        comma_opt ::= COMMA
-        comma_opt ::=
+        comma_opt ::= COMMA?
 
         stmt ::= simple_stmt
         stmt ::= compound_stmt
@@ -256,6 +243,9 @@ class PythonParser(GenericASTBuilder):
         yield_expr_or_testlist ::= yield_expr
         yield_expr_or_testlist ::= testlist
 
+        ## yield_expr ::= 'yield' [testlist]
+        yield_expr ::= YIELD testlist_opt
+
         print_stmt ::= PRINT test_params_or_redirect
         test_params_or_redirect ::= test comma_test_opt comma_opt
 
@@ -281,8 +271,7 @@ class PythonParser(GenericASTBuilder):
         # return_stmt ::= 'return' [testlist]
         return_stmt ::= RETURN testlist_opt
 
-        testlist_opt ::= testlist
-        testlist_opt ::=
+        testlist_opt ::= testlist?
 
         yield_stmt ::= yield_expr
 
@@ -293,8 +282,7 @@ class PythonParser(GenericASTBuilder):
         test_opt3 ::= test
 
         global_stmt ::= GLOBAL NAME comma_names
-        comma_names ::= comma_names comma_name
-        comma_names ::=
+        comma_names ::= comma_name*
 
         comma_name  ::= COMMA NAME
 
@@ -305,8 +293,7 @@ class PythonParser(GenericASTBuilder):
         assert_stmt ::= ASSERT test
         assert_stmt ::= ASSERT test COMMA test
 
-        test_opt ::= test
-        test_opt ::=
+        test_opt ::= test?
 
         ## exprlist ::= expr (',' expr)* [',']
         exprlist ::= expr comma_exprs comma_opt
@@ -354,8 +341,7 @@ class PythonParser(GenericASTBuilder):
         or_test ::= and_test or_and_tests
 
         ## ('or' and_test)*
-        or_and_tests ::= or_and_tests or_and_test
-        or_and_tests ::=
+        or_and_tests ::= or_and_test*
 
         or_and_test ::= OR and_test
 
@@ -421,16 +407,14 @@ class PythonParser(GenericASTBuilder):
         atom       ::= NAME
         atom       ::= strings
 
-        dictmaker_opt ::= dictmaker
-        dictmaker_opt ::=
+        dictmaker_opt ::= dictmaker?
 
         ## [yield_expr|testlist_gexp]
         yield_expr_or_testlist_gexp_opt ::= yield_expr
         yield_expr_or_testlist_gexp_opt ::= testlist_gexp
         yield_expr_or_testlist_gexp_opt ::=
 
-        listmaker_opt ::= listmaker
-        listmaker_opt ::=
+        listmaker_opt ::= listmaker?
 
         ## listmaker ::= test ( list_for | (',' test)* [','] )
 
@@ -446,8 +430,7 @@ class PythonParser(GenericASTBuilder):
 
         lambdef ::= LAMBDA varargslist_opt COLON test
 
-        trailers   ::= trailers trailer
-        trailers   ::=
+        trailers   ::= trailer*
 
         ## trailer ::= '(' [arglist] ')' | '[' subscriptlist ']' | '.' NAME
         trailer ::= LPAREN arglist_opt RPAREN
@@ -469,8 +452,7 @@ class PythonParser(GenericASTBuilder):
         subscript ::= test
         subscript ::= test_opt COLON test_opt sliceop_opt
 
-        sliceop_opt ::= sliceop
-        sliceop_opt ::=
+        sliceop_opt ::= sliceop?
 
         ## sliceop ::= ':' [test]
         sliceop ::= COLON test_opt
@@ -495,15 +477,13 @@ class PythonParser(GenericASTBuilder):
         class_subclass_opt ::=
 
 
-        strings   ::= strings STRING
-        strings   ::= STRING
+        strings   ::= STRING+
 
         sep       ::= comments
         sep       ::= NEWLINE
         sep       ::= SEMICOLON
 
-        comments ::= comments comment
-        comments ::= comment
+        comments  ::= comment+
 
         comment ::= COMMENT
         comment ::= COMMENT NEWLINE
@@ -531,8 +511,7 @@ class PythonParser(GenericASTBuilder):
 
         dots_dotted_name_or_dots ::= dots dotted_name
         dots_dotted_name_or_dots ::= DOT dots
-        dots ::= dots DOT
-        dots ::=
+        dots ::= DOT*
 
         ## 'import' ('*' | '(' import_as_names ')' | import_as_names))
         import_list ::= IMPORT STAR
@@ -550,8 +529,7 @@ class PythonParser(GenericASTBuilder):
         ##  ',' import_as_name
         comma_import_as_name ::= COMMA import_as_name
 
-        comma_dotted_as_names ::= comma_dotted_as_names dotted_as_name
-        comma_dotted_as_names ::= dotted_as_name
+        comma_dotted_as_names ::= dotted_as_name+
 
         dotted_as_names ::= dotted_as_name comma_dotted_as_names
         comma_dotted_as_names ::= comma_dotted_as_names COMMA dotted_as_name
@@ -600,8 +578,7 @@ class PythonParser(GenericASTBuilder):
         ## with_stmt ::= with' test [ with_var ] ':' suite
         with_stmt ::= WITH test with_var_opt COLON suite
 
-        with_var_opt ::= with_var
-        with_var_opt ::=
+        with_var_opt ::= with_var?
 
         ## with_var ::= 'as' expr
         with_var ::= AS expr

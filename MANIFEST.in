@@ -1,4 +1,5 @@
 include README.rst
+include NEW-FEATURES.rst
 include ChangeLog
 include LICENSE
 include Makefile

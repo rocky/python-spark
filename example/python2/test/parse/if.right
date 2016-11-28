@@ -1,5 +1,5 @@
 file_input (2)
-  0. newline_or_stmts (10)
+  0. newline_or_stmts (14)
     0. newline_or_stmt
       if_stmt (6)
         0. L1.2: IF: 'if'
@@ -90,4 +90,97 @@ file_input (2)
         L10.4: PASS: 'pass'
     9. newline_or_stmt
       L10.5: NEWLINE: '\n'
-  1. L11.1: ENDMARKER: '\x04'
+    10. newline_or_stmt
+      L11.1: NEWLINE: '\n'
+    11. newline_or_stmt
+      if_stmt (6)
+        0. L12.2: IF: 'if'
+        1. test
+          power (3)
+            0. atom
+              L12.6: NAME: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. L12.7: COLON: ':'
+        3. suite (5)
+          0. L12.8: NEWLINE: '\n'
+          1. indent
+            L13.3: INDENT: '   '
+          2. stmt_plus
+            pass_stmt
+              L13.7: PASS: 'pass'
+          3. L13.8: NEWLINE: '\n'
+          4. L14.4: DEDENT: ''
+        4. elif_suites (5)
+          0. elif_suites
+          1. L14.4: ELIF: 'elif'
+          2. test
+            power (3)
+              0. atom
+                L14.9: NAME: 'False'
+              1. trailers
+              2. starstar_factor_opt
+          3. L14.10: COLON: ':'
+          4. suite (5)
+            0. L14.11: NEWLINE: '\n'
+            1. indent
+              L15.3: INDENT: '   '
+            2. stmt_plus
+              pass_stmt
+                L15.7: PASS: 'pass'
+            3. L15.8: NEWLINE: '\n'
+            4. L17.0: DEDENT: ''
+        5. else_suite_opt
+    12. newline_or_stmt
+      L16.1: NEWLINE: '\n'
+    13. newline_or_stmt
+      if_stmt (6)
+        0. L17.2: IF: 'if'
+        1. test
+          power (3)
+            0. atom
+              L17.6: NAME: 'True'
+            1. trailers
+            2. starstar_factor_opt
+        2. L17.7: COLON: ':'
+        3. suite (5)
+          0. L17.8: NEWLINE: '\n'
+          1. indent
+            L18.3: INDENT: '   '
+          2. stmt_plus
+            pass_stmt
+              L18.7: PASS: 'pass'
+          3. L18.8: NEWLINE: '\n'
+          4. L19.4: DEDENT: ''
+        4. elif_suites (5)
+          0. elif_suites
+          1. L19.4: ELIF: 'elif'
+          2. test
+            power (3)
+              0. atom
+                L19.9: NAME: 'False'
+              1. trailers
+              2. starstar_factor_opt
+          3. L19.10: COLON: ':'
+          4. suite (5)
+            0. L19.11: NEWLINE: '\n'
+            1. indent
+              L20.3: INDENT: '   '
+            2. stmt_plus
+              pass_stmt
+                L20.7: PASS: 'pass'
+            3. L20.8: NEWLINE: '\n'
+            4. L21.4: DEDENT: ''
+        5. else_suite_opt (3)
+          0. L21.4: ELSE: 'else'
+          1. L21.5: COLON: ':'
+          2. suite (5)
+            0. L21.6: NEWLINE: '\n'
+            1. indent
+              L22.3: INDENT: '   '
+            2. stmt_plus
+              pass_stmt
+                L22.7: PASS: 'pass'
+            3. L22.8: NEWLINE: '\n'
+            4. L23.1: DEDENT: ''
+  1. L23.1: ENDMARKER: '\x04'

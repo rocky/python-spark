@@ -55,9 +55,9 @@ class ExprScanner(GenericScanner):
         self.add_token('INTEGER', s)
 
 # Some kinds of SPARK parsing you might want to consider
-# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
-# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
-DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False}
+# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True, 'dups': True}
+# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True, 'dups': True}
+DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False, 'dups': True}
 
 class ExprParser(GenericParser):
     """A simple expression parser for numbers and arithmetic operators: +, , *, and /.
