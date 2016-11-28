@@ -341,8 +341,7 @@ class PythonParser(GenericASTBuilder):
         or_test ::= and_test or_and_tests
 
         ## ('or' and_test)*
-        or_and_tests ::= or_and_tests or_and_test
-        or_and_tests ::=
+        or_and_tests ::= or_and_test*
 
         or_and_test ::= OR and_test
 
