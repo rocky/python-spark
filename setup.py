@@ -39,7 +39,7 @@ maintainer_email   = "rb@dustyfeet.com"
 modname            = 'spark_parser'
 name               = 'spark_parser'
 py_modules         = None
-short_desc         = 'An Early-Algorithm Context-free grammar Parser'
+short_desc         = 'An Early-Algorithm Context-free grammar Parser Toolkit'
 web                = 'https://github.com/rocky/python-spark/'
 
 # tracebacks in zip files are funky and not debuggable
