@@ -1,6 +1,98 @@
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* setup.py, spark_parser/version.py: Get ready for release 1.5.1
+
+2016-11-28  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2016-11-28  R. Bernstein <rocky@users.noreply.github.com>
+
+	* README.rst: Update README.rst
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* README.rst, README2.rst: Update docs
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* README.rst, example/python2/py2_parser.py: One last optional rule.  Note this was John's Ph.d thesis
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py: NEWLINE* -> NEWLINE+ I think we need at least one.
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* example/expr2/parser.py, setup.py: Update short description Add 'dups' in expr2/parser.py
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py, example/python2/test/format/if.py,
+	example/python2/test/format/if.right,
+	example/python2/test/parse/exec.py-notyet,
+	example/python2/test/parse/if.py,
+	example/python2/test/parse/if.py-notyet,
+	example/python2/test/parse/if.right: Increase grammar coverage
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py, test/test_misc.py: Test for an illegal
+	start symbol
+
+2016-11-28  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py: Recuce Python2 grammar
+
+2016-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2016-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2016-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2016-11-27  rocky <rb@dustyfeet.com>
+
+	* NEW-FEATURES.rst, example/python2/py2_parser.py,
+	spark_parser/spark.py, test/test_misc.py: Add optional ? ...  and for direct recursive rule, e.g.     foo ::= foo and test both.  Update NEW-FEATURES.rst
+
+2016-11-27  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Fix up rSt formatting
+
+2016-11-27  rocky <rb@dustyfeet.com>
+
+	* MANIFEST.in, NEW-FEATURES.rst: Describe new features
+
+2016-11-27  rocky <rb@dustyfeet.com>
+
+	* Makefile, TODO.rst, example/expr/expr.py,
+	example/python2/py2_parser.py, spark_parser/spark.py,
+	test/test_misc.py: Add simple + and * suffixes for grammar rules test this and dup rule TODO.rst: revise
+
 2016-11-26  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.5.0
+	* example/python2/test/helper.py: Python 2.3 tolerance
+
+2016-11-26  rocky <rb@dustyfeet.com>
+
+	* : commit 7bfd0d3537704f37d983298c206261181526408f Author: rocky
+	<rb@dustyfeet.com> Date:   Sat Nov 26 12:46:56 2016 -0500
+
+2016-11-26  R. Bernstein <rocky@users.noreply.github.com>
+
+	* : Merge pull request #8 from rocky/reduce-checks Reduce checks
+
+2016-11-26  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: 2 new features: - User-definable reduction check. This   allows one to specify an additional check before   a rediction is made. For example in uncompyle6 we   check whether a SETUP_LOOP target jumps to the last   token of the rule. Or that an augmented assignment statement   doesn't have inplace-binary operators - User defined reduce printing rule. For example, the uncompyle6
+	  token class has line numbers and offsets associated with them. We
+	  can show these as part of the reduction rule.
 
 2016-11-23  rocky <rb@dustyfeet.com>
 

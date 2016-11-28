@@ -10,7 +10,7 @@ from spark_parser.ast import AST
 
 from py2_scan import Python2Scanner, ENDMARKER
 
-from spark_parser import GenericASTBuilder #, DEFAULT_DEBUG
+from spark_parser import GenericASTBuilder
 
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : False,
                  'errorstack': 'full', 'context': True, 'dups': True}

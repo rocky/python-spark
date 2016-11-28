@@ -14,7 +14,7 @@ copyright   = """
 Copyright (C) 2016 Rocky Bernstein <rb@dustyfeet.com>.
 """
 
-classifiers =  ['Development Status :: 4 - Beta',
+classifiers =  ['Development Status :: 5 - Production/Stable',
                 'Intended Audience :: Developers',
                 'Operating System :: OS Independent',
                 'Programming Language :: Python',

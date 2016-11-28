@@ -29,18 +29,18 @@ class ExprEvaluator(GenericASTTraversal, object):
         self.prune()
 
     def n_atom(self, node):
-      """atom ::= NUMBER | '(' expr ')' """
-      l = len(node)
-      if l == 1:
-          self.preorder(node[0])
-          node.value = node[0].value
-          self.prune()
-      elif l == 3:
-          self.preorder(node[1])
-          node.value = node[1].value
-          self.prune()
-      else:
-          assert False, "Expecting atom to have length 1 or 3"
+        """atom ::= NUMBER | '(' expr ')' """
+        l = len(node)
+        if l == 1:
+            self.preorder(node[0])
+            node.value = node[0].value
+            self.prune()
+        elif l == 3:
+            self.preorder(node[1])
+            node.value = node[1].value
+            self.prune()
+        else:
+            assert False, "Expecting atom to have length 1 or 3"
 
     def n_expr(self, node):
         """arith_expr ::= arith_expr ADD_OP term | term"""
@@ -59,7 +59,6 @@ class ExprEvaluator(GenericASTTraversal, object):
                 assert False, "Expecting operator to be '+' or '-'"
             self.prune()
         assert False, "Expecting atom to have length 1 or 3"
-
 
     def n_term(self, node):
         """term ::= term MULT_OP atom | atom"""

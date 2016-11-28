@@ -80,7 +80,6 @@ class TestMisc(unittest.TestCase):
         except TypeError:
             self.assertTrue(True)
 
-
     def test_period(self):
         parser = RulesPeriod('opt_period', debug={'dups': True})
 
@@ -89,7 +88,7 @@ class TestMisc(unittest.TestCase):
         self.assertEqual(rules,
                          [(('START', ('|-', 'opt_period')), 'ambda>'),
                           (('opt_period', ()), 'rules'),
-                          (('opt_period', ('PERIOD',)), 'rules'),])
+                          (('opt_period', ('PERIOD',)), 'rules'), ])
 
 
 if __name__ == '__main__':

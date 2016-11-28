@@ -1,3 +1,13 @@
+spark 1.5.0 2016-11-27 johnnybamazing
+
+- Add add limited Kleene closure symbols *, +, and optional suffix ?
+  in grammar rules.
+- Use these to simplify Python2 grammar
+- Improve coverage in tests of Python2 grammar
+- Start a NEW-FEATURES file
+- Error if start symbol is not on LHS of grammar
+- Check for totally recursive rules
+
 spark 1.5.0 2016-11-26
 
 - User-definable reduction check. This
