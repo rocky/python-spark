@@ -37,7 +37,7 @@ uses this and contains a much larger example.
 See Also
 --------
 
-* |new features|
+* features_
 * http://pages.cpsc.ucalgary.ca/~aycock/spark/ (Old and not very well maintained)
 * https://pypi.python.org/pypi/uncompyle6/
 
