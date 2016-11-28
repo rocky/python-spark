@@ -1,4 +1,4 @@
-import collections, sys, unittest
+import unittest
 from spark_parser.spark import GenericParser
 
 class Rules(GenericParser):
@@ -29,7 +29,7 @@ class RulesPeriod(GenericParser):
     pass
 
 class InvalidRule(GenericParser):
-    """Testing ? extended rule"""
+    """Testing illegal recursive rule"""
     def p_rules(self, args):
         """
         foo ::= foo
@@ -58,6 +58,13 @@ class TestMisc(unittest.TestCase):
         # Check Invalid rule
         try:
             InvalidRule('foo', debug={'dups': True})
+            self.assertTrue(False)
+        except TypeError:
+            self.assertTrue(True)
+
+        # Check erroneous start symbol
+        try:
+            parser = Rules('bad-start')
             self.assertTrue(False)
         except TypeError:
             self.assertTrue(True)

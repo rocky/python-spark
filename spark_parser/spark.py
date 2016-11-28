@@ -82,6 +82,8 @@ class GenericParser(object):
         self.debug = debug
 
         self.collectRules()
+        if start not in self.rules:
+            raise TypeError('Start symbol "%s" is not in LHS of any rule' % start)
         self.augment(start)
         self.ruleschanged = True
 
