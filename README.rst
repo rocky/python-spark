@@ -4,7 +4,7 @@ SPARK
 =====
 
 SPARK stands for Scanning, Parsing, and Rewriting Kit. It uses Jay
-Early's algorithm for parsing context free grammars, and comes with
+Earley's algorithm for parsing context free grammars, and comes with
 some generic Abstract Syntax Tree routines. There is also a prototype
 scanner which does its job by combining Python regular expressions.
 
@@ -14,7 +14,7 @@ Languages in Python" at the 7th International Python Conference. The
 current incarnation of this code is maintained (or not) by Rocky
 Bernstein.
 
-Note: Early algorithm parsers are almost linear when given an LR grammar.
+Note: Earley algorithm parsers are almost linear when given an LR grammar.
 These are grammars which are left-recursive.
 
 Installation
