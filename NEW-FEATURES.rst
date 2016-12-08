@@ -143,6 +143,6 @@ and:
 .. code-block::
 
      opt_comma ::= COMMA
-     ratings ::=
+     opt_comma ::=
 
 respectively.
