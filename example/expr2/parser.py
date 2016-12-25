@@ -57,9 +57,9 @@ def parse_expr(python_str, out=sys.stdout,
 
     # For heavy grammar debugging
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #                 'errorstack': True}
+    #                 'errorstack': True, 'dups': True}
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
-    #                'errorstack': True}
+    #                'errorstack': True, 'dups': True}
     parser = ExprParser(parser_debug)
     parser.checkGrammar()
     return parser.parse(tokens)

@@ -58,10 +58,10 @@ methods implement most of the below.
 
 import re, sys
 
-PYTHON3 = (sys.version_info >= (3, 0))
-
 from py2_parser import parse_python2
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
+
+PYTHON3 = (sys.version_info >= (3, 0))
 
 if PYTHON3:
     from io import StringIO
@@ -245,23 +245,23 @@ class Python2Formatter(GenericASTTraversal, object):
 
     # redo: 'atom": ( '%? %c %c', 0, 1, 2),
     def n_atom(self, node):
-      """atom ::=
+        """atom ::=
              ('(' [yield_expr|testlist_gexp] ')'
                  | '[' [listmaker] ']'
                  | '{' [dictmaker] '}'
                  | '`' testlist1 '`'
                  | NAME | NUMBER | STRING+)
-      """
-      l = len(node)
-      if l == 1:
-          self.preorder(node[0])
-      elif l == 3:
-          self.preorder(node[0])
-          self.preorder(node[1])
-          self.preorder(node[2])
-      else:
-          assert False, "Expecting atom to have length 1 or 3"
-      self.prune()
+        """
+        l = len(node)
+        if l == 1:
+            self.preorder(node[0])
+        elif l == 3:
+            self.preorder(node[0])
+            self.preorder(node[1])
+            self.preorder(node[2])
+        else:
+            assert False, "Expecting atom to have length 1 or 3"
+        self.prune()
 
     def n_subscript(self, node):
         if node == 'DOT' and len(node) == 3:
@@ -496,7 +496,6 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(node[1])
         self.prune()
 
-
     def n_for_stmt(self, node):
         assert node[0] == 'FOR'
         self.write(self.indent, 'for ')
@@ -630,8 +629,6 @@ class Python2Formatter(GenericASTTraversal, object):
     def format_python2(self, ast):
         """convert AST to Python2 source code"""
         return self.traverse(ast)
-
-
 
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
                          showgrammar=False, compile_mode='exec'):
