@@ -1,5 +1,5 @@
 """
-Copyright (c) 2015-2016 Rocky Bernstein
+Copyright (c) 2015-2017 Rocky Bernstein
 Copyright (c) 1998-2002 John Aycock
 
   Permission is hereby granted, free of charge, to any person obtaining
@@ -44,7 +44,7 @@ def _namelist(instance):
     return namelist
 
 def rule2str(rule):
-    return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+    return ("%s ::= %s" % (rule[0], ' '.join(rule[1]))).rstrip()
 
 class _State:
     '''
@@ -770,29 +770,29 @@ class GenericParser(object):
         '''
         return list[0]
 
-    def dumpGrammar(self):
+    def dumpGrammar(self, out=sys.stdout):
         """
         Print grammar rules
         """
         for rule in sorted(self.rule2name.items()):
-            print("%s" % rule2str(rule))
+            out.write("%s\n" % rule2str(rule[0]))
         return
 
-    def checkGrammar(self):
+    def checkGrammar(self, out=sys.stderr):
         '''
         Check grammar
         '''
         lhs, rhs, tokens, right_recursive = self.checkSets()
         if len(lhs) > 0:
-            print("LHS symbols not used on the RHS:")
-            print(sorted(lhs))
+            out.write("LHS symbols not used on the RHS:\n")
+            out.write(sorted(lhs), "\n")
         if len(rhs) > 0:
-            print("RHS symbols not used on the LHS:")
-            print(sorted(rhs))
+            out.write("RHS symbols not used on the LHS:\n")
+            out.write(sorted(rhs, "\n"))
         if len(right_recursive) > 0:
-            print("Right recursive rules:")
+            out.write("Right recursive rules:\n")
             for rule in right_recursive:
-                print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+                out.write("%s ::= %s\n" % (rule[0], ' '.join(rule[1])))
                 pass
             pass
 

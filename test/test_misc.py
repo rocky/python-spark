@@ -1,6 +1,12 @@
 import sys, unittest
 
 from spark_parser.spark import GenericParser
+from spark_parser import PYTHON3
+
+if PYTHON3:
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 # Python 2.3 doesn't have sorted
 if sys.version[0:3] <= '2.3':
@@ -65,6 +71,17 @@ class TestMisc(unittest.TestCase):
                           (('stmts', ('stmt',)), 'rules'),
                           (('stmts', ('stmts', 'stmt')), 'rules'),
                           (('x', ('TOKEN',)), 'rules')])
+        f = StringIO()
+        expect = \
+"""START ::= |- x
+ratings ::=
+ratings ::= ratings STARS
+stmts ::= stmt
+stmts ::= stmts stmt
+x ::= TOKEN
+"""
+        parser.dumpGrammar(f)
+        self.assertEqual(f.getvalue(), expect)
 
         # Check Invalid rule
         try:
@@ -89,7 +106,6 @@ class TestMisc(unittest.TestCase):
                          [(('START', ('|-', 'opt_period')), 'ambda>'),
                           (('opt_period', ()), 'rules'),
                           (('opt_period', ('PERIOD',)), 'rules'), ])
-
 
 if __name__ == '__main__':
     unittest.main()
