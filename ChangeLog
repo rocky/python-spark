@@ -1,6 +1,31 @@
+2017-01-27  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.5.2
+
+2017-01-27  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py, test/test_misc.py: Fix bug in dumpGrammar()
+
+2016-12-08  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2016-12-08  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2016-12-08  rocky <rb@dustyfeet.com>
+
+	* README.rst, setup.py: Correct Jay EarlEy's name
+
 2016-11-28  rocky <rb@dustyfeet.com>
 
-	* setup.py, spark_parser/version.py: Get ready for release 1.5.1
+	* ChangeLog, NEWS, example/expr2/eval.py,
+	example/python2/py2_format.py, example/python2/py2_parser.py,
+	example/python2/test/scan/indent1.py,
+	example/python2/test/scan/indent1.right, setup.py,
+	spark_parser/version.py, test/test_misc.py: Get ready for release
+	1.5.1 Lint some files
 
 2016-11-28  R. Bernstein <rocky@users.noreply.github.com>
 
