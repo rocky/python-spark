@@ -22,7 +22,7 @@ Copyright (c) 1998-2002 John Aycock
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import os, re, sys
+import os, pickle, re, sys
 
 if sys.version[0:3] <= '2.3':
     from sets import Set as set
@@ -73,10 +73,28 @@ class GenericParser(object):
     Parsing", unpublished paper, 2001.
     '''
 
-    def __init__(self, start, debug=DEFAULT_DEBUG):
+    def __init__(self, start, debug=DEFAULT_DEBUG,
+                 coverage_path=None):
+        """_start_ : grammar start symbol;
+           _debug_ : produce optional parsing debug information
+           _profile_ : if not None should be a file path to open
+           with where to store profile is stored
+        """
+
         self.rules = {}
         self.rule2func = {}
         self.rule2name = {}
+
+        # grammar coverage information
+        if coverage_path:
+            self.coverage_path = coverage_path
+            if os.path.exists(coverage_path):
+                self.profile_info = pickle.load(coverage_path)
+            else:
+                self.profile_info = {}
+        else:
+            self.profile_info = None
+            self.coverage_path = None
 
         # When set, shows additional debug output
         self.debug = debug
@@ -222,6 +240,10 @@ class GenericParser(object):
             self.rule2func[rule] = fn
             self.rule2name[rule] = func.__name__[2:]
             self.ruleschanged = True
+
+            if self.profile_info is not None:
+                rule_str = self.reduce_string(rule)
+                self.profile_info[rule_str] = 0
             pass
         return
 
@@ -407,6 +429,9 @@ class GenericParser(object):
             else:
                 self.error(None, None)
 
+        if self.profile_info is not None:
+            self.dump_profile_info()
+
         return self.buildTree(self._START, finalitem,
                     tokens, len(sets)-2)
 
@@ -574,7 +599,9 @@ class GenericParser(object):
             for rule in self.states[state].complete:
                 lhs, rhs = rule
                 if self.debug['reduce']:
-                    self.debug_reduce(rule, tokens, parent, i)
+                    self.debug_reduce(rule)
+                if self.profile_info is not None:
+                    self.profile_rule(rule)
                 if lhs in self.check_reduce and tokens:
                     if self.check_reduce[lhs] == 'AST':
                         ast = self.reduce_ast(rule, tokens, item, i, sets)
@@ -824,8 +851,23 @@ class GenericParser(object):
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
 
+    def reduce_string(self, rule):
+        return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+
     def debug_reduce(self, rule, tokens, parent, i):
-        print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+        print(self.reduce_string(rule))
+
+    def profile_rule(self, rule):
+        """Bump count of the number of times _rule_ was used"""
+        rule_str = self.reduce_string(rule)
+        self.profile_info[rule_str] += 1
+
+    def dump_profile_info(self):
+        """Show the accumulated results of how many times each rule was used"""
+        for rule in sorted(self.rule2name.items()):
+            rule_str = rule2str(rule[0])
+            print("%s: %d" % (rule_str, self.profile_info[rule_str]))
+        return
 
     def reduce_ast(self, rule, tokens, item, k, sets):
         rhs = rule[1]
