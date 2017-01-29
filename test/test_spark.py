@@ -112,7 +112,7 @@ class TestSpark(unittest.TestCase):
 
         # import sys
         # parser = ExprParser(coverage_path=sys.stdout)
-        # parser = ExprParser(coverage_path=open("/tmp/grammar.cover", "wb"))
+        # parser = ExprParser(coverage_path="/tmp/spark-grammar.cover")
         parser = ExprParser()
 
         lhs, rhs, tokens, right_recursive = parser.checkSets()

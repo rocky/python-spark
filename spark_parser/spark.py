@@ -90,7 +90,7 @@ class GenericParser(object):
         if coverage_path:
             if isinstance(coverage_path, str):
                 if os.path.exists(coverage_path):
-                    self.profile_info = pickle.load(coverage_path)
+                    self.profile_info = pickle.load(open(coverage_path, "rb"))
             self.profile_info = {}
         else:
             self.profile_info = None

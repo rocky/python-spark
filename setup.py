@@ -64,7 +64,7 @@ from setuptools import setup, find_packages
 setup(
        classifiers        = classifiers,
        description        = short_desc,
-       # install_requires   = install_requires,
+       install_requires   = ['click'],
        license            = license,
        long_description   = long_description,
        maintainer         = maintainer,
@@ -72,6 +72,7 @@ setup(
        packages           = find_packages(),
        py_modules         = py_modules,
        name               = name,
+       scripts            = ['bin/spark-parser-coverage'],
        test_suite         = 'nose.collector',
        url                = web,
        tests_require     = ['nose>=1.0'],
