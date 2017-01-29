@@ -88,10 +88,10 @@ class GenericParser(object):
         # grammar coverage information
         self.coverage_path = coverage_path
         if coverage_path:
+            self.profile_info = {}
             if isinstance(coverage_path, str):
                 if os.path.exists(coverage_path):
                     self.profile_info = pickle.load(open(coverage_path, "rb"))
-            self.profile_info = {}
         else:
             self.profile_info = None
 
@@ -242,7 +242,8 @@ class GenericParser(object):
 
             if self.profile_info is not None:
                 rule_str = self.reduce_string(rule)
-                self.profile_info[rule_str] = 0
+                if rule_str not in self.profile_info:
+                    self.profile_info[rule_str] = 0
             pass
         return
 
@@ -859,7 +860,10 @@ class GenericParser(object):
     def profile_rule(self, rule):
         """Bump count of the number of times _rule_ was used"""
         rule_str = self.reduce_string(rule)
-        self.profile_info[rule_str] += 1
+        if rule_str not in self.profile_info:
+            self.profile_info[rule_str] = 1
+        else:
+            self.profile_info[rule_str] += 1
 
     def get_profile_info(self):
         """Show the accumulated results of how many times each rule was used"""
@@ -911,7 +915,12 @@ class GenericParser(object):
 
 class GenericASTBuilder(GenericParser):
     def __init__(self, AST, start, debug=DEFAULT_DEBUG):
-        GenericParser.__init__(self, start, debug=debug)
+        if 'SPARK_PARSER_COVERAGE' in os.environ:
+            coverage_path = os.environ['SPARK_PARSER_COVERAGE']
+        else:
+            coverage_path = None
+        GenericParser.__init__(self, start, debug=debug,
+                               coverage_path=coverage_path)
         self.AST = AST
 
     def preprocess(self, rule, func):

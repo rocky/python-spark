@@ -20,8 +20,8 @@ DEFAULT_COUNT = 100
 def run(path, max_count):
     """Print grammar reduce statistics for a series of spark-parser parses
     """
-    for rule, count in sort_profile_info(path[0], max_count):
-        print("%s -- %d" % (rule, count))
+    for rule, count in sort_profile_info(path, max_count):
+        print("%d: %s" % (count, rule))
         pass
     return
 
