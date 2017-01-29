@@ -10,7 +10,7 @@ from spark_parser.spark import GenericParser
 
 class ExprScanner(GenericScanner):
 
-    def __init__(self):
+    def __init__(self, coverage_path=None):
         GenericScanner.__init__(self)
 
     def tokenize(self, input):
@@ -110,7 +110,9 @@ class TestSpark(unittest.TestCase):
         test_term6 = AST('multiply', [test_term_to_factor2, test_factor_to_integer3])
         test_expr7 = AST('add', [test_expr_to_term1, test_term6])
 
-        # parser = ExprParser(coverage_path='foo')
+        # import sys
+        # parser = ExprParser(coverage_path=sys.stdout)
+        # parser = ExprParser(coverage_path=open("/tmp/grammar.cover", "wb"))
         parser = ExprParser()
 
         lhs, rhs, tokens, right_recursive = parser.checkSets()

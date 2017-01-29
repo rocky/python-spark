@@ -86,15 +86,14 @@ class GenericParser(object):
         self.rule2name = {}
 
         # grammar coverage information
+        self.coverage_path = coverage_path
         if coverage_path:
-            self.coverage_path = coverage_path
-            if os.path.exists(coverage_path):
-                self.profile_info = pickle.load(coverage_path)
-            else:
-                self.profile_info = {}
+            if isinstance(coverage_path, str):
+                if os.path.exists(coverage_path):
+                    self.profile_info = pickle.load(coverage_path)
+            self.profile_info = {}
         else:
             self.profile_info = None
-            self.coverage_path = None
 
         # When set, shows additional debug output
         self.debug = debug
@@ -862,12 +861,22 @@ class GenericParser(object):
         rule_str = self.reduce_string(rule)
         self.profile_info[rule_str] += 1
 
-    def dump_profile_info(self):
+    def get_profile_info(self):
         """Show the accumulated results of how many times each rule was used"""
-        for rule in sorted(self.rule2name.items()):
-            rule_str = rule2str(rule[0])
-            print("%s: %d" % (rule_str, self.profile_info[rule_str]))
+        return sorted(self.profile_info.items(),
+                      key=lambda kv: kv[1],
+                      reverse=False)
         return
+
+    def dump_profile_info(self):
+        if isinstance(self.coverage_path, str):
+            with open(self.coverage_path, 'wb') as fp:
+                pickle.dump(self.profile_info, fp)
+        else:
+            for rule, count in self.get_profile_info():
+                self.coverage_path.write("%s -- %d\n" % (rule, count))
+                pass
+            self.coverage_path.write("-" * 40 + "\n")
 
     def reduce_ast(self, rule, tokens, item, k, sets):
         rhs = rule[1]
