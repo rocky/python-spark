@@ -300,6 +300,7 @@ class GenericParser(object):
             if lhs not in self.rules:
                 return
 
+
             if rule in self.rules[lhs]:
                 self.rules[lhs].remove(rule)
                 del self.rule2func[rule]
