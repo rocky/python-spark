@@ -877,8 +877,9 @@ class GenericParser(object):
 
     def dump_profile_info(self):
         if isinstance(self.coverage_path, str):
-            with open(self.coverage_path, 'wb') as fp:
-                pickle.dump(self.profile_info, fp)
+            fp = open(self.coverage_path, 'wb')
+            pickle.dump(self.profile_info, fp)
+            fp.close()
         else:
             for rule, count in self.get_profile_info():
                 self.coverage_path.write("%s -- %d\n" % (rule, count))
