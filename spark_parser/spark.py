@@ -857,6 +857,8 @@ class GenericParser(object):
     def reduce_string(self, rule):
         return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
 
+    # Note the unused parameters here are used in subclassed
+    # routines that need more information
     def debug_reduce(self, rule, tokens, parent, i):
         print(self.reduce_string(rule))
 
