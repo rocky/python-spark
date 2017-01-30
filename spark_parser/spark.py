@@ -22,7 +22,7 @@ Copyright (c) 1998-2002 John Aycock
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import os, re, sys
+import os, pickle, re, sys
 
 if sys.version[0:3] <= '2.3':
     from sets import Set as set
@@ -44,7 +44,7 @@ def _namelist(instance):
     return namelist
 
 def rule2str(rule):
-    return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+    return ("%s ::= %s" % (rule[0], ' '.join(rule[1]))).rstrip()
 
 class _State:
     '''
@@ -73,10 +73,27 @@ class GenericParser(object):
     Parsing", unpublished paper, 2001.
     '''
 
-    def __init__(self, start, debug=DEFAULT_DEBUG):
+    def __init__(self, start, debug=DEFAULT_DEBUG,
+                 coverage_path=None):
+        """_start_ : grammar start symbol;
+           _debug_ : produce optional parsing debug information
+           _profile_ : if not None should be a file path to open
+           with where to store profile is stored
+        """
+
         self.rules = {}
         self.rule2func = {}
         self.rule2name = {}
+
+        # grammar coverage information
+        self.coverage_path = coverage_path
+        if coverage_path:
+            self.profile_info = {}
+            if isinstance(coverage_path, str):
+                if os.path.exists(coverage_path):
+                    self.profile_info = pickle.load(open(coverage_path, "rb"))
+        else:
+            self.profile_info = None
 
         # When set, shows additional debug output
         self.debug = debug
@@ -222,6 +239,11 @@ class GenericParser(object):
             self.rule2func[rule] = fn
             self.rule2name[rule] = func.__name__[2:]
             self.ruleschanged = True
+
+            if self.profile_info is not None:
+                rule_str = self.reduce_string(rule)
+                if rule_str not in self.profile_info:
+                    self.profile_info[rule_str] = 0
             pass
         return
 
@@ -410,6 +432,9 @@ class GenericParser(object):
             else:
                 self.error(None, None)
 
+        if self.profile_info is not None:
+            self.dump_profile_info()
+
         return self.buildTree(self._START, finalitem,
                     tokens, len(sets)-2)
 
@@ -578,6 +603,8 @@ class GenericParser(object):
                 lhs, rhs = rule
                 if self.debug['reduce']:
                     self.debug_reduce(rule, tokens, parent, i)
+                if self.profile_info is not None:
+                    self.profile_rule(rule)
                 if lhs in self.check_reduce and tokens:
                     if self.check_reduce[lhs] == 'AST':
                         ast = self.reduce_ast(rule, tokens, item, i, sets)
@@ -770,29 +797,29 @@ class GenericParser(object):
         '''
         return list[0]
 
-    def dumpGrammar(self):
+    def dumpGrammar(self, out=sys.stdout):
         """
         Print grammar rules
         """
         for rule in sorted(self.rule2name.items()):
-            print("%s" % rule2str(rule))
+            out.write("%s\n" % rule2str(rule[0]))
         return
 
-    def checkGrammar(self):
+    def checkGrammar(self, out=sys.stderr):
         '''
         Check grammar
         '''
         lhs, rhs, tokens, right_recursive = self.checkSets()
         if len(lhs) > 0:
-            print("LHS symbols not used on the RHS:")
-            print(sorted(lhs))
+            out.write("LHS symbols not used on the RHS:\n")
+            out.write(sorted(lhs), "\n")
         if len(rhs) > 0:
-            print("RHS symbols not used on the LHS:")
-            print(sorted(rhs))
+            out.write("RHS symbols not used on the LHS:\n")
+            out.write(sorted(rhs, "\n"))
         if len(right_recursive) > 0:
-            print("Right recursive rules:")
+            out.write("Right recursive rules:\n")
             for rule in right_recursive:
-                print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+                out.write("%s ::= %s\n" % (rule[0], ' '.join(rule[1])))
                 pass
             pass
 
@@ -827,8 +854,37 @@ class GenericParser(object):
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
 
+    def reduce_string(self, rule):
+        return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+
     def debug_reduce(self, rule, tokens, parent, i):
-        print("%s ::= %s" % (rule[0], ' '.join(rule[1])))
+        print(self.reduce_string(rule))
+
+    def profile_rule(self, rule):
+        """Bump count of the number of times _rule_ was used"""
+        rule_str = self.reduce_string(rule)
+        if rule_str not in self.profile_info:
+            self.profile_info[rule_str] = 1
+        else:
+            self.profile_info[rule_str] += 1
+
+    def get_profile_info(self):
+        """Show the accumulated results of how many times each rule was used"""
+        return sorted(self.profile_info.items(),
+                      key=lambda kv: kv[1],
+                      reverse=False)
+        return
+
+    def dump_profile_info(self):
+        if isinstance(self.coverage_path, str):
+            fp = open(self.coverage_path, 'wb')
+            pickle.dump(self.profile_info, fp)
+            fp.close()
+        else:
+            for rule, count in self.get_profile_info():
+                self.coverage_path.write("%s -- %d\n" % (rule, count))
+                pass
+            self.coverage_path.write("-" * 40 + "\n")
 
     def reduce_ast(self, rule, tokens, item, k, sets):
         rhs = rule[1]
@@ -863,7 +919,12 @@ class GenericParser(object):
 
 class GenericASTBuilder(GenericParser):
     def __init__(self, AST, start, debug=DEFAULT_DEBUG):
-        GenericParser.__init__(self, start, debug=debug)
+        if 'SPARK_PARSER_COVERAGE' in os.environ:
+            coverage_path = os.environ['SPARK_PARSER_COVERAGE']
+        else:
+            coverage_path = None
+        GenericParser.__init__(self, start, debug=debug,
+                               coverage_path=coverage_path)
         self.AST = AST
 
     def preprocess(self, rule, func):
