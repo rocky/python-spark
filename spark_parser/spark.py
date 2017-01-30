@@ -439,7 +439,7 @@ class GenericParser(object):
             print("Token context:\n\t%s" % ("\n\t".join(tokens)))
         raise SystemExit
 
-    def errorstack(self, tokens, i: int, full=False):
+    def errorstack(self, tokens, i, full=False):
         """Show the stacks of completed symbols.
         We get this by inspecting the current transitions
         possible and from that extracting the set of states
@@ -522,7 +522,8 @@ class GenericParser(object):
         if self.profile_info is not None:
             self.dump_profile_info()
 
-        return self.buildTree(self._START, finalitem, tokens, len(sets) - 2)
+        return self.buildTree(self._START, finalitem,
+                    tokens, len(sets)-2)
 
     def isnullable(self, sym):
         #  For symbols in G_e only.
@@ -837,7 +838,10 @@ class GenericParser(object):
             # Find applicable rules if not already given
             if rule is None:
                 choices = [rule for rule in self.states[state].complete if rule[0] == nt]
-                rule = choices[0] if len(choices) == 1 else self.ambiguity(choices)
+                if len(choices) == 1:
+                    rule = choices[0]
+                else:
+                    rule = self.ambiguity(choices)
             rhs = rule[1]
 
             # Process symbols in reverse order, skipping over those already completed
@@ -893,7 +897,7 @@ class GenericParser(object):
         list = [a_b[1] for a_b in sortlist]
         return rules[name2index[self.resolve(list)]]
 
-    def resolve(self, rule: list):
+    def resolve(self, rule):
         """
         Resolve ambiguity in favor of the shortest RHS.
         Since we walk the tree from the top down, this
@@ -1010,13 +1014,16 @@ class GenericParser(object):
 
     def get_profile_info(self):
         """Show the accumulated results of how many times each rule was used"""
-        return sorted(self.profile_info.items(), key=lambda kv: kv[1], reverse=False)
+        return sorted(self.profile_info.items(),
+                      key=lambda kv: kv[1],
+                      reverse=False)
         return
 
     def dump_profile_info(self):
         if isinstance(self.coverage_path, str):
-            with open(self.coverage_path, "wb") as fp:
-                pickle.dump(self.profile_info, fp)
+            fp = open(self.coverage_path, 'wb')
+            pickle.dump(self.profile_info, fp)
+            fp.close()
         else:
             for rule, count in self.get_profile_info():
                 self.coverage_path.write("%s -- %d\n" % (rule, count))
@@ -1057,11 +1064,12 @@ class GenericParser(object):
 
 class GenericASTBuilder(GenericParser):
     def __init__(self, AST, start, debug=DEFAULT_DEBUG):
-        if "SPARK_PARSER_COVERAGE" in os.environ:
-            coverage_path = os.environ["SPARK_PARSER_COVERAGE"]
+        if 'SPARK_PARSER_COVERAGE' in os.environ:
+            coverage_path = os.environ['SPARK_PARSER_COVERAGE']
         else:
             coverage_path = None
-        GenericParser.__init__(self, start, debug=debug, coverage_path=coverage_path)
+        GenericParser.__init__(self, start, debug=debug,
+                               coverage_path=coverage_path)
         self.AST = AST
 
     def preprocess(self, rule, func):
