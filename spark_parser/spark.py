@@ -138,15 +138,15 @@ class GenericParser(object):
         #
         #  XXX - should find a better way to do this..
         #
-        changes = 1
+        changes = True
         while changes:
-            changes = 0
+            changes = False
             for k, v in list(self.edges.items()):
                 if v is None:
                     state, sym = k
                     if state in self.states:
                         self.goto(state, sym)
-                        changes = 1
+                        changes = True
         rv = self.__dict__.copy()
         for s in list(self.states.values()):
             del s.items
@@ -246,6 +246,31 @@ class GenericParser(object):
                     self.profile_info[rule_str] = 0
             pass
         return
+
+    def remove_rule(self, doc):
+        """Remove a grammar rules from  _self.rules_, _self.rule2func_,
+            and _self.rule2name_
+        """
+        rules = doc.split()
+        index = []
+        for i in range(len(rules)):
+            if rules[i] == '::=':
+                index.append(i-1)
+        index.append(len(rules))
+        for i in range(len(index)-1):
+            lhs = rules[index[i]]
+            rhs = rules[index[i]+2:index[i+1]]
+            rule = (lhs, tuple(rhs))
+
+            if lhs not in self.rules:
+                return
+
+            self.rules[lhs].remove(rule)
+            del self.rule2func[rule]
+            del self.rule2name[rule]
+            self.ruleschanged = True
+        return
+
 
     def collectRules(self):
         for name in _namelist(self):
