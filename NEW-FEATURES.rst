@@ -198,10 +198,8 @@ respectively.
 Tracking Grammar Coverage
 ==========================
 
-Again in _uncompyle6_ there are lots of grammar rules,
-over 600 rules for each of the 13 or so versions of Python.
-
-So it is very easy to have dead grammar rules that never get used, And
+Again in *uncompyle6* there are lots of grammar rules, so it is very 
+easy to have dead grammar rules that never get used. And
 grammar constructs from one version of Python can easily bleed into
 another version. By looking at grammar coverage over a large set of
 parses, I can prune grammar rules or segregate them. I can also craft
@@ -212,8 +210,8 @@ Removing Grammar Rules
 ======================
 
 This may sound like a weird thing to want. But in a program like
-uncompyle6 where there is a lot of grammar sharing via inheritance
-someitmes the grammar inherited is too large. This gives me a way
+*uncompyle6* where there is a lot of grammar sharing via inheritance
+sometimes the grammar inherited is too large. This gives me a way
 to prune the grammar back down.
 
 .. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
