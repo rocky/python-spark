@@ -11,14 +11,13 @@
 
 # Things that change more often go here.
 copyright   = """
-Copyright (C) 2016 Rocky Bernstein <rb@dustyfeet.com>.
+Copyright (C) 2016-2017 Rocky Bernstein <rb@dustyfeet.com>.
 """
 
 classifiers =  ['Development Status :: 5 - Production/Stable',
                 'Intended Audience :: Developers',
                 'Operating System :: OS Independent',
                 'Programming Language :: Python',
-                'Programming Language :: Python :: 2.3',
                 'Programming Language :: Python :: 2.4',
                 'Programming Language :: Python :: 2.5',
                 'Programming Language :: Python :: 2.6',
@@ -26,6 +25,7 @@ classifiers =  ['Development Status :: 5 - Production/Stable',
                 'Programming Language :: Python :: 3.3',
                 'Programming Language :: Python :: 3.4',
                 'Programming Language :: Python :: 3.5',
+                'Programming Language :: Python :: 3.6',
                 'Topic :: Software Development :: Code Generators',
                 'Topic :: Software Development :: Libraries :: Python Modules',
                 ]
@@ -71,6 +71,7 @@ setup(
        packages           = find_packages(),
        py_modules         = py_modules,
        name               = name,
+       scripts            = ['bin/spark-parser-coverage'],
        test_suite         = 'nose.collector',
        url                = web,
        tests_require     = ['nose>=1.0'],
