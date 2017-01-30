@@ -1,5 +1,5 @@
 """
-Copyright (c) 2015-2016 Rocky Bernstein
+Copyright (c) 2015-2017 Rocky Bernstein
 Copyright (c) 1998-2002 John Aycock
 
   Permission is hereby granted, free of charge, to any person obtaining
