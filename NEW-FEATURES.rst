@@ -55,7 +55,7 @@ Next, I needed better AST tree display routines. For example:
 Grammar Checking
 ================
 
-In a large project like _uncompyle6_ there are lots of grammar rules:
+In a large project like uncompyle6_ there are lots of grammar rules:
 over 600 rules for each of the 13 or so versions of Python.
 
 It is very easy to create nonsensical grammar rules, so we need to
@@ -137,7 +137,7 @@ additional checks can be peformed before a reduction. In an ambiguous
 grammar useful as it helps distinguish which rule should be used among
 many.
 
-Here are some little examples from the project uncompyle6_ which
+Here are some little examples from the project *uncompyle6* which
 deparses Python bytecode. There is a rule in the grammar for a keyword
 argument that's used in a parameter list of a function.
 for example the `path=` in `os.path.exists(path='/etc/hosts')`
