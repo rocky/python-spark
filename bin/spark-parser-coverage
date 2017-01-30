@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import click
+import pickle
+
+def sort_profile_info(path, max_count=1000):
+    profile_info = pickle.load(open(path, "rb"))
+    items = sorted(profile_info.items(),
+                   key=lambda kv: kv[1],
+                   reverse=False)
+    return [item for item in items if item[1] <= max_count]
+
+DEFAULT_COVERAGE_FILE = "/tmp/spark-grammar.cover",
+DEFAULT_COUNT = 100
+@click.command()
+@click.option('--path', type=str, default=DEFAULT_COVERAGE_FILE,
+              help=("grammar coverage file (default %s)" % DEFAULT_COVERAGE_FILE))
+@click.option('--max-count', type=int, default=DEFAULT_COUNT,
+              help=("limit output to rules having no more than this many hits (default %d)" % DEFAULT_COUNT))
+def run(path, max_count):
+    """Print grammar reduce statistics for a series of spark-parser parses
+    """
+    for rule, count in sort_profile_info(path, max_count):
+        print("%d: %s" % (count, rule))
+        pass
+    return
+
+if __name__ == '__main__':
+    run()
