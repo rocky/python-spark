@@ -599,7 +599,7 @@ class GenericParser(object):
             for rule in self.states[state].complete:
                 lhs, rhs = rule
                 if self.debug['reduce']:
-                    self.debug_reduce(rule)
+                    self.debug_reduce(rule, tokens, parent, i)
                 if self.profile_info is not None:
                     self.profile_rule(rule)
                 if lhs in self.check_reduce and tokens:
@@ -854,7 +854,9 @@ class GenericParser(object):
     def reduce_string(self, rule):
         return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
 
-    def debug_reduce(self, rule):
+    # Note the unused parameters here are used in subclassed
+    # routines that need more information
+    def debug_reduce(self, rule, tokens, parent, i):
         print(self.reduce_string(rule))
 
     def profile_rule(self, rule):
