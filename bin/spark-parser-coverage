@@ -14,58 +14,55 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-import click
-import os
-import pickle
 from spark_parser.version import __version__
+import getopt, os, sys
+import pickle
 
 def sort_profile_info(path, max_count=1000):
-
     profile_info = pickle.load(open(path, "rb"))
+    items = sorted(profile_info.items(),
+                   key=lambda kv: kv[1],
+                   reverse=False)
+    return [item for item in items if item[1] <= max_count]
 
-    # Classify unused rules. Some are "unused" because the have nullable
-    # nonterminals and those show up as a different rule. Sothe rule
-    # *is* used just not in the form where a nullable symbol hasn't been
-    # nulled.
+program, ext = os.path.splitext(os.path.basename(__file__))
 
-    # And in some cases this is intentional. Uncompyle6 creates such grammar
-    # rules to ensure that positions of certain nonterminals in semantic
-    # actions appear in the same place as similar grammar rules
-
-    unused_rules = set() # just the grammar rules
-    used_rules = []  # (count, grammar rule)
-    for rule, count in profile_info.items():
-        if count == 0:
-            unused_rules.add(rule)
-        else:
-            used_rules.append((count, rule))
-
-    for count, rule in used_rules:
-        if rule.find("\\e_") > -1:
-            canonic_rule = rule.replace("\\e_", "", 1000)
-            if canonic_rule in unused_rules:
-                unused_rules.remove(canonic_rule)
-                pass
-            pass
-        pass
-
-    unused_items = [(0, item) for item in sorted(unused_rules)]
-    used_items = sorted(used_rules, reverse=False)
-    return [item for item in unused_items + used_items
-                if item[0] <= max_count]
-
-DEFAULT_COVERAGE_FILE =os.environ.get("SPARK_PARSER_COVERAGE", "/tmp/spark-grammar.cover")
+DEFAULT_COVERAGE_FILE = "/tmp/spark-grammar.cover",
 DEFAULT_COUNT = 100
-@click.command()
-@click.version_option(version=__version__)
-@click.option('--max-count', type=int, default=DEFAULT_COUNT,
-              help=(f"limit output to rules having no more than this many hits (default {DEFAULT_COUNT})"))
-@click.argument('path', type=click.Path(), default=DEFAULT_COVERAGE_FILE)
-def run(max_count, path: str):
+def run():
+    Usage_short = """usage: %s --path coverage-file...
+Type -h for for full help.""" % program
+
+
+    try:
+        opts, files = getopt.getopt(sys.argv[1:], 'hVp:m:',
+                                    ['help', 'version', 'path=', 'max-count='])
+    except getopt.GetoptError(e):
+        sys.stderr.write('%s: %s\n' % (os.path.basename(sys.argv[0]), e))
+        sys.exit(-1)
+
+    max_count = DEFAULT_COUNT
+    path = DEFAULT_COVERAGE_FILE
+    for opt, val in opts:
+        if opt in ('-h', '--help'):
+            print(__doc__)
+            sys.exit(1)
+        elif opt in ('-V', '--version'):
+            print("%s %s" % (program, __version__))
+            sys.exit(0)
+        elif opt in ('-p', '--path'):
+            path = val
+        elif opt in ('-m', '--max_count'):
+            max_count = int(val)
+        else:
+            print(opt)
+            sys.stderr.write(Usage_short)
+            sys.exit(1)
+
+
     """Print grammar reduce statistics for a series of spark-parser parses
     """
-    for count, rule in sort_profile_info(path, max_count):
+    for rule, count in sort_profile_info(path, max_count):
         print("%d: %s" % (count, rule))
         pass
     return
