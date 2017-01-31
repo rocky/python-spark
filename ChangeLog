@@ -1,6 +1,47 @@
+2017-01-30  rocky <rb@dustyfeet.com>
+
+	* NEW-FEATURES.rst, NEWS, spark_parser/spark.py,
+	spark_parser/version.py: Add the ability to remove a rule Go over new features and over NEWS
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Reinstate extra debug_reduce parameters
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: function parameter mismatch
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* bin/spark-parser-coverage, spark_parser/spark.py: Fix bugs in
+	accumulating coverage counts
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* bin/spark-parser-coverage, setup.py, spark_parser/spark.py,
+	test/test_spark.py: More coverage code
+
+2017-01-28  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py, test/test_spark.py: Banc on coverage a
+	little more
+
+2017-01-28  rocky <rb@dustyfeet.com>
+
+	* spark_parser/__init__.py, spark_parser/spark.py,
+	test/test_spark.py: Start tracking grammar coverage
+
 2017-01-27  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.5.2
+	* setup.py: Works on 3.6.0
+
+2017-01-27  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, example/expr2/eval.py,
+	example/python2/test/format/if.py,
+	example/python2/test/parse/if.py,
+	example/python2/test/parse/if.right, spark_parser/version.py: Get
+	ready for release 1.5.2 Some lint changes
 
 2017-01-27  rocky <rb@dustyfeet.com>
 
