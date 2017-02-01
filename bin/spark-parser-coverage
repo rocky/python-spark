@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#  Copyright (c) 2022 Rocky Bernstein
+#  Copyright (c) 2022, 2024 Rocky Bernstein
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -13,6 +13,10 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Print grammar reduce statistics for a series of spark-parser parses
+"""
 
 from spark_parser.version import __version__
 import getopt, os, sys
@@ -30,6 +34,7 @@ program, ext = os.path.splitext(os.path.basename(__file__))
 DEFAULT_COVERAGE_FILE = "/tmp/spark-grammar.cover",
 DEFAULT_COUNT = 100
 def run():
+
     Usage_short = """usage: %s --path coverage-file...
 Type -h for for full help.""" % program
 

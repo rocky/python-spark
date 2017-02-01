@@ -64,7 +64,10 @@ from setuptools import setup, find_packages
 setup(
        classifiers        = classifiers,
        description        = short_desc,
+<<<<<<< HEAD
        # install_requires   = install_requires,
+=======
+>>>>>>> e05f2c6 (Get ready for release 1.6.0 (python 2.4))
        license            = license,
        long_description   = long_description,
        maintainer         = maintainer,
