@@ -10,7 +10,7 @@ from spark_parser.spark import GenericParser
 
 class ExprScanner(GenericScanner):
 
-    def __init__(self):
+    def __init__(self, coverage_path=None):
         GenericScanner.__init__(self)
 
     def tokenize(self, input):
@@ -61,8 +61,8 @@ class ExprParser(GenericParser):
     by SPARK.
     """
 
-    def __init__(self, start='expr', debug=DEFAULT_DEBUG):
-        GenericParser.__init__(self, start, debug)
+    def __init__(self, start='expr', debug=DEFAULT_DEBUG, coverage_path=None):
+        GenericParser.__init__(self, start, debug=debug, coverage_path=coverage_path)
 
     def p_expr_add_term(self, args):
         ' expr ::= expr ADD_OP term '
@@ -110,7 +110,11 @@ class TestSpark(unittest.TestCase):
         test_term6 = AST('multiply', [test_term_to_factor2, test_factor_to_integer3])
         test_expr7 = AST('add', [test_expr_to_term1, test_term6])
 
+        # import sys
+        # parser = ExprParser(coverage_path=sys.stdout)
+        # parser = ExprParser(coverage_path="/tmp/spark-grammar.cover")
         parser = ExprParser()
+
         lhs, rhs, tokens, right_recursive = parser.checkSets()
         self.assertEqual(len(lhs), 0)
         self.assertEqual(len(rhs), 0)

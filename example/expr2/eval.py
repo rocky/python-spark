@@ -91,7 +91,7 @@ def eval_expr(expr_str, show_tokens=False, showast=False,
     parsed = parse_expr(expr_str, show_tokens=show_tokens,
                         parser_debug=parser_debug)
     if showast:
-        print (parsed)
+        print(parsed)
 
     assert parsed == 'expr', 'Should have parsed grammar start'
 

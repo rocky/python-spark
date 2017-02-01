@@ -1,7 +1,10 @@
 import unittest
-from spark_parser.spark import GenericParser
+from spark_parser import (GenericParser, PYTHON3)
 
-from StringIO import StringIO
+if PYTHON3:
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 
 class Expr(GenericParser):

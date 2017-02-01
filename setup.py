@@ -63,7 +63,7 @@ from setuptools import setup, find_packages
 setup(
        classifiers        = classifiers,
        description        = short_desc,
-       # install_requires   = install_requires,
+       install_requires   = ['click'],
        license            = license,
        long_description   = long_description,
        maintainer         = maintainer,
