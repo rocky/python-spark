@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+"""Print grammar reduce statistics for a series of spark-parser parses
+"""
 from spark_parser.version import VERSION
 import getopt, os, sys
 import pickle
@@ -15,6 +17,7 @@ program, ext = os.path.splitext(os.path.basename(__file__))
 DEFAULT_COVERAGE_FILE = "/tmp/spark-grammar.cover",
 DEFAULT_COUNT = 100
 def run():
+
     Usage_short = """usage: %s --path coverage-file...
 Type -h for for full help.""" % program
 

@@ -48,11 +48,12 @@ class TestMisc(unittest.TestCase):
     def test_basic(self):
         # Check duplicate rule detection
         parser = Rules('x', debug={'dups': True})
-        self.assertTrue(hasattr(parser, 'dups'))
+        self.assertEqual(True, hasattr(parser, 'dups'))
         self.assertEqual(parser.dups, [('x', ('TOKEN',))])
 
         # Check "+", and "*", expansion
-        rules = sorted(parser.rule2name.items())
+        rules = parser.rule2name.items()
+        rules.sort()
         self.assertEqual(rules,
                          [(('START', ('|-', 'x')), 'ambda>'),
                           (('ratings', ()), 'rules'),
@@ -77,20 +78,21 @@ x ::= TOKEN
             InvalidRule('foo', debug={'dups': True})
             self.assertTrue(False)
         except TypeError:
-            self.assertTrue(True)
+            self.assertEqual(True, True)
 
         # Check erroneous start symbol
         try:
             parser = Rules('bad-start')
-            self.assertTrue(False)
+            self.assertEqual(False, True)
         except TypeError:
-            self.assertTrue(True)
+            self.assertEqual(True, True)
 
     def test_period(self):
         parser = RulesPeriod('opt_period', debug={'dups': True})
 
         # Check "?" expansion
-        rules = sorted(parser.rule2name.items())
+        rules = parser.rule2name.items()
+        rules.sort()
         self.assertEqual(rules,
                          [(('START', ('|-', 'opt_period')), 'ambda>'),
                           (('opt_period', ()), 'rules'),

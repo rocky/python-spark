@@ -1,5 +1,5 @@
 import unittest
-from spark_parser import (GenericParser, PYTHON3)
+from spark_parser import GenericParser, PYTHON3
 
 if PYTHON3:
     from io import StringIO
