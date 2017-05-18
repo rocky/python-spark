@@ -1,6 +1,29 @@
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py, spark_parser/version.py,
+	test/test_grammar.py: parser.remove_rules is the same as remove_rule
+
+2017-05-16  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: remove_rule: check to see if rule exists
+	first
+
+2017-01-31  rocky <rb@dustyfeet.com>
+
+	* : commit 21fa172cc4010ba39cab8f2f4cbb5806bd78186e Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Jan 31 18:58:59 2017 -0500
+
 2017-01-31  rocky <rb@dustyfeet.com>
 
 	* ChangeLog: Get ready for release
+
+2017-01-30  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2017-01-30  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
 
 2017-01-30  rocky <rb@dustyfeet.com>
 

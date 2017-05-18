@@ -1,4 +1,9 @@
-spark 1.6.0 2016-01-30
+spark 1.6.1 2017-04-17
+
+- parser.remove_rules is the same as remove_rule
+- fix parser.remove_rules so that it works even if rule has been removed
+
+spark 1.6.0 2017-01-30
 
 - Add ability to track grammar coverage
 - Add ability to remove grammar rules

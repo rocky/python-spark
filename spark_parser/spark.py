@@ -247,7 +247,7 @@ class GenericParser(object):
             pass
         return
 
-    def remove_rule(self, doc):
+    def remove_rules(self, doc):
         """Remove a grammar rules from  _self.rules_, _self.rule2func_,
             and _self.rule2name_
         """
@@ -272,6 +272,7 @@ class GenericParser(object):
                 self.ruleschanged = True
         return
 
+    remove_rule = remove_rules
 
     def collectRules(self):
         for name in _namelist(self):
