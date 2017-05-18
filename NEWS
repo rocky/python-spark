@@ -1,4 +1,4 @@
-spark 1.6.1 2017-04-17
+spark 1.6.1 2017-04-18
 
 - parser.remove_rules is the same as remove_rule
 - fix parser.remove_rules so that it works even if rule has been removed
