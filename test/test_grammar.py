@@ -50,7 +50,7 @@ term ::= term MULT_OP factor
         parser.dumpGrammar(f)
         self.assertEqual(expect, f.getvalue())
 
-        parser.remove_rule("expr ::= expr ADD_OP term")
+        parser.remove_rules("expr ::= expr ADD_OP term")
         expect = """START ::= |- expr
 expr ::= expr SUB_OP term
 expr ::= term
