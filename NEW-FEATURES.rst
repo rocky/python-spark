@@ -1,8 +1,8 @@
 Introduction
 ============
 
-The original version of this Earley parser, circa 2000, was pretty awesome for its
-age.  It was remarkably fast, and small: one Python file. Some care
+The original version of this Earley parser, circa 2000, was pretty awesome for at
+that time.  It was remarkably fast, and small: one Python file. Some care
 was put into making it run fast.
 
 That made it easy to embed in a project. In fact at one time it was
@@ -59,7 +59,7 @@ In a large project like uncompyle6_ there are lots of grammar rules:
 over 600 rules for each of the 13 or so versions of Python.
 
 It is very easy to create nonsensical grammar rules, so we need to
-have a way to check the grammar.  Partuclarly useful is the ability to
+have a way to check the grammar.  Partcularly useful is the ability to
 find unused left-hand-side nonterminals that are not either the start
 symbol or used on the right-hand side.  Likewise unused nonterminals
 (lower-case symbols) that appear on the right-hand side that are not
