@@ -66,7 +66,7 @@ symbol or used on the right-hand side.  Likewise unused nonterminals
 defined as a rule. Of course, tokens or upper-case symbols are ok.
 
 Checking for duplicate rules is also handy. Also finding immediate
-recursion rules. e.g. `expr ::= expr`.
+recursion rules. e.g. ``expr ::= expr``.
 
 Parser Error State
 ==================
@@ -78,7 +78,7 @@ list of rule states of the current state. I won't show that here.
 Reduce Rule Tracing
 ===================
 
-However also added was the ability to dump rules as reductions
+Also added was the ability to dump rules as reductions
 occurred. Here is an example of that from uncompyle6:
 
 .. code-block::
@@ -140,7 +140,7 @@ many.
 Here are some little examples from the project *uncompyle6* which
 deparses Python bytecode. There is a rule in the grammar for a keyword
 argument that's used in a parameter list of a function.
-for example the `path=` in `os.path.exists(path='/etc/hosts')`
+for example the ``path=`` in ``os.path.exists(path='/etc/hosts')``
 
 This grammar rule is:
 
@@ -150,7 +150,7 @@ This grammar rule is:
 
 
 But there is an additional restriction that the value in the
-`LOAD_CONST` can't be any old value; it must be a "string" (which
+``LOAD_CONST`` can't be any old value; it must be a "string" (which
 would have the value "path") in the previous example.
 
 The reduction rule checking can work at a strickly token level, or it
@@ -161,7 +161,7 @@ Limited Grammar Shorthands: \+, \*, ?
 =====================================
 
 I also added a little syntactic sugar for the Kleene closure
-operators `+`, `*` and optional suffix `?`. It is limited to only one
+operators ``+``, ``*`` and optional suffix ``?``. It is limited to only one
 nonterminal on the right-hand side, but that does come up often and
 helps a little. So you can now do things like:
 
@@ -198,7 +198,7 @@ respectively.
 Tracking Grammar Coverage
 ==========================
 
-Again in *uncompyle6* there are lots of grammar rules, so it is very 
+Again in *uncompyle6* there are lots of grammar rules, so it is very
 easy to have dead grammar rules that never get used. And
 grammar constructs from one version of Python can easily bleed into
 another version. By looking at grammar coverage over a large set of
