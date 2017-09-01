@@ -1,5 +1,5 @@
 This directory contains a more complete example of using SPARK to scan, parse,
-generate an abstract tree, and do something what that tree.
+generate an abstract tree, and then do something with the AST.
 
 Specifically, here we handle the Python 2.6 grammar. File
 [python26.gr](http://github.com/rocky/python-spark/tree/master/example/python2/python26.gr)
