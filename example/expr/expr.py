@@ -70,14 +70,16 @@ class ExprParser(GenericParser):
         GenericParser.__init__(self, start, debug)
 
     # Below are methods for the grammar rules and the AST tree-building
-    # action to take
+    # action to take. The method name starts with p_, but note that the
+    # the method name itself after the p_ isn't used; it is just
+    # suggestive of what the grammar rules in docstring comments do.
 
     def p_expr_add_term(self, args):
         ' expr ::= expr ADD_OP term '
         op = 'add' if args[1].attr == '+' else 'subtract'
         return AST(op, [args[0], args[2]])
 
-    def p_expr2term2(self, args):
+    def p_expr2term(self, args):
         ' expr ::= term '
         return AST('single', [args[0]])
 
