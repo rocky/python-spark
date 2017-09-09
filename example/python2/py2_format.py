@@ -147,9 +147,6 @@ escape = re.compile(r'''
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
 
-def _get_mapping(node):
-    return MAP.get(node, MAP_DIRECT)
-
 class Python2FormatterError(Exception):
     def __init__(self, errmsg):
         self.errmsg = errmsg
@@ -615,11 +612,10 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write(fmt[i:])
 
     def default(self, node):
-        mapping = _get_mapping(node)
-        table = mapping[0]
+        table = MAP_DIRECT[0]
         key = node
 
-        for i in mapping[1:]:
+        for i in MAP_DIRECT[1:]:
             key = key[i]
 
         if key.type in table:
