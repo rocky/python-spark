@@ -1,4 +1,4 @@
-#  Copyright (c) 2016 by Rocky Bernstein
+#  Copyright (c) 2016-2017 by Rocky Bernstein
 
 """Formats Python source an abstract syntax tree created by AST builder.
 
@@ -622,10 +622,6 @@ class Python2Formatter(GenericASTTraversal, object):
             self.engine(table[key.type], node)
             self.prune()
 
-    def format_python2(self, ast):
-        """convert AST to Python2 source code"""
-        return self.traverse(ast)
-
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
                          showgrammar=False, compile_mode='exec'):
     """
@@ -645,7 +641,7 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
         print(parsed)
 
     # What we've been waiting for: Generate source from AST!
-    python2_formatted_str = formatter.format_python2(parsed)
+    python2_formatted_str = formatter.traverse(parsed)
 
     return python2_formatted_str
 
