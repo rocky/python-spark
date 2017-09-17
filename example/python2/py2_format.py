@@ -16,8 +16,8 @@ These uses a printf-like syntax to direct substitution from attributes
 of the nonterminal and its children..
 
 The rest of the below describes how table-driven semantic actions work
-and gives a list of the format specifiers. The default() and engine()
-methods implement most of the below.
+and gives a list of the format specifiers. The default() and
+template_engine() methods implement most of the below.
 
   Step 1 determines a table (T) and a path to a
   table key (K) from the node type (N) (other nodes are shown as O):
@@ -51,8 +51,10 @@ methods implement most of the below.
 
   * indicates an argument (A) required.
 
-  The '%' may optionally be followed by a number (C) in square brackets, which
-  makes the engine walk down to N[C] before evaluating the escape code.
+  The '%' may optionally be followed by a number (C) in square
+  brackets, which makes the template engine walk down to N[C] before
+  evaluating the escape code.
+
 """
 # from __future__ import print_function
 
@@ -268,11 +270,10 @@ class Python2Formatter(GenericASTTraversal, object):
             self.preorder(n)
         self.prune()
 
-    # Possibly this kind of thing should be an engine format
+    # Possibly this kind of thing should be an template-engine format
     # 'import_as_name': ('%c %?as %c', 0, 2) which means:
-    #   'import_as_name': ('%c', 0)
-    # if len(node) < 2 else:
-    #   'import_as_name': ('%c as %c', 0, 2),
+    # 'import_as_name': ('%c', 0) if len(node) < 2 else:
+    # 'import_as_name': ('%c as %c', 0, 2),
     def n_import_as_name(self, node):
         self.preorder(node[0])
         if len(node) == 3:
@@ -523,7 +524,7 @@ class Python2Formatter(GenericASTTraversal, object):
 
     #     self.prune()
 
-    def engine(self, entry, startnode):
+    def template_engine(self, entry, startnode):
         """The format template interpetation engine.  See the comment at the
         beginning of this module for the how we interpret format specifications such as
         %c, %C, and so on.
@@ -619,7 +620,7 @@ class Python2Formatter(GenericASTTraversal, object):
             key = key[i]
 
         if key.type in table:
-            self.engine(table[key.type], node)
+            self.template_engine(table[key.type], node)
             self.prune()
 
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
