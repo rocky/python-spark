@@ -1,7 +1,7 @@
 Introduction
 ============
 
-The original version of this Earley parser, circa 2000, was pretty awesome for at
+The original version of this Earley parser, circa 2000, was pretty awesome at
 that time.  It was remarkably fast, and small: one Python file. Some care
 was put into making it run fast.
 
