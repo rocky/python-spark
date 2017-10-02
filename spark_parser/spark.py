@@ -629,8 +629,8 @@ class GenericParser(object):
                     self.debug_reduce(rule, tokens, parent, i)
                 if self.profile_info is not None:
                     self.profile_rule(rule)
-                if lhs in self.check_reduce and tokens:
-                    if self.check_reduce[lhs] == 'AST':
+                if lhs in self.check_reduce:
+                    if self.check_reduce[lhs] == 'AST' and tokens:
                         ast = self.reduce_ast(rule, tokens, item, i, sets)
                     else:
                         ast = None
@@ -878,13 +878,13 @@ class GenericParser(object):
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
 
-    def reduce_string(self, rule):
-        return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+    def reduce_string(self, rule, last_token_pos):
+        return "%s ::= %s (%d)" % (rule[0], ' '.join(rule[1]), last_token_pos)
 
     # Note the unused parameters here are used in subclassed
     # routines that need more information
     def debug_reduce(self, rule, tokens, parent, i):
-        print(self.reduce_string(rule))
+        print(self.reduce_string(rule, i))
 
     def profile_rule(self, rule):
         """Bump count of the number of times _rule_ was used"""
