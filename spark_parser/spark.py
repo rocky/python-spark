@@ -630,8 +630,12 @@ class GenericParser(object):
                 if self.profile_info is not None:
                     self.profile_rule(rule)
                 if lhs in self.check_reduce:
-                    if self.check_reduce[lhs] == 'AST' and tokens:
-                        ast = self.reduce_ast(rule, tokens, item, i, sets)
+                    if (self.check_reduce[lhs] == 'AST' and
+                        (tokens or hasattr(self, 'tokens'))):
+                        if hasattr(self, 'tokens'):
+                            ast = self.reduce_ast(rule, self.tokens, item, i, sets)
+                        else:
+                            ast = self.reduce_ast(rule, tokens, item, i, sets)
                     else:
                         ast = None
                     invalid = self.reduce_is_invalid(rule, ast, tokens, parent, i)
