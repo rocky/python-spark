@@ -17,6 +17,8 @@ After you've mastered this, consider going onto
 [uncompyle6](http://github.com/rocky/python-uncompyle6) which turns Python
 bytecode back into Python.
 
+[fl_convert](https://sourceforge.net/projects/pyfltk/files/flconvert/flconvert-0.1a2/) uses the original spark code to parse Fast Light ToolKit's GUI builder files and generate Python code.
+
 There is plenty of room improvement for each program, but that is
 somewhat deliberate. The hope is that you'll modify these to
 improve them and understand how things work.
