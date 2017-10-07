@@ -11,7 +11,7 @@ else:
 
 class AST(UserList):
     def __init__(self, kind, kids=[]):
-        self.type = intern(kind)
+        self.kind = intern(kind)
         UserList.__init__(self, kids)
 
     def __getslice__(self, low, high):
@@ -19,19 +19,19 @@ class AST(UserList):
 
     def __eq__(self, o):
         if isinstance(o, AST):
-            return (self.type == o.type and
+            return (self.kind == o.kind and
                     UserList.__eq__(self, o))
         else:
-            return self.type == o
+            return self.kind == o
 
     def __hash__(self):
-        return hash(self.type)
+        return hash(self.kind)
 
     def __repr__(self, indent=''):
         return self.__repr1__(indent, None)
 
     def __repr1__(self, indent, sibNum=None):
-        rv = str(self.type)
+        rv = str(self.kind)
         if sibNum is not None:
             rv = "%d. %s" % (sibNum, rv)
         enumerate_children = False
@@ -74,7 +74,7 @@ class GenericASTTraversal:
         self.ast = ast
 
     def typestring(self, node):
-        return node.type
+        return node.kind
 
     def prune(self):
         raise GenericASTTraversalPruningException

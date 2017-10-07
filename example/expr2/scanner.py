@@ -1,6 +1,6 @@
 """
 Simple SPARK-style scanner
-Copyright (c) 2016 Rocky Bernstein
+Copyright (c) 2016-2017 Rocky Bernstein
 """
 
 from __future__ import print_function
@@ -9,7 +9,7 @@ from spark_parser.scanner import GenericScanner, GenericToken
 class ExprScanner(GenericScanner):
 
     def error(self, s, pos):
-        """Show text and a carot under that. For example:
+        """Show text and a caret under that. For example:
 x = 2y + z
      ^
 """

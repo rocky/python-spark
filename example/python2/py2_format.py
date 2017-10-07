@@ -177,7 +177,7 @@ MAP = {
 escape = re.compile(r'''
             (?P<prefix> [^%]* )
             % ( \[ (?P<child> -? \d+ ) \] )?
-                ((?P<type> [^{] ) |
+                ((?P<kind> [^{] ) |
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
 
@@ -574,7 +574,7 @@ class Python2Formatter(GenericASTTraversal, object):
             i = m.end()
             self.write(m.group('prefix'))
 
-            typ = m.group('type') or '{'
+            typ = m.group('kind') or '{'
             node = startnode
             try:
                 if m.group('child'):
@@ -651,8 +651,8 @@ class Python2Formatter(GenericASTTraversal, object):
         for i in MAP_DIRECT[1:]:
             key = key[i]
 
-        if key.type in table:
-            self.template_engine(table[key.type], node)
+        if key.kind in table:
+            self.template_engine(table[key.kind], node)
             self.prune()
 
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
