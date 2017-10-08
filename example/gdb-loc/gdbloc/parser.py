@@ -119,7 +119,7 @@ class LocationParser(GenericASTBuilder):
         if rule == ('location', ('FILENAME', 'SPACE', 'FILENAME', 'SPACE', 'NUMBER')):
             # In this rule the 2nd filename should be 'line'. if not, the rule
             # is invalid
-           return tokens[first+2].value != 'line'
+            return tokens[first+2].value != 'line'
         return False
 
 

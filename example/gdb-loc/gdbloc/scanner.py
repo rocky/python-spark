@@ -49,9 +49,9 @@ x = 2y + z
             self.add_token('IF', s)
             return
         if s[0] in ["""'\""""]:
-           base = s[1:-1]
+            base = s[1:-1]
         else:
-           base = s
+            base = s
         self.add_token('FILENAME', base)
 
     def t_funcname(self, s):
