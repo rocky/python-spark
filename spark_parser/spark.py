@@ -421,6 +421,8 @@ class GenericParser(object):
         setting.
         """
 
+        self.tokens = tokens
+
         if debug:
             self.debug = debug
 
@@ -634,17 +636,17 @@ class GenericParser(object):
                         (tokens or hasattr(self, 'tokens'))):
                         if hasattr(self, 'tokens'):
                             tokens = self.tokens
-                        ast = self.reduce_ast(rule, tokens, item, i, sets)
+                        ast = self.reduce_ast(rule, self.tokens, item, i, sets)
                     else:
                         ast = None
+                    invalid = self.reduce_is_invalid(rule, ast, self.tokens, parent, i)
                     if ast:
-                        invalid = self.reduce_is_invalid(rule, ast, tokens, parent, i)
                         del ast
-                        if invalid:
-                            if self.debug['reduce']:
-                                print("Reduce %s invalid by check" % lhs)
-                            continue
-                        pass
+                    if invalid:
+                        if self.debug['reduce']:
+                            print("Reduce %s invalid by check" % lhs)
+                        continue
+                    pass
                     pass
                 for pitem in sets[parent]:
                     pstate, pparent = pitem

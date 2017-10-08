@@ -79,6 +79,17 @@ class LocationParser(GenericASTBuilder):
         token       ::= SPACE
         '''
 
+    def add_custom_rules(self, tokens, orig_customize):
+        self.check_reduce['location'] = 'tokens'
+
+    def reduce_is_invalid(self, rule, ast, tokens, first, last):
+        if rule == ('location', ('FILENAME', 'SPACE', 'FILENAME', 'SPACE', 'NUMBER')):
+            # In this rule the 2nd filename should be 'line'. if not, the rule
+            # is invalid
+            return tokens[first+2].value != 'line'
+        return False
+
+
 def parse_location(python_str, out=sys.stdout,
                    show_tokens=False, parser_debug=DEFAULT_DEBUG):
     assert isinstance(python_str, str)
@@ -94,6 +105,7 @@ def parse_location(python_str, out=sys.stdout,
                     'errorstack': True, 'dups': True}
     parser = LocationParser(parser_debug)
     parser.checkGrammar()
+    parser.add_custom_rules(tokens, {})
     return parser.parse(tokens)
 
 if __name__ == '__main__':
