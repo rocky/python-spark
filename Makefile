@@ -22,7 +22,7 @@ check-full: check
 check:
 	(cd test && nosetests -v *.py)
 	$(MAKE) -C example/python2 check
-	$(MAKE) -C example/gdb-loc check
+#	$(MAKE) -C example/gdb-loc check
 
 #: Clean up temporary files
 clean:
