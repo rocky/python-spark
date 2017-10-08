@@ -1,6 +1,11 @@
-#  Copyright (c) 2016 Rocky Bernstein
+#  Copyright (c) 2017 Rocky Bernstein
 """
-More complex expression parsing
+Parsing for a trepan2/trepan3k debugger
+"breakpoint' or "list" command arguments
+
+This is a debugger location along with:
+ - an optional condition parsing for breakpoints commands
+ - a range or count for "list" commands
 """
 
 from __future__ import print_function
@@ -8,19 +13,30 @@ from __future__ import print_function
 import sys
 from spark_parser.ast import AST
 
-from scanner import LocationScanner
+from gdbloc.scanner import LocationScanner
 
 from spark_parser import GenericASTBuilder, DEFAULT_DEBUG
 
 class LocationParser(GenericASTBuilder):
-    """A more complete expression Parser.
-
+    """Location parsing as used in trepan2 and trepan3k
+    for list and breakpoint commands
     Note: function parse() comes from GenericASTBuilder
     """
 
-    def __init__(self, debug=DEFAULT_DEBUG):
-        super(LocationParser, self).__init__(AST, 'start', debug=debug)
+    def __init__(self, start_nt, text, debug=DEFAULT_DEBUG):
+        super(LocationParser, self).__init__(AST, start_nt, debug=debug)
         self.debug = debug
+        self.text  = text
+
+    def error(self, tokens, index):
+        token = tokens[index]
+        print(self.text)
+        print(' ' * (token.offset + len(token.value)) + '^')
+        print("Syntax error at or near token '%s'" % token.value)
+        if 'context' in self.debug and self.debug['context']:
+            super(LocationParser, self).error(tokens, index)
+
+        raise SystemExit
 
     def nonterminal(self, nt, args):
         has_len = hasattr(args, '__len__')
@@ -43,13 +59,28 @@ class LocationParser(GenericASTBuilder):
             rv = GenericASTBuilder.nonterminal(self, nt, args)
         return rv
 
+    def p_bp_location(self, args):
+        '''
+        bp_start    ::= opt_space location_if opt_space
+        '''
+
+    def p_list_range(self, args):
+        '''
+        ## START HERE
+        range_start  ::= opt_space range
+        range ::= location
+        range ::= location opt_space COMMA NUMBER
+        range ::= COMMA NUMBER
+        range ::= NUMBER COMMA
+        range ::= DIRECTION
+        '''
+
     ##########################################################
     # Expression grammar rules. Grammar rule functions
     # start with the name p_ and are collected automatically
     ##########################################################
     def p_location(self, args):
         '''
-        start       ::= opt_space location_if opt_space
         opt_space   ::= SPACE?
 
         location_if ::= location
@@ -76,6 +107,8 @@ class LocationParser(GenericASTBuilder):
         token       ::= FUNCNAME
         token       ::= COLON
         token       ::= NUMBER
+        token       ::= COMMA
+        token       ::= DIRECTION
         token       ::= SPACE
         '''
 
@@ -86,14 +119,14 @@ class LocationParser(GenericASTBuilder):
         if rule == ('location', ('FILENAME', 'SPACE', 'FILENAME', 'SPACE', 'NUMBER')):
             # In this rule the 2nd filename should be 'line'. if not, the rule
             # is invalid
-            return tokens[first+2].value != 'line'
+           return tokens[first+2].value != 'line'
         return False
 
 
-def parse_location(python_str, out=sys.stdout,
-                   show_tokens=False, parser_debug=DEFAULT_DEBUG):
-    assert isinstance(python_str, str)
-    tokens = LocationScanner().tokenize(python_str)
+def parse_bp_location(text, out=sys.stdout,
+                      show_tokens=False, parser_debug=DEFAULT_DEBUG):
+    assert isinstance(text, str)
+    tokens = LocationScanner().tokenize(text)
     if show_tokens:
         for t in tokens:
             print(t)
@@ -101,17 +134,22 @@ def parse_location(python_str, out=sys.stdout,
     # For heavy grammar debugging
     # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
     #                 'errorstack': True, 'dups': True}
-    parser_debug = {'rules': False, 'transition': False, 'reduce': True,
-                    'errorstack': True, 'dups': True}
-    parser = LocationParser(parser_debug)
-    parser.checkGrammar()
+    # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
+    #                 'errorstack': True, 'dups': False}
+    parser_debug = {'rules': False, 'transition': False, 'reduce': False,
+                    'errorstack': False, 'dups': False}
+
+    parser = LocationParser('bp_start', text, parser_debug)
+    parser.check_grammar(frozenset(('bp_start', 'range_start')))
     parser.add_custom_rules(tokens, {})
     return parser.parse(tokens)
 
 if __name__ == '__main__':
     lines = """
     /tmp/foo.py:12
+    '''/tmp/foo.py:12''' line 14
     /tmp/foo.py line 12
+    '''/tmp/foo.py line 12''' line 25
     12
     ../foo.py:5
     gcd()
@@ -123,5 +161,25 @@ if __name__ == '__main__':
         print("=" * 30)
         print(line)
         print("+" * 30)
-        ast = parse_location(line, show_tokens=True)
+        ast = parse_bp_location(line, show_tokens=True)
+        print(ast)
+
+    bad_lines = """
+    /tmp/foo.py
+    '''/tmp/foo.py'''
+    /tmp/foo.py 12
+    /tmp/foo.py line
+    gcd()
+    foo.py if x > 1
+    """.splitlines()
+    for line in bad_lines:
+        if not line.strip():
+            continue
+        print("=" * 30)
+        print(line)
+        print("+" * 30)
+        try:
+            ast = parse_bp_location(line, show_tokens=True)
+        except:
+            continue
         print(ast)

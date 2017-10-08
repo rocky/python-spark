@@ -27,7 +27,7 @@ class TestGrammar(unittest.TestCase):
     def test_basic(self):
         parser = Expr('expr')
         f = StringIO()
-        parser.dumpGrammar(f)
+        parser.dump_grammar(f)
         expect = """START ::= |- expr
 expr ::= expr ADD_OP term
 expr ::= term
@@ -47,7 +47,7 @@ term ::= factor
 term ::= term MULT_OP factor
 """
         f = StringIO()
-        parser.dumpGrammar(f)
+        parser.dump_grammar(f)
         self.assertEqual(expect, f.getvalue())
 
         parser.remove_rules("expr ::= expr ADD_OP term")
@@ -59,7 +59,7 @@ term ::= factor
 term ::= term MULT_OP factor
 """
         f = StringIO()
-        parser.dumpGrammar(f)
+        parser.dump_grammar(f)
         self.assertEqual(expect, f.getvalue())
 
 

@@ -6,9 +6,9 @@ class Token:
     offset: byte offset from start of parse string
     """
     def __init__(self, kind, value=None, offset=None):
+        self.offset = offset
         self.kind = kind
         self.value = value
-        self.offset = offset
 
     def __eq__(self, o):
         """ '==', but it's okay if offset is different"""

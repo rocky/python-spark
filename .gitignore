@@ -10,3 +10,4 @@
 /spark3_parser.egg-info
 /spark_parser.egg-info
 /tmp
+.cache

@@ -13,8 +13,9 @@ were there any automated tests for the program. And simple usuable
 examples were lacking. (I'm not sure I have been totally successful at
 addressing this, but what's here now is a much better start.)
 
-Many of the changes I've added come from using the program. I list
-features aside from the packaging, tests, and examples mentioned above.
+Many of the changes I've added come from using the program and add to
+the usuability of the parsing system. I list features below aside from
+the packaging, tests, and examples mentioned above.
 
 Comments in Grammar
 ===================

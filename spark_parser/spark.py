@@ -827,7 +827,7 @@ class GenericParser(object):
         '''
         return list[0]
 
-    def dumpGrammar(self, out=sys.stdout):
+    def dump_grammar(self, out=sys.stdout):
         """
         Print grammar rules
         """
@@ -835,32 +835,37 @@ class GenericParser(object):
             out.write("%s\n" % rule2str(rule[0]))
         return
 
-    def checkGrammar(self, out=sys.stderr):
+    def check_grammar(self, ok_start_symbols = set(),
+                      out=sys.stderr):
         '''
-        Check grammar
+        Check grammar for:
+        -  unused left-hand side nonterminals that are neither start symbols
+           or listed in ok_start_symbols
+        -  unused right-hand side nonterminals, i.e. not tokens
+        -  right-recursive rules. These can slow down parsing.
         '''
-        lhs, rhs, tokens, right_recursive = self.checkSets()
-        if len(lhs) > 0:
+        lhs, rhs, tokens, right_recursive = self.check_sets()
+        if lhs:
             out.write("LHS symbols not used on the RHS:\n")
-            out.write(sorted(lhs), "\n")
-        if len(rhs) > 0:
+            out.write((', '.join(sorted(lhs)) + "\n"))
+        if rhs:
             out.write("RHS symbols not used on the LHS:\n")
-            out.write(sorted(rhs, "\n"))
-        if len(right_recursive) > 0:
+            out.write((', '.join(sorted(rhs))) + "\n" )
+        if right_recursive:
             out.write("Right recursive rules:\n")
-            for rule in right_recursive:
+            for rule in sorted(right_recursive):
                 out.write("%s ::= %s\n" % (rule[0], ' '.join(rule[1])))
                 pass
             pass
 
-    def checkSets(self):
+    def check_sets(self):
         '''
         Check grammar
         '''
         lhs_set = set()
         rhs_set = set()
         token_set = set()
-        right_recursive = []
+        right_recursive = set()
         for lhs in self.rules:
             rules_for_lhs = self.rules[lhs]
             lhs_set.add(lhs)
@@ -874,7 +879,7 @@ class GenericParser(object):
                     else:
                         rhs_set.add(sym)
                 if len(rhs) > 0 and lhs == rhs[-1]:
-                    right_recursive.append([lhs, rhs])
+                    right_recursive.add((lhs, rhs))
                 pass
             pass
 

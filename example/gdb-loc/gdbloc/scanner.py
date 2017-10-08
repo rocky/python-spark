@@ -5,7 +5,7 @@ Copyright (c) 2017 Rocky Bernstein
 
 from __future__ import print_function
 from spark_parser.scanner import GenericScanner
-from tok import Token
+from gdbloc.tok import Token
 
 class LocationScanner(GenericScanner):
 
@@ -44,7 +44,7 @@ x = 2y + z
         pass
 
     def t_filename(self, s):
-        r'[^[\t \n:]+|".+"|\'.+\''
+        r'(?:[^\'"\t \n:]+)|(?:^""".+""")|(?:\'\'\'.+\'\'\')'
         if s == 'if':
             self.add_token('IF', s)
             return
@@ -60,7 +60,18 @@ x = 2y + z
 
     def t_colon(self, s):
         r':'
+        # Used to separate a filename from a line number
         self.add_token('COLON', s)
+
+    def t_comma(self, s):
+        r','
+        # Used in "list" to separate first from last
+        self.add_token('COMMA', s)
+
+    def t_direction(self, s):
+        r'[+-]'
+        # Used in the "list" command
+        self.add_token('DIRECTION', s)
 
     # Recognize integers
     def t_number(self, s):
@@ -68,16 +79,16 @@ x = 2y + z
         self.add_token('NUMBER', int(s))
 
 if __name__ == "__main__":
-    for line in """
-    /tmp/foo.py:12
-    /tmp/foo.py line 12
-    12
-    ../foo.py:5
-    gcd()
-    foo.py line 5 if x > 1
-    """.splitlines():
-        if not line.strip():
-            continue
+    for line in (
+            # '/tmp/foo.py:12',
+            # "'''/tmp/foo.py:12'''",
+            # "/tmp/foo.py line 12",
+            # "\"\"\"/tmp/foo.py's line 12\"\"\"",
+            # "12",
+            # "../foo.py:5",
+            "gcd()",
+            # "foo.py line 5 if x > 1",
+            ):
         tokens = LocationScanner().tokenize(line.strip())
         for t in tokens:
             print(t)

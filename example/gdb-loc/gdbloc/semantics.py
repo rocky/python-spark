@@ -1,7 +1,7 @@
 #  Copyright (c) 2017 by Rocky Bernstein
 from __future__ import print_function
 
-from parser import parse_location
+from gdbloc.parser import parse_bp_location
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 from spark_parser.ast import GenericASTTraversalPruningException
 
@@ -72,7 +72,7 @@ class LocationGrok(GenericASTTraversal, object):
         self.prune()
 
     def default(self, node):
-        if node not in frozenset(("""opt_space tokens token start
+        if node not in frozenset(("""opt_space tokens token bp_start range_start
                                   IF FILENAME COLON SPACE""".split())):
             assert False, ("Something's wrong: you missed a rule for %s" % node.kind)
 
@@ -80,13 +80,13 @@ class LocationGrok(GenericASTTraversal, object):
         return self.preorder(node)
 
 
-def main(string, show_tokens=True, show_ast=True, show_grammar=True):
+def main(string, show_tokens=False, show_ast=False, show_grammar=False):
     parser_debug = {'rules': False, 'transition': False,
                     'reduce': show_grammar,
                     'errorstack': True, 'context': True, 'dups': True }
-    parsed = parse_location(string, show_tokens=show_tokens,
-                            parser_debug=parser_debug)
-    assert parsed == 'start'
+    parsed = parse_bp_location(string, show_tokens=show_tokens,
+                               parser_debug=parser_debug)
+    assert parsed == 'bp_start'
     walker = LocationGrok(string)
     walker.traverse(parsed)
     location = walker.location
@@ -108,5 +108,5 @@ if __name__ == '__main__':
         print("=" * 30)
         print(line)
         print("+" * 30)
-        location = main(line, show_tokens=True)
+        location = main(line)
         print(location)

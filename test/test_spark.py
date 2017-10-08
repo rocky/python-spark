@@ -115,7 +115,7 @@ class TestSpark(unittest.TestCase):
         # parser = ExprParser(coverage_path="/tmp/spark-grammar.cover")
         parser = ExprParser()
 
-        lhs, rhs, tokens, right_recursive = parser.checkSets()
+        lhs, rhs, tokens, right_recursive = parser.check_sets()
         self.assertEqual(len(lhs), 0)
         self.assertEqual(len(rhs), 0)
         self.assertEqual(len(right_recursive), 0)
