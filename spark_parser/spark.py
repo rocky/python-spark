@@ -845,7 +845,7 @@ class GenericParser(object):
         -  right-recursive rules. These can slow down parsing.
         '''
         lhs, rhs, tokens, right_recursive = self.check_sets()
-        if lhs:
+        if lhs - ok_start_symbols:
             out.write("LHS symbols not used on the RHS:\n")
             out.write((', '.join(sorted(lhs)) + "\n"))
         if rhs:

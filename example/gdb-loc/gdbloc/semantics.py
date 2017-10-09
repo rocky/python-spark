@@ -7,6 +7,7 @@ from spark_parser.ast import GenericASTTraversalPruningException
 
 from collections import namedtuple
 Location = namedtuple("Location", "path line_number method condition")
+ListRange = namedtuple("ListRange", "location end_number")
 
 
 class LocationError(Exception):
@@ -70,6 +71,10 @@ class LocationGrok(GenericASTTraversal, object):
         self.location = Location(self.location.path, self.location.line_number,
                                  self.location.method, condition)
         self.prune()
+
+    def n_range(self, node):
+        # FIXME: start here
+        self.location = ListRange(None, None)
 
     def default(self, node):
         if node not in frozenset(("""opt_space tokens token bp_start range_start

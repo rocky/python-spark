@@ -31,7 +31,7 @@ class LocationParser(GenericASTBuilder):
     def error(self, tokens, index):
         token = tokens[index]
         print(self.text)
-        print(' ' * (token.offset + len(token.value)) + '^')
+        print(' ' * (token.offset + len(str(token.value))) + '^')
         print("Syntax error at or near token '%s'" % token.value)
         if 'context' in self.debug and self.debug['context']:
             super(LocationParser, self).error(tokens, index)
@@ -123,7 +123,7 @@ class LocationParser(GenericASTBuilder):
         return False
 
 
-def parse_bp_location(text, out=sys.stdout,
+def parse_location(start_symbol, text, out=sys.stdout,
                       show_tokens=False, parser_debug=DEFAULT_DEBUG):
     assert isinstance(text, str)
     tokens = LocationScanner().tokenize(text)
@@ -139,21 +139,62 @@ def parse_bp_location(text, out=sys.stdout,
     parser_debug = {'rules': False, 'transition': False, 'reduce': False,
                     'errorstack': False, 'dups': False}
 
-    parser = LocationParser('bp_start', text, parser_debug)
+    parser = LocationParser(start_symbol, text, parser_debug)
     parser.check_grammar(frozenset(('bp_start', 'range_start')))
     parser.add_custom_rules(tokens, {})
     return parser.parse(tokens)
 
+def parse_bp_location(*args, **kwargs):
+    parse_location('bp_start', *args, **kwargs)
+
+def parse_range(*args, **kwargs):
+    parse_location('range_start', *args, **kwargs)
+
 if __name__ == '__main__':
+    # lines = """
+    # /tmp/foo.py:12
+    # '''/tmp/foo.py:12''' line 14
+    # /tmp/foo.py line 12
+    # '''/tmp/foo.py line 12''' line 25
+    # 12
+    # ../foo.py:5
+    # gcd()
+    # foo.py line 5 if x > 1
+    # """.splitlines()
+    # for line in lines:
+    #     if not line.strip():
+    #         continue
+    #     print("=" * 30)
+    #     print(line)
+    #     print("+" * 30)
+    #     ast = parse_bp_location(line, show_tokens=True)
+    #     print(ast)
+
+    # bad_lines = """
+    # /tmp/foo.py
+    # '''/tmp/foo.py'''
+    # /tmp/foo.py 12
+    # /tmp/foo.py line
+    # gcd()
+    # foo.py if x > 1
+    # """.splitlines()
+    # for line in bad_lines:
+    #     if not line.strip():
+    #         continue
+    #     print("=" * 30)
+    #     print(line)
+    #     print("+" * 30)
+    #     try:
+    #         ast = parse_bp_location(line, show_tokens=True)
+    #     except:
+    #         continue
+    #     print(ast)
+
     lines = """
-    /tmp/foo.py:12
-    '''/tmp/foo.py:12''' line 14
-    /tmp/foo.py line 12
-    '''/tmp/foo.py line 12''' line 25
-    12
-    ../foo.py:5
-    gcd()
-    foo.py line 5 if x > 1
+    1
+    2,
+    ,3
+    4,10
     """.splitlines()
     for line in lines:
         if not line.strip():
@@ -161,25 +202,5 @@ if __name__ == '__main__':
         print("=" * 30)
         print(line)
         print("+" * 30)
-        ast = parse_bp_location(line, show_tokens=True)
-        print(ast)
-
-    bad_lines = """
-    /tmp/foo.py
-    '''/tmp/foo.py'''
-    /tmp/foo.py 12
-    /tmp/foo.py line
-    gcd()
-    foo.py if x > 1
-    """.splitlines()
-    for line in bad_lines:
-        if not line.strip():
-            continue
-        print("=" * 30)
-        print(line)
-        print("+" * 30)
-        try:
-            ast = parse_bp_location(line, show_tokens=True)
-        except:
-            continue
+        ast = parse_range(line, show_tokens=True)
         print(ast)

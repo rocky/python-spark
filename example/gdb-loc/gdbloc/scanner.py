@@ -25,8 +25,9 @@ x = 2y + z
         GenericScanner.tokenize(self, input)
         return self.rv
 
-    def add_token(self, name, s):
-        t = Token(kind=name, value=s, offset=self.pos)
+    def add_token(self, name, v):
+        t = Token(kind=name, value=v, offset=self.pos)
+        self.pos += len(str(v))
         self.rv.append(t)
 
     # The function names below begin with 't_'.
@@ -44,7 +45,7 @@ x = 2y + z
         pass
 
     def t_filename(self, s):
-        r'(?:[^\'"\t \n:]+)|(?:^""".+""")|(?:\'\'\'.+\'\'\')'
+        r'(?:[^,\d\'"\t \n:][^\'"\t \n:]*)|(?:^""".+""")|(?:\'\'\'.+\'\'\')'
         if s == 'if':
             self.add_token('IF', s)
             return
@@ -52,7 +53,9 @@ x = 2y + z
             base = s[1:-1]
         else:
             base = s
+        pos = self.pos
         self.add_token('FILENAME', base)
+        self.pos = pos + len(s)
 
     def t_funcname(self, s):
         r'[a-zA-Z_]\w+\(\)'
@@ -76,22 +79,28 @@ x = 2y + z
     # Recognize integers
     def t_number(self, s):
         r'\d+'
+        pos = self.pos
         self.add_token('NUMBER', int(s))
+        self.pos = pos + len(s)
 
-if __name__ == "__main__":
-    for line in (
-            # '/tmp/foo.py:12',
-            # "'''/tmp/foo.py:12'''",
-            # "/tmp/foo.py line 12",
-            # "\"\"\"/tmp/foo.py's line 12\"\"\"",
-            # "12",
-            # "../foo.py:5",
-            "gcd()",
-            # "foo.py line 5 if x > 1",
-            ):
-        tokens = LocationScanner().tokenize(line.strip())
-        for t in tokens:
-            print(t)
-            pass
-        pass
-    pass
+# if __name__ == "__main__":
+#     for line in (
+#             # '/tmp/foo.py:12',
+#             # "'''/tmp/foo.py:12'''",
+#             # "/tmp/foo.py line 12",
+#             # "\"\"\"/tmp/foo.py's line 12\"\"\"",
+#             # "12",
+#             # "../foo.py:5",
+#             # "gcd()",
+#             # "foo.py line 5 if x > 1",
+#             "5 ,",
+#             "5,",
+#             "5,10",
+#             ",10",
+#             ):
+#         tokens = LocationScanner().tokenize(line.strip())
+#         for t in tokens:
+#             print(t)
+#             pass
+#         pass
+#     pass
