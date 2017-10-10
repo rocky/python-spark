@@ -1,7 +1,7 @@
 |buildstatus| |Supported Python Versions|
 
-SPARK
-=====
+SPARK - An Earley Algorithm Parser toolkit.
+===========================================
 
 SPARK stands for Scanning, Parsing, and Rewriting Kit. It uses Jay
 Earley's algorithm for parsing context free grammars, and comes with

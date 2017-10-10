@@ -128,7 +128,7 @@ class LocationGrok(GenericASTTraversal, object):
         return self.preorder(node)
 
 
-def build_location(string, show_tokens=False, show_ast=False, show_grammar=False):
+def build_bp_expr(string, show_tokens=False, show_ast=False, show_grammar=False):
     parser_debug = {'rules': False, 'transition': False,
                     'reduce': show_grammar,
                     'errorstack': True, 'context': True, 'dups': True }
@@ -139,9 +139,12 @@ def build_location(string, show_tokens=False, show_ast=False, show_grammar=False
         print(parsed)
     walker = LocationGrok(string)
     walker.traverse(parsed)
-    location = walker.result
+    bp_expr = walker.result
+    if isinstance(bp_expr, Location):
+        bp_expr = BPLocation(bp_expr, None)
+    location = bp_expr.location
     assert location.line_number is not None or location.method
-    return location
+    return bp_expr
 
 def build_range(string, show_tokens=True, show_ast=False, show_grammar=True):
     parser_debug = {'rules': False, 'transition': False,
@@ -158,30 +161,13 @@ def build_range(string, show_tokens=True, show_ast=False, show_grammar=True):
     return list_range
 
 if __name__ == '__main__':
-    # lines = """
-    # /tmp/foo.py:12
-    # /tmp/foo.py line 12
-    # 12
-    # ../foo.py:5
-    # gcd()
-    # foo.py line 5 if x > 1
-    # """.splitlines()
-    # for line in lines:
-    #     if not line.strip():
-    #         continue
-    #     print("=" * 30)
-    #     print(line)
-    #     print("+" * 30)
-    #     location = build_location(line)
-    #     print(location)
     lines = """
-    /tmp/foo.py:12 , 5
-    -
-    +
+    /tmp/foo.py:12
+    /tmp/foo.py line 12
+    12
     ../foo.py:5
-    ../foo.py:5 ,
-    , 5
-    , /foo.py:5
+    gcd()
+    foo.py line 5 if x > 1
     """.splitlines()
     for line in lines:
         if not line.strip():
@@ -189,5 +175,22 @@ if __name__ == '__main__':
         print("=" * 30)
         print(line)
         print("+" * 30)
-        list_range = build_range(line)
-        print(list_range)
+        bp_expr = build_bp_expr(line)
+        print(bp_expr)
+    # lines = """
+    # /tmp/foo.py:12 , 5
+    # -
+    # +
+    # ../foo.py:5
+    # ../foo.py:5 ,
+    # , 5
+    # , /foo.py:5
+    # """.splitlines()
+    # for line in lines:
+    #     if not line.strip():
+    #         continue
+    #     print("=" * 30)
+    #     print(line)
+    #     print("+" * 30)
+    #     list_range = build_range(line)
+    #     print(list_range)
