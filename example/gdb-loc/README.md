@@ -1,5 +1,5 @@
 Here we parse and canocialize data for some gdb-like concepts that are
-found in gdb or my Python trepan debuggers.
+found in gdb or my Python [trepan](http://pypi.python.org/pypi/trepan3k) [debuggers](http://pypi.python.org/pypi/trepan2).
 
 Specifically:
 
@@ -75,5 +75,5 @@ specified is computed here, but in the application or debugger that
 uses this.
 
 
-Side note: note how much care and is put into mimicking gdb's command
-interface in the in the trepan debuggers.
+Side note: note how much attention is put into mimicking gdb's command
+interface in the trepan debuggers.
