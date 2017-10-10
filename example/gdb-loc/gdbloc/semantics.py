@@ -1,16 +1,23 @@
 #  Copyright (c) 2017 by Rocky Bernstein
 from __future__ import print_function
 
-from gdbloc.parser import parse_bp_location
+from gdbloc.parser import parse_bp_location, parse_range
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
-from spark_parser.ast import GenericASTTraversalPruningException
 
 from collections import namedtuple
-Location = namedtuple("Location", "path line_number method condition")
-ListRange = namedtuple("ListRange", "location end_number")
+Location = namedtuple("Location", "path line_number method")
+BPLocation = namedtuple("BPLocation", "location condition")
+ListRange = namedtuple("ListRange", "first last")
 
 
 class LocationError(Exception):
+    def __init__(self, errmsg):
+        self.errmsg = errmsg
+
+    def __str__(self):
+        return self.errmsg
+
+class RangeError(Exception):
     def __init__(self, errmsg):
         self.errmsg = errmsg
 
@@ -22,7 +29,7 @@ class LocationGrok(GenericASTTraversal, object):
     def __init__(self, text):
         GenericASTTraversal.__init__(self, None)
         self.text = text
-        self.location = None
+        self.result = None
         return
 
     def n_location(self, node):
@@ -38,21 +45,21 @@ class LocationGrok(GenericASTTraversal, object):
             line_number = node[0].value
         else:
             assert True, "n_location: Something's is wrong; node[0] is %s" % node[0]
-        self.location = Location(path, line_number, method, None)
+        self.result = Location(path, line_number, method)
+        node.location = Location(path, line_number, method)
         self.prune()
 
     def n_NUMBER(self, node):
-        self.location = Location(None, node.value, None, None)
+        self.result = Location(None, node.value, None)
 
     def n_FUNCNAME(self, node):
-        self.location = Location(None, None, node.value[:-2], None)
+        self.result = Location(None, None, node.value[:-2])
 
     def n_location_if(self, node):
+        location = None
         if node[0] == 'location':
-            try:
-                self.n_location(node[0])
-            except GenericASTTraversalPruningException:
-                pass
+            self.preorder(node[0])
+            location = node[0].location
 
         if len(node) == 1:
             return
@@ -68,44 +75,113 @@ class LocationGrok(GenericASTTraversal, object):
         condition = self.text[if_node.offset:]
 
         # Pick out condition from string and location inside "IF" token
-        self.location = Location(self.location.path, self.location.line_number,
-                                 self.location.method, condition)
+        self.result = BPLocation(location, condition)
         self.prune()
 
-    def n_range(self, node):
+    def n_range(self, range_node):
         # FIXME: start here
-        self.location = ListRange(None, None)
+        l = len(range_node)
+        if 1 <= l <= 2:
+            # range ::= location
+            # range ::= DIRECTION
+            if range_node[-1] == 'location':
+                self.preorder(range_node[-1])
+                self.result = ListRange(range_node[-1].location, '.')
+            else:
+                assert range_node[-1] == 'DIRECTION'
+                self.result = ListRange('.', range_node[-1].value)
+                pass
+            self.prune()
+        elif l == 3:
+            # range ::= COMMA opt_space location
+            # range ::= location opt_space COMMA
+            if range_node[0] == 'COMMA':
+                assert range_node[-1] == 'location'
+                self.preorder(range_node[-1])
+                self.result = ListRange('.', self.result)
+                self.prune()
+            else:
+                assert range_node[-1] == 'COMMA'
+                assert range_node[0] == 'location'
+                self.preorder(range_node[0])
+                self.result = ListRange(range_node[0].location, '.')
+                self.prune()
+                pass
+        elif l == 5:
+            # range ::= location opt_space COMMA opt_space NUMBER
+            assert range_node[2] == 'COMMA'
+            assert range_node[-1] == 'NUMBER'
+            self.preorder(range_node[0])
+            self.result = ListRange(range_node[0].location, range_node[-1].value)
+            self.prune()
+        else:
+            from trepan.api import debug; debug()
+            raise RangeError("Something is wrong")
+        return
 
     def default(self, node):
         if node not in frozenset(("""opt_space tokens token bp_start range_start
-                                  IF FILENAME COLON SPACE""".split())):
+                                  IF FILENAME COLON COMMA SPACE DIRECTION""".split())):
             assert False, ("Something's wrong: you missed a rule for %s" % node.kind)
 
     def traverse(self, node, ):
         return self.preorder(node)
 
 
-def main(string, show_tokens=False, show_ast=False, show_grammar=False):
+def build_location(string, show_tokens=False, show_ast=False, show_grammar=False):
     parser_debug = {'rules': False, 'transition': False,
                     'reduce': show_grammar,
                     'errorstack': True, 'context': True, 'dups': True }
     parsed = parse_bp_location(string, show_tokens=show_tokens,
                                parser_debug=parser_debug)
     assert parsed == 'bp_start'
+    if show_ast:
+        print(parsed)
     walker = LocationGrok(string)
     walker.traverse(parsed)
-    location = walker.location
+    location = walker.result
     assert location.line_number is not None or location.method
     return location
 
+def build_range(string, show_tokens=True, show_ast=False, show_grammar=True):
+    parser_debug = {'rules': False, 'transition': False,
+                    'reduce': show_grammar,
+                    'errorstack': True, 'context': True, 'dups': True }
+    parsed = parse_range(string, show_tokens=show_tokens,
+                               parser_debug=parser_debug)
+    if show_ast:
+        print(parsed)
+    assert parsed == 'range_start'
+    walker = LocationGrok(string)
+    walker.traverse(parsed)
+    list_range = walker.result
+    return list_range
+
 if __name__ == '__main__':
+    # lines = """
+    # /tmp/foo.py:12
+    # /tmp/foo.py line 12
+    # 12
+    # ../foo.py:5
+    # gcd()
+    # foo.py line 5 if x > 1
+    # """.splitlines()
+    # for line in lines:
+    #     if not line.strip():
+    #         continue
+    #     print("=" * 30)
+    #     print(line)
+    #     print("+" * 30)
+    #     location = build_location(line)
+    #     print(location)
     lines = """
-    /tmp/foo.py:12
-    /tmp/foo.py line 12
-    12
+    /tmp/foo.py:12 , 5
+    -
+    +
     ../foo.py:5
-    gcd()
-    foo.py line 5 if x > 1
+    ../foo.py:5 ,
+    , 5
+    , /foo.py:5
     """.splitlines()
     for line in lines:
         if not line.strip():
@@ -113,5 +189,5 @@ if __name__ == '__main__':
         print("=" * 30)
         print(line)
         print("+" * 30)
-        location = main(line)
-        print(location)
+        list_range = build_range(line)
+        print(list_range)

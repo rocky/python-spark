@@ -4,6 +4,7 @@ Copyright (c) 2017 Rocky Bernstein
 """
 
 from __future__ import print_function
+import re
 from spark_parser.scanner import GenericScanner
 from gdbloc.tok import Token
 
@@ -44,22 +45,23 @@ x = 2y + z
         self.add_token('SPACE', s)
         pass
 
-    def t_filename(self, s):
-        r'(?:[^,\d\'"\t \n:][^\'"\t \n:]*)|(?:^""".+""")|(?:\'\'\'.+\'\'\')'
+    def t_file_or_func(self, s):
+        r'(?:[^-+,\d\'"\t \n:][^\'"\t \n:]*)|(?:^""".+""")|(?:\'\'\'.+\'\'\')'
+        maybe_funcname = True
         if s == 'if':
             self.add_token('IF', s)
             return
         if s[0] in ["""'\""""]:
+            maybe_funcname = False
             base = s[1:-1]
         else:
             base = s
         pos = self.pos
-        self.add_token('FILENAME', base)
+        if maybe_funcname and re.match('[a-zA-Z_]\w+\(\)', s):
+            self.add_token('FUNCNAME', base)
+        else:
+            self.add_token('FILENAME', base)
         self.pos = pos + len(s)
-
-    def t_funcname(self, s):
-        r'[a-zA-Z_]\w+\(\)'
-        self.add_token('FUNCNAME', s)
 
     def t_colon(self, s):
         r':'

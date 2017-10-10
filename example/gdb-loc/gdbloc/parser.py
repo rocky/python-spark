@@ -69,10 +69,10 @@ class LocationParser(GenericASTBuilder):
         ## START HERE
         range_start  ::= opt_space range
         range ::= location
-        range ::= location opt_space COMMA NUMBER
-        range ::= COMMA NUMBER
-        range ::= NUMBER COMMA
-        range ::= DIRECTION
+        range ::= location opt_space COMMA opt_space NUMBER
+        range ::= COMMA opt_space location
+        range ::= location opt_space COMMA
+        range ::= opt_space DIRECTION
         '''
 
     ##########################################################
@@ -136,8 +136,8 @@ def parse_location(start_symbol, text, out=sys.stdout,
     #                 'errorstack': True, 'dups': True}
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
     #                 'errorstack': True, 'dups': False}
-    parser_debug = {'rules': False, 'transition': False, 'reduce': False,
-                    'errorstack': False, 'dups': False}
+    parser_debug = {'rules': False, 'transition': False, 'reduce': True,
+                    'errorstack': True, 'dups': False}
 
     parser = LocationParser(start_symbol, text, parser_debug)
     parser.check_grammar(frozenset(('bp_start', 'range_start')))
@@ -145,10 +145,10 @@ def parse_location(start_symbol, text, out=sys.stdout,
     return parser.parse(tokens)
 
 def parse_bp_location(*args, **kwargs):
-    parse_location('bp_start', *args, **kwargs)
+    return parse_location('bp_start', *args, **kwargs)
 
 def parse_range(*args, **kwargs):
-    parse_location('range_start', *args, **kwargs)
+    return parse_location('range_start', *args, **kwargs)
 
 if __name__ == '__main__':
     # lines = """
