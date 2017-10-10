@@ -12,7 +12,7 @@ has code for understanding gdb breakpoint locations (with optional
 condition) and "list" command ranges. I use this in my [Python trepan
 debugger](http://pypi.python.org/pypi/trepan3k)
 
-A large cexample is
+A large example is
 [`python2`](http://github.com/rocky/python-spark/tree/master/example/python2)
 a formatter for Python 2.6. It reads in valid Python 2.6, parses it
 and builds an abstract syntax tree. Then it prints it back out

@@ -1,7 +1,157 @@
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* README.rst, example/gdb-loc/gdbloc/semantics.py: Test gdb-loc
+	semantics
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/expr2/README.md,
+	example/gdb-loc/README.md: Update docs again
+
+2017-10-09  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/README.md, example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py: Pretty much coplete the gdbloc
+	example Now I just need to add it to trepan2 and trepan3k...
+
+2017-10-08  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py,
+	example/gdb-loc/pytest/test_parser.py,
+	example/gdb-loc/pytest/test_scanner.py, example/gdb-loc/setup.py,
+	spark_parser/spark.py: Start gdbloc range parsing
+
+2017-10-08  rocky <rb@dustyfeet.com>
+
+	* Makefile: Back off gdb-loc testing in CI and toplevel Some environment thing, and Python pisses me off about its fragility
+	too often for me to care here.
+
+2017-10-08  rocky <rb@dustyfeet.com>
+
+	* Makefile, example/gdb-loc/Makefile,
+	example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/pytest/test-scanner.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/pytest/test_scanner.py: More gdb-loc testing
+
+2017-10-08  rocky <rb@dustyfeet.com>
+
+	* .gitignore, NEW-FEATURES.rst, example/expr2/parser.py,
+	example/gdb-loc/.gitignore, example/gdb-loc/README.md,
+	example/gdb-loc/gdbloc/__init__.py,
+	example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/pytest/test-scanner.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py, example/gdb-loc/gdbloc/tok.py,
+	example/gdb-loc/setup.py, example/location/README.md,
+	example/location/parser.py, example/location/scanner.py,
+	example/location/semantics.py, example/location/tok.py,
+	example/python2/py2_parser.py, spark_parser/spark.py,
+	test/test_checker.py, test/test_grammar.py, test/test_misc.py,
+	test/test_spark.py: Fill out example for gdb line ranges
+
+2017-10-07  rocky <rb@dustyfeet.com>
+
+	* example/location/parser.py, example/location/semantics.py,
+	spark_parser/spark.py: Add semantic actions for location example...  Set tokens inside spark_parser
+
+2017-10-07  rocky <rb@dustyfeet.com>
+
+	* example/location/README.md, example/location/parser.py,
+	example/location/scanner.py, example/location/tok.py: Start location
+	parser
+
+2017-10-07  rocky <rb@dustyfeet.com>
+
+	* example/expr2/scanner.py, example/python2/py2_format.py,
+	example/python2/py2_token.py, example/python2/test/test_class.py,
+	spark_parser/ast.py, spark_parser/scanner.py,
+	spark_parser/version.py: Start the breakpoint location parser
+
+2017-10-05  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Fix bug in calling reduce_is_invalid
+
+2017-10-03  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: always create an AST when check_reduce
+	needs it...  We require however the cooperation of the subclass to set
+	self.tokens
+
+2017-10-03  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: Go over table-semantics description
+	yet again
+
+2017-10-02  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Some simple but important changes...  Show the last token number in debugging grammar reductions Call check reduce even when we don't have a token stream Note: this puts responsibility on reduce routines to check for an
+	null AST or no tokens, and this is an incompatible change.
+
+2017-09-20  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
+2017-09-17  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: engine -> template-engine
+
+2017-09-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: Simplify more
+
+2017-09-09  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: Simplify Python example
+
+2017-08-31  rocky <rb@dustyfeet.com>
+
+	* example/python2/README.md: More doc changes
+
+2017-08-31  rocky <rb@dustyfeet.com>
+
+	* example/expr/expr.py: Minor changes of a documentation nature
+
+2017-08-10  rocky <rb@dustyfeet.com>
+
+	* .travis.yml: Add Python 3.6 testing
+
+2017-07-14  rocky <rb@dustyfeet.com>
+
+	* NEW-FEATURES.rst: Mostly RsT formatting
+
+2017-06-01  R. Bernstein <rocky@users.noreply.github.com>
+
+	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+
 2017-05-17  rocky <rb@dustyfeet.com>
 
-	* spark_parser/spark.py, spark_parser/version.py,
-	test/test_grammar.py: parser.remove_rules is the same as remove_rule
+	* appveyor.yml: Appveyor take 4
+
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* appveyor.yml: Appveyor take 3
+
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* appveyor.yml: Appveyor take 2
+
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* appveyor.yml, appveyor/install.ps1, appveyor/run_with_env.cmd: Try
+	appveyor
+
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* Makefile, tox.ini: Make make test-full work
+
+2017-05-17  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, spark_parser/spark.py, spark_parser/version.py,
+	test/test_grammar.py: Get ready for release 1.6.1
 
 2017-05-16  rocky <rb@dustyfeet.com>
 
