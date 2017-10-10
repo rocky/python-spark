@@ -25,4 +25,4 @@ This is a little more fully worked out (and thus longer) than the [`expr`](http:
 
 See
 [python2](http://github.com/rocky/python-spark/tree/master/example/python2)
-for the most elaborate example showing Python 2.6.
+for a more elaborate example showing Python 2.6 parsing.

@@ -70,7 +70,7 @@ stmts ::= stmt
 stmts ::= stmts stmt
 x ::= TOKEN
 """
-        parser.dumpGrammar(f)
+        parser.dump_grammar(f)
         self.assertEqual(f.getvalue(), expect)
 
         # Check Invalid rule

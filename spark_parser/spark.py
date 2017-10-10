@@ -424,6 +424,8 @@ class GenericParser(object):
         setting.
         """
 
+        self.tokens = tokens
+
         if debug:
             self.debug = debug
 
@@ -632,18 +634,22 @@ class GenericParser(object):
                     self.debug_reduce(rule, tokens, parent, i)
                 if self.profile_info is not None:
                     self.profile_rule(rule)
-                if lhs in self.check_reduce and tokens:
-                    if self.check_reduce[lhs] == 'AST':
-                        ast = self.reduce_ast(rule, tokens, item, i, sets)
+                if lhs in self.check_reduce:
+                    if (self.check_reduce[lhs] == 'AST' and
+                        (tokens or hasattr(self, 'tokens'))):
+                        if hasattr(self, 'tokens'):
+                            tokens = self.tokens
+                        ast = self.reduce_ast(rule, self.tokens, item, i, sets)
                     else:
                         ast = None
-                    invalid = self.reduce_is_invalid(rule, ast, tokens, parent, i)
+                    invalid = self.reduce_is_invalid(rule, ast, self.tokens, parent, i)
                     if ast:
                         del ast
                     if invalid:
                         if self.debug['reduce']:
                             print("Reduce %s invalid by check" % lhs)
                         continue
+                    pass
                     pass
                 for pitem in sets[parent]:
                     pstate, pparent = pitem
@@ -824,7 +830,7 @@ class GenericParser(object):
         '''
         return list[0]
 
-    def dumpGrammar(self, out=sys.stdout):
+    def dump_grammar(self, out=sys.stdout):
         """
         Print grammar rules
         """
@@ -832,32 +838,37 @@ class GenericParser(object):
             out.write("%s\n" % rule2str(rule[0]))
         return
 
-    def checkGrammar(self, out=sys.stderr):
+    def check_grammar(self, ok_start_symbols = set(),
+                      out=sys.stderr):
         '''
-        Check grammar
+        Check grammar for:
+        -  unused left-hand side nonterminals that are neither start symbols
+           or listed in ok_start_symbols
+        -  unused right-hand side nonterminals, i.e. not tokens
+        -  right-recursive rules. These can slow down parsing.
         '''
-        lhs, rhs, tokens, right_recursive = self.checkSets()
-        if len(lhs) > 0:
+        lhs, rhs, tokens, right_recursive = self.check_sets()
+        if lhs - ok_start_symbols:
             out.write("LHS symbols not used on the RHS:\n")
-            out.write(sorted(lhs), "\n")
-        if len(rhs) > 0:
+            out.write((', '.join(sorted(lhs)) + "\n"))
+        if rhs:
             out.write("RHS symbols not used on the LHS:\n")
-            out.write(sorted(rhs, "\n"))
-        if len(right_recursive) > 0:
+            out.write((', '.join(sorted(rhs))) + "\n" )
+        if right_recursive:
             out.write("Right recursive rules:\n")
-            for rule in right_recursive:
+            for rule in sorted(right_recursive):
                 out.write("%s ::= %s\n" % (rule[0], ' '.join(rule[1])))
                 pass
             pass
 
-    def checkSets(self):
+    def check_sets(self):
         '''
         Check grammar
         '''
         lhs_set = set()
         rhs_set = set()
         token_set = set()
-        right_recursive = []
+        right_recursive = set()
         for lhs in self.rules:
             rules_for_lhs = self.rules[lhs]
             lhs_set.add(lhs)
@@ -871,7 +882,7 @@ class GenericParser(object):
                     else:
                         rhs_set.add(sym)
                 if len(rhs) > 0 and lhs == rhs[-1]:
-                    right_recursive.append([lhs, rhs])
+                    right_recursive.add((lhs, rhs))
                 pass
             pass
 
@@ -881,13 +892,13 @@ class GenericParser(object):
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
 
-    def reduce_string(self, rule):
-        return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
+    def reduce_string(self, rule, last_token_pos):
+        return "%s ::= %s (%d)" % (rule[0], ' '.join(rule[1]), last_token_pos)
 
     # Note the unused parameters here are used in subclassed
     # routines that need more information
     def debug_reduce(self, rule, tokens, parent, i):
-        print(self.reduce_string(rule))
+        print(self.reduce_string(rule, i))
 
     def profile_rule(self, rule):
         """Bump count of the number of times _rule_ was used"""

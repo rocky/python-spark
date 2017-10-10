@@ -1,4 +1,4 @@
-#  Copyright (c) 2016 Rocky Bernstein
+#  Copyright (c) 2016-2017 Rocky Bernstein
 """
 More complex expression parsing
 """
@@ -61,7 +61,7 @@ def parse_expr(python_str, out=sys.stdout,
     # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
     #                'errorstack': True, 'dups': True}
     parser = ExprParser(parser_debug)
-    parser.checkGrammar()
+    parser.check_grammar()
     return parser.parse(tokens)
 
 if __name__ == '__main__':

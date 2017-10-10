@@ -1,4 +1,4 @@
-#  Copyright (c) 2016 Rocky Bernstein
+#  Copyright (c) 2016-2017 Rocky Bernstein
 """
 More complex expression parsing
 """
@@ -608,7 +608,7 @@ def parse_python2(python_stmts, start='file_input',
     #                'errorstack': 'full', 'context': True, 'dups': True}
     parser = PythonParser(start=start, debug=parser_debug)
     if check:
-        parser.checkGrammar()
+        parser.check_grammar()
     return parser.parse(tokens)
 
 if __name__ == '__main__':

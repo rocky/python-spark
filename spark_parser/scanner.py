@@ -19,24 +19,24 @@ def _namelist(instance):
 class GenericToken:
     """A sample Token class that can be used in scanning"""
     def __init__(self, kind, attr=None):
-        self.type = kind
+        self.kind = kind
         self.attr = attr
 
     def __eq__(self, o):
         """ '==', but it's okay if offsets and linestarts are different"""
         if isinstance(o, GenericToken):
-            return (self.type == o.type) and (self.attr == o.attr)
+            return (self.kind == o.kind) and (self.attr == o.attr)
         else:
-            return self.type == o
+            return self.kind == o
 
     def __str__(self):
         if self.attr:
-            return 'type: %s, value: %r' % (self.type, self.attr)
+            return 'kind: %s, value: %r' % (self.kind, self.attr)
         else:
-            return "type: %s" % self.type
+            return "kind: %s" % self.kind
 
     def __repr__(self):
-        return self.attr or self.type
+        return self.attr or self.kind
 
     # Used in generic table-driven semantics routines
     def __hash__(self):
@@ -56,11 +56,12 @@ class GenericScanner:
 
         def t_add_op(self, s):
         r'[+-]'
-        t = GenericToken(type='ADD_OP', attr=s)
+        t = GenericToken(kind='ADD_OP', attr=s)
         self.rv.append(t)
     """
     def __init__(self):
         pattern = self.reflect()
+        self.pos = 0
         self.re = re.compile(pattern, re.VERBOSE)
 
         self.index2func = {}
@@ -80,26 +81,26 @@ class GenericScanner:
         rv.append(self.makeRE('t_default'))
         return '|'.join(rv)
 
-    def error(self, s, pos):
+    def error(self, s):
         """Simple-minded error handler. see py2_scan for another
         possibility.'
         """
-        print("Lexical error in %s at position %s" % (s, pos))
+        print("Lexical error in %s at position %s" % (s, self.pos))
         raise SystemExit
 
     def tokenize(self, s):
-        pos = 0
+        self.pos = 0
         n = len(s)
-        while pos < n:
-            m = self.re.match(s, pos)
+        while self.pos < n:
+            m = self.re.match(s, self.pos)
             if m is None:
-                self.error(s, pos)
+                self.error(s)
 
             groups = m.groups()
             for i in range(len(groups)):
                 if groups[i] and i in self.index2func:
                     self.index2func[i](groups[i])
-            pos = m.end()
+            self.pos = m.end()
 
     def t_default(self, s):
         r'( \n )+'

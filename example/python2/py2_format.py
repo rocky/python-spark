@@ -1,6 +1,12 @@
-#  Copyright (c) 2016 by Rocky Bernstein
+#  Copyright (c) 2016-2017 by Rocky Bernstein
+#  Based on decompyle.py
+#  Copyright (c) 1999 John Aycock
 
 """Formats Python source an abstract syntax tree created by AST builder.
+
+The below is a bit long, but still it is somehwat abbreviated.
+See https://github.com/rocky/python-uncompyle6/wiki/Table-driven-semantic-actions.
+for a more complete explanation, nicely marked up and with examples.
 
 Semantic action rules for nonterminal symbols can be specified here by
 creating a method prefaced with "n_" for that nonterminal. For
@@ -9,51 +15,77 @@ example, "n_exec_stmt" handles the semantic actions for the
 of the nontermail is suffixed with "_exit" it will be called after
 all of its children are called.
 
-Another other way to specify a semantic rule for a nonterminal is via
-rule given in one of the tables MAP_R0, MAP_R, or MAP_DIRECT.
+After a while writing methods this way, you'll probably find many
+routines which do similar sorts of things, and soon you'll find you
+want a short notation to describe rules and not have to create methods
+at all.
 
-These uses a printf-like syntax to direct substitution from attributes
-of the nonterminal and its children..
+So another other way to specify a semantic rule for a nonterminal is via
+one of the tables MAP_R0, MAP_R, or MAP_DIRECT where the key is the
+nonterminal name.
 
-The rest of the below describes how table-driven semantic actions work
-and gives a list of the format specifiers. The default() and
+These dictionaries use a printf-like syntax to direct substitution
+from attributes of the nonterminal and its children..
+
+The rest of the below describes how table-driven semantic actions work;
+we also a list of the format specifiers. The default() and
 template_engine() methods implement most of the below.
 
-  Step 1 determines a table (T) and a path to a
-  table key (K) from the node type (N) (other nodes are shown as O):
+We allow for a couple of ways to interact with a node in a tree.  So
+step 1 determines from what point of view tree-wise the rule is
+applied.  In the diagram below, "N" is a nonterminal name, and K
+is the table key name; we show where those are with respect to each
+other in the AST tree for N.
 
-         N                  N               N&K
-     / | ... \          / | ... \        / | ... \
-    O  O      O        O  O      K      O  O      O
-              |
-              K
+          N&K               N                  N
+         / | ... \        / | ... \          / | ... \
+        O  O      O      O  O      K         O O      O
+                                                      |
+                                                      K
+      TABLE_DIRECT      TABLE_R             TABLE_R0
 
-  MAP_R0 (TABLE_R0)  MAP_R (TABLE_R)  MAP_DIRECT (TABLE_DIRECT)
+The default is a "TABLE_DIRECT" mapping By far, most rules used work this way.
+TABLE_R0 is rarely used.
 
-  The default is a direct mapping.  The key K is then extracted from the
-  subtree and used to find a table entry T[K], if any.  The result is a
-  format string and arguments (a la printf()) for the formatting engine.
-  Escapes in the format string are:
+The default is a "TABLE_DIRECT" mapping.  The key K is then extracted from the
+subtree and used to find a table entry T[K], if any.  The result is a
+format string and arguments (a la printf()) for the formatting engine.
+Escapes in the format string are:
 
-    %c  evaluate children N[A] recursively*
-    %C  evaluate children N[A[0]]..N[A[1]-1] recursively, separate by A[2]*
-    %P  same as %C but sets operator precedence
-    %D  same as %C but is for left-recursive lists like kwargs which
-        goes to epsilon at the beginning. Using %C an extra separator
-        with an epsilon appears at the beginning
-    %|  tab to current indentation level
-    %+ increase current indentation level
-    %- decrease current indentation level
+    %c  evaluate the node recursively. Its argument is a single
+        integer representing a node index.
+
+    %p  like %c but sets the operator precedence.
+        Its argument then is a tuple indicating the node
+        index and the precidence value, an integer.
+
+    %C  evaluate children recursively, with sibling children separated by the
+        given string.  It needs a 3-tuple: a starting node, the maximimum
+        value of an end node, and a string to be inserted between sibling children
+
+    %P same as %C but sets operator precedence.  Its argument is a 4-tuple:
+        the node low and high indices, the separator, a string the precidence
+        value, an integer.
+
+    %D Same as `%C` this is for left-recursive lists like kwargs where goes
+       to epsilon at the beginning. It needs a 3-tuple: a starting node, the
+       maximimum value of an end node, and a string to be inserted between
+       sibling children. If we were to use `%C` an extra separator with an
+       epsilon would appear at the beginning.
+
+    %|  Insert spaces to the current indentation level. Takes no arguments.
+
+    %+ increase current indentation level. Takes no arguments.
+
+    %- decrease current indentation level. Takes no arguments.
+
     %{...} evaluate ... in context of N
-    %% literal '%'
-    %p evaluate N setting precedence
 
+    %% literal '%'. Takes no arguments.
 
-  * indicates an argument (A) required.
-
-  The '%' may optionally be followed by a number (C) in square
-  brackets, which makes the template engine walk down to N[C] before
-  evaluating the escape code.
+The '%' may optionally be followed by a number (C) in square
+brackets, which makes the template engine walk down to N[C] before
+evaluating the escape code.
 
 """
 # from __future__ import print_function
@@ -145,7 +177,7 @@ MAP = {
 escape = re.compile(r'''
             (?P<prefix> [^%]* )
             % ( \[ (?P<child> -? \d+ ) \] )?
-                ((?P<type> [^{] ) |
+                ((?P<kind> [^{] ) |
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
 
@@ -545,7 +577,7 @@ class Python2Formatter(GenericASTTraversal, object):
             i = m.end()
             self.write(m.group('prefix'))
 
-            typ = m.group('type') or '{'
+            typ = m.group('kind') or '{'
             node = startnode
             try:
                 if m.group('child'):
@@ -623,8 +655,8 @@ class Python2Formatter(GenericASTTraversal, object):
         for i in mapping[1:]:
             key = key[i]
 
-        if key.type in table:
-            self.template_engine(table[key.type], node)
+        if key.kind in table:
+            self.template_engine(table[key.kind], node)
             self.prune()
 
     def format_python2(self, ast):
@@ -650,7 +682,7 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
         print(parsed)
 
     # What we've been waiting for: Generate source from AST!
-    python2_formatted_str = formatter.format_python2(parsed)
+    python2_formatted_str = formatter.traverse(parsed)
 
     return python2_formatted_str
 
