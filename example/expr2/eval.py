@@ -3,7 +3,7 @@
 """Simple expression evaluator in SPARK
 """
 
-from parser import parse_expr
+from expr_parser import parse_expr
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
 class ExprFormatterError(Exception):
