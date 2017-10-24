@@ -6,8 +6,8 @@ is the simpler of the two: it's everything all rolled into one file
 
 [`expr2`](http://github.com/rocky/python-spark/tree/master/example/expr2)
 has more complete grammar rules. And the scanner is split off from the
-parser. The pytest program `test_grammar.py` show off using the parser
-check_grammar() function to make sure that there are no extraneous
+parser. The pytest program `test_grammar.py` shows off using the parser
+*check_grammar()* function to make sure that there are no extraneous
 nonterminals in left-hand or right-hand grammar rules.
 
 [gdb-loc](http://github.com/rocky/python-spark/tree/master/example/gdb-loc)

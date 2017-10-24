@@ -452,7 +452,7 @@ class GenericParser(object):
         finalitem = (self.finalState(tokens), 0)
         if finalitem not in sets[-2]:
             if len(tokens) > 0:
-                if self.debug['errorstack']:
+                if self.debug.get('errorstack', False):
                     self.errorstack(tokens, i-1, str(self.debug['errorstack']) == 'full')
                 self.error(tokens, i-1)
             else:
