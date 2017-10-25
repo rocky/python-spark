@@ -60,7 +60,7 @@ In a large project like uncompyle6_ there are lots of grammar rules:
 over 600 rules for each of the 13 or so versions of Python.
 
 It is very easy to create nonsensical grammar rules, so we need to
-have a way to check the grammar.  Partuclarly useful is the ability to
+have a way to check the grammar.  Partcularly useful is the ability to
 find unused left-hand-side nonterminals that are not either the start
 symbol or used on the right-hand side.  Likewise unused nonterminals
 (lower-case symbols) that appear on the right-hand side that are not

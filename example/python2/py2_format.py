@@ -50,10 +50,14 @@ TABLE_R0 is rarely used.
 The default is a "TABLE_DIRECT" mapping.  The key K is then extracted from the
 subtree and used to find a table entry T[K], if any.  The result is a
 format string and arguments (a la printf()) for the formatting engine.
+
 Escapes in the format string are:
 
     %c  evaluate the node recursively. Its argument is a single
-        integer representing a node index.
+        integer or tuple representing a node index.
+        If a tuple is given, the first item is the node index while
+        the second item is a string giving the node/noterminal name.
+        This name will be checked at runtime against the node type.
 
     %p  like %c but sets the operator precedence.
         Its argument then is a tuple indicating the node
@@ -106,7 +110,6 @@ else:
     minint = -sys.maxint-1
     maxint = sys.maxint
 
-# TAB = '\t'			# as God intended
 TAB = ' ' *4   # is less spacy than "\t"
 INDENT_PER_LEVEL = ' ' # additional intent per pretty-print level
 
@@ -118,23 +121,32 @@ TABLE_R0 = {}
 TABLE_DIRECT = {
     'break_stmt':       ( '%|break\n', ),
     'continue_stmt':    ( '%|continue\n', ),
-    'del_stmt':	        ( '%|del %c\n', 1),
-    'expr_stmt':	( '%|%c %c %c\n', 0, 1, 2),
-    'global_stmt':	( '%|global %C\n', (1, maxint, '')),
-    'print_stmt':       ( '%|print %c\n', 1),
+    'del_stmt':	        ( '%|del %c\n',
+                          (1, 'exprlist')),
+    'expr_stmt':	( '%|%c %c %c\n',
+                          (0, 'testlist'), 1, 2),
+    'global_stmt':	( '%|global %C\n', (1, maxint, '') ),
+    'print_stmt':       ( '%|print %c\n',
+                          (1, 'test_params_or_redirect') ),
     'pass_stmt':        ( '%|pass\n', ),
-    'import_from':      ( '%|from %c import %c\n', 1, 2 ),
+    'import_from':      ( '%|from %c import %c\n',
+                          (1, 'dots_dotted_name_or_dots'), (2, 'import_list') ),
     'import_name':      ( '%|import %c\n', 1 ),
     'newline_or_stmt':  ('%c\n', 0),
     'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     'comma_name':	( ', %c', 1),
-    'while_stmt':	( '%|while %c:\n%+%c%-', 1, 3),
+
+    # FIXME: Not quite right. Should handle else_suite_opt at index 4
+    'while_stmt':	( '%|while %c:\n%+%c%-',
+                          (1, 'test'), (3, 'suite') ),
+
     'classdef':         ( '%|class %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
     'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
     'comp_op_exprs':    ( ' %c %c', 0, 1 ),
     'or_and_test':      ( ' %c %c', 0, 1 ),
-    'comma_import_as_name': (', %c', 1 ),
+    'comma_import_as_name': (', %c',
+                             (1, 'import_as_name') ),
     'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
 
     'NAME':	 ( '%{attr}', ),
@@ -180,9 +192,6 @@ escape = re.compile(r'''
                 ((?P<kind> [^{] ) |
                  ( [{] (?P<expr> [^}]* ) [}] ))
         ''', re.VERBOSE)
-
-def _get_mapping(node):
-    return MAP.get(node, MAP_DIRECT)
 
 class Python2FormatterError(Exception):
     def __init__(self, errmsg):
@@ -543,11 +552,6 @@ class Python2Formatter(GenericASTTraversal, object):
         self.indentLess()
         self.prune()
 
-    def n_yield_expr_or_testlistt(self, node):
-        self.preorder(node[0])
-        if len(node) > 1:
-            self.preorter(node[1])
-
     # def n_stmt_plus(self, node):
     #     if len(node) > 1:
     #         self.write(self.indent)
@@ -591,8 +595,16 @@ class Python2Formatter(GenericASTTraversal, object):
             elif typ == '-':	self.indentLess()
             elif typ == '|':	self.write(self.indent)
             elif typ == 'c':
-                if isinstance(entry[arg], int):
-                    self.preorder(node[entry[arg]])
+                index = entry[arg]
+                if isinstance(index, tuple):
+
+                    assert node[index[0]] == index[1], (
+                        "at %s[%d], %s vs %s" % (
+                            node.kind, arg, node[index[0]].kind, index[1])
+                        )
+                    index = index[0]
+                if isinstance(index, int):
+                    self.preorder(node[index])
                 arg += 1
             elif typ == 'p':
                 (index, self.prec) = entry[arg]
@@ -648,20 +660,15 @@ class Python2Formatter(GenericASTTraversal, object):
         self.write(fmt[i:])
 
     def default(self, node):
-        mapping = _get_mapping(node)
-        table = mapping[0]
+        table = MAP_DIRECT[0]
         key = node
 
-        for i in mapping[1:]:
+        for i in MAP_DIRECT[1:]:
             key = key[i]
 
         if key.kind in table:
             self.template_engine(table[key.kind], node)
             self.prune()
-
-    def format_python2(self, ast):
-        """convert AST to Python2 source code"""
-        return self.traverse(ast)
 
 def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
                          showgrammar=False, compile_mode='exec'):
