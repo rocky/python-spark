@@ -24,9 +24,11 @@ check:
 	$(MAKE) -C example/python2 check
 #	$(MAKE) -C example/gdb-loc check
 
+CLEAN_FILES= *.pyc *.so */*.pyc __pycache__ rm  test/__pycache__/ example/*/__pycache__
 #: Clean up temporary files
 clean:
 	$(PYTHON) ./setup.py $@
+	-rm -fvr $(CLEAN_FILES) || true
 
 #: Create source (tarball) and binary (egg) distribution
 dist: README.rst
@@ -46,7 +48,7 @@ wheel:
 
 # It is too much work to figure out how to add a new command to distutils
 # to do the following. I'm sure distutils will someday get there.
-DISTCLEAN_FILES = build dist *.egg-info *.pyc *.so py*.py
+DISTCLEAN_FILES = build dist *.egg-info
 
 #: Remove ALL dervied files
 distclean: clean
