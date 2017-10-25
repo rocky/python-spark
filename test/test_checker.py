@@ -2,11 +2,8 @@
 """
 SPARK unit unit test grammar checking
 """
-import unittest, sys
+import unittest
 from spark_parser.spark import GenericParser
-
-if sys.version[0:3] <= '2.3':
-    from sets import Set as set
 
 
 class RightRecursive(GenericParser):
