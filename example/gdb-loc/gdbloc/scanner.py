@@ -152,10 +152,10 @@ if __name__ == "__main__":
                 print(t)
                 pass
             print('-' * 30)
-        except ScannerError as e:
+        except ScannerError(text, cursor):
             print("Lexical error at or around: ")
-            print(e.text)
-            print(e.text_cursor)
+            print(text)
+            print(text_cursor)
 
         pass
     pass

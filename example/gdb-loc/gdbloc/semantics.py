@@ -7,7 +7,7 @@ from gdbloc.parser import LocationError as PLocationError
 from gdbloc.scanner import ScannerError
 from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
-from collections import namedtuple
+from namedtuple24 import namedtuple
 Location = namedtuple("Location", "path line_number is_address method")
 BPLocation = namedtuple("BPLocation", "location condition")
 ListRange = namedtuple("ListRange", "first last")
@@ -268,20 +268,21 @@ def build_arange(string, show_tokens=False, show_ast=False, show_grammar=False):
 if __name__ == '__main__':
     # FIXME: make sure the below is in a test
     def doit(fn, line):
+        text, text_cursor = '', 0
         print("=" * 30)
         print(line)
         print("+" * 30)
         try:
             result = fn(line)
             print(result)
-        except ScannerError as e:
+        except ScannerError(text, text_cursor):
             print("Scanner error")
-            print(e.text)
-            print(e.text_cursor)
-        except PLocationError as e:
+            print(text)
+            print(text_cursor)
+        except PLocationError(text, text_cursor):
             print("Parser error at or near")
-            print(e.text)
-            print(e.text_cursor)
+            print(text)
+            print(text_cursor)
 
     # lines = """
     # /tmp/foo.py:12
