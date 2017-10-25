@@ -38,7 +38,7 @@ class LocationGrok(GenericASTTraversal, object):
 
     def n_addr_location(self, node):
         # addr_location ::= location
-        #addr_location ::= ADDRESS
+        # addr_location ::= ADDRESS
 
         path, line_number, method = None, None, None
         if node[0] == 'ADDRESS':
@@ -51,7 +51,6 @@ class LocationGrok(GenericASTTraversal, object):
             assert node[0] == 'location'
             self.preorder(node[0])
             node.location = node[0].location
-
 
     def n_location(self, node):
         path, line_number, method = None, None, None

@@ -1,3 +1,8 @@
+spark 1.7.1 2017-10-11
+
+- Handle errorstack option when not set properly
+- more complete gdb-loc demo including better tests
+
 spark 1.7.0 2017-10-10
 
 A number of incompatible changes, but necessary in code this old...

@@ -1,3 +1,59 @@
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.7.1
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/pytest/test_parser.py: Better gdbloc parser test
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py,
+	example/gdb-loc/pytest/test_parser.py,
+	example/gdb-loc/pytest/test_semantics.py, spark_parser/spark.py: 
+	parser: handle errorstack better; better gdbloc
+
+2017-10-12  rocky <rb@dustyfeet.com>
+
+	* example/README.md, example/expr2/eval.py,
+	example/expr2/expr_parser.py, example/expr2/parser.py,
+	example/expr2/test_grammar.py, example/python2/py2_format.py: 
+	Improve examples.
+
+2017-10-12  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/pytest/test_semantics.py: Add gdbloc semantic test
+
+2017-10-12  rocky <rb@dustyfeet.com>
+
+	* admin-tools/README.md, admin-tools/check-newer-versions.sh,
+	admin-tools/check-older-versions.sh,
+	admin-tools/how-to-make-a-release.md,
+	admin-tools/make-dist-newer.sh, admin-tools/make-dist-older.sh,
+	admin-tools/pyenv-newer-versions, admin-tools/pyenv-older-versions,
+	admin-tools/setup-master.sh, admin-tools/setup-python-2.4.sh: Add
+	admin code for making a release
+
+2017-10-12  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: Start allowing node type checking
+	in fmt strings
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* NEWS: Another typo
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, example/README.md: Typo
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* : commit 0b00a93ea702835ce60bbec8f552ff3670dd21ce Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Oct 10 12:47:18 2017 -0400
+
 2017-10-10  rocky <rb@dustyfeet.com>
 
 	* README.rst, example/gdb-loc/gdbloc/semantics.py: Test gdb-loc

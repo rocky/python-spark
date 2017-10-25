@@ -9,7 +9,7 @@ def test_semantics():
             ( "/tmp/foo.py:12",
               ListRange(first=Location(path='/tmp/foo.py', line_number=12, is_address=False, method=None),
                        last=None) ),
-             (", 5",
+            (", 5",
               ListRange(first=None, last=Location(path=None, line_number=5, is_address=False,
                                                  method=None))),
             (", foo.py:14",
