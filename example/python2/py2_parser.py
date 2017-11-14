@@ -611,6 +611,7 @@ def parse_python2(python_stmts, start='file_input',
         parser.check_grammar()
     return parser.parse(tokens)
 
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         for python2_stmts in (

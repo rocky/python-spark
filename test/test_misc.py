@@ -96,5 +96,6 @@ x ::= TOKEN
                           (('opt_period', ()), 'rules'),
                           (('opt_period', ('PERIOD',)), 'rules'), ])
 
+
 if __name__ == '__main__':
     unittest.main()
