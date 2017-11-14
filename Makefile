@@ -24,7 +24,7 @@ check:
 	$(MAKE) -C example/python2 check
 #	$(MAKE) -C example/gdb-loc check
 
-CLEAN_FILES= *.pyc *.so */*.pyc __pycache__ rm  test/__pycache__/ example/*/__pycache__
+CLEAN_FILES= *.pyc *.so */*.pyc __pycache__ rm  */__pycache__/ */*/__pycache__ *~ */*~
 #: Clean up temporary files
 clean:
 	$(PYTHON) ./setup.py $@

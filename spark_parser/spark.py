@@ -283,7 +283,7 @@ class GenericParser(object):
 
     def augment(self, start):
         rule = '%s ::= %s %s' % (self._START, self._BOF, start)
-        self.addRule(rule, lambda args: args[1], 0)
+        self.addRule(rule, lambda args: args[1], False)
 
     def computeNull(self):
         self.nullable = {}
@@ -892,8 +892,11 @@ class GenericParser(object):
         missing_rhs = rhs_set - lhs_set
         return (missing_lhs, missing_rhs, token_set, right_recursive)
 
-    def reduce_string(self, rule, last_token_pos):
-        return "%s ::= %s (%d)" % (rule[0], ' '.join(rule[1]), last_token_pos)
+    def reduce_string(self, rule, last_token_pos=-1):
+        if last_token_pos >= 0:
+            return "%s ::= %s (%d)" % (rule[0], ' '.join(rule[1]), last_token_pos)
+        else:
+            return "%s ::= %s" % (rule[0], ' '.join(rule[1]))
 
     # Note the unused parameters here are used in subclassed
     # routines that need more information

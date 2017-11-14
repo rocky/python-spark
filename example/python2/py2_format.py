@@ -597,7 +597,6 @@ class Python2Formatter(GenericASTTraversal, object):
             elif typ == 'c':
                 index = entry[arg]
                 if isinstance(index, tuple):
-
                     assert node[index[0]] == index[1], (
                         "at %s[%d], %s vs %s" % (
                             node.kind, arg, node[index[0]].kind, index[1])
@@ -607,8 +606,21 @@ class Python2Formatter(GenericASTTraversal, object):
                     self.preorder(node[index])
                 arg += 1
             elif typ == 'p':
-                (index, self.prec) = entry[arg]
+                p = self.prec
+                l = len(entry)
+                if l == 3:
+                    (index, self.prec, name) = entry[arg]
+                    assert node[index] == name, (
+                        "at %s[%d], %s vs %s" % (
+                            node.kind, arg, node[index[0]].kind, index[1])
+                        )
+                elif l == 2:
+                    (index, self.prec) = entry[arg]
+                else:
+                    raise RuntimeError("Invalid %%p tuple length %d; length should be 1 or 2" % l)
+
                 self.preorder(node[index])
+                self.prec = p
                 arg += 1
             elif typ == 'C':
                 low, high, sep = entry[arg]
