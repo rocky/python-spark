@@ -128,6 +128,7 @@ x = 2y + z
         self.add_token('ADDRESS', s)
         self.pos = pos + len(s)
 
+
 if __name__ == "__main__":
     for line in (
             '/tmp/foo.py:12',

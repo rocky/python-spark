@@ -100,6 +100,7 @@ def eval_expr(expr_str, show_tokens=False, showast=False,
     # What we've been waiting for: Generate source from AST!
     return evaluator.traverse(parsed)
 
+
 if __name__ == '__main__':
     def eval_test(eval_str):
         result = eval_expr(eval_str, show_tokens=False, showast=False,

@@ -49,6 +49,7 @@ class ExprScanner(GenericScanner):
         r'\d+'
         self.add_token('INTEGER', s)
 
+
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True}
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True}
@@ -133,6 +134,7 @@ class TestSpark(unittest.TestCase):
             self.assertEqual(tree, expect)
             pass
         return
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -54,12 +54,14 @@ class _State:
         self.T, self.complete, self.items = [], [], items
         self.stateno = stateno
 
+
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True,
 #                  'errorstack': 'full', 'dups': False }
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True,
 #                  'errorstack': 'plain', 'dups': False }
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False,
                  'errorstack': None, 'context': True, 'dups': False}
+
 
 class GenericParser(object):
     '''

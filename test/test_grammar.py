@@ -20,6 +20,7 @@ class Expr(GenericParser):
         return
     pass
 
+
 nop_func = lambda self, args: None
 
 class TestGrammar(unittest.TestCase):

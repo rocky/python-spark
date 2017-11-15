@@ -1,4 +1,9 @@
-spark 1.7.1 2017-10-11
+spark 1.7.2 2017-11-14
+
+- Fix bug when used with profiling introduced in version 1.7.0
+- In python2 grammar example add check-nonterminal to template engine
+
+spark 1.7.1 2017-10-24
 
 - Handle errorstack option when not set properly
 - more complete gdb-loc demo including better tests
