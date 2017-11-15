@@ -242,7 +242,10 @@ class GenericParser(object):
             self.rule2name[rule] = func.__name__[2:]
             self.ruleschanged = True
 
-            if self.profile_info is not None:
+            # Note: In empty rules, i.e. len(rule[1] == 0, we don't
+            # call reductions on explicitly. Instead it is computed
+            # implicitly.
+            if self.profile_info is not None and len(rule[1]) > 0:
                 rule_str = self.reduce_string(rule)
                 if rule_str not in self.profile_info:
                     self.profile_info[rule_str] = 0
