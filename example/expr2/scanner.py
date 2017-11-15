@@ -76,6 +76,7 @@ x = 2y + z
         r'(0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+\.\d|\d+)j?'
         self.add_token('NUMBER', s)
 
+
 if __name__ == "__main__":
     tokens = ExprScanner().tokenize("(10.5 + 2 / 30) // 3 >> 1")
     for t in tokens:

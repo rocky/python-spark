@@ -1,6 +1,44 @@
+2017-11-14  rocky <rb@dustyfeet.com>
+
+	* example/expr2/eval.py, example/expr2/scanner.py,
+	spark_parser/version.py: Get ready for release 1.7.2
+
+2017-11-14  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/scanner.py, example/python2/py2_parser.py,
+	example/python2/py2_scan.py, spark_parser/spark.py,
+	test/test_checker.py, test/test_grammar.py, test/test_misc.py,
+	test/test_spark.py: Lint crap
+
+2017-11-14  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Fix bug when used with profiling...  reduce_string() should do the right thing if there is no token
+	position which happens in profiling when recording which rule was
+	used
+
+2017-11-13  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py: Check nonterminal if present in
+	template_engine
+
 2017-10-24  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.7.1
+	* Makefile: To aggressive distclean
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* test/test_checker.py: Nuke 2.3 stuff in this branch
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* Makefile: Update clean targets in prep for release
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, example/gdb-loc/gdbloc/semantics.py,
+	example/gdb-loc/pytest/test_semantics.py, spark_parser/version.py: 
+	Get ready for release 1.7.1
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
