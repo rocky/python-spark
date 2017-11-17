@@ -849,33 +849,56 @@ class GenericParser(object):
         -  unused right-hand side nonterminals, i.e. not tokens
         -  right-recursive rules. These can slow down parsing.
         '''
-        lhs, rhs, tokens, right_recursive = self.check_sets()
+        warnings = 0
+        (lhs, rhs, tokens, right_recursive,
+         dup_rhs) = self.check_sets()
         if lhs - ok_start_symbols:
+            warnings += 1
             out.write("LHS symbols not used on the RHS:\n")
-            out.write((', '.join(sorted(lhs)) + "\n"))
+            out.write("  " + (', '.join(sorted(lhs)) + "\n"))
         if rhs:
+            warnings += 1
             out.write("RHS symbols not used on the LHS:\n")
             out.write((', '.join(sorted(rhs))) + "\n" )
         if right_recursive:
+            warnings += 1
             out.write("Right recursive rules:\n")
             for rule in sorted(right_recursive):
-                out.write("%s ::= %s\n" % (rule[0], ' '.join(rule[1])))
+                out.write("  %s ::= %s\n" % (rule[0], ' '.join(rule[1])))
                 pass
             pass
+        if dup_rhs:
+            warnings += 1
+            out.write("Nonterminals with the same RHS\n")
+            for rhs in sorted(dup_rhs.keys()):
+                out.write("  RHS: %s\n" % ' '.join(rhs))
+                out.write("  LHS: %s\n" % ', '.join(dup_rhs[rhs]))
+                out.write("  ---\n")
+                pass
+            pass
+        return warnings
 
     def check_sets(self):
         '''
         Check grammar
         '''
-        lhs_set = set()
-        rhs_set = set()
-        token_set = set()
+        lhs_set         = set()
+        rhs_set         = set()
+        rhs_rules_set   = {}
+        token_set       = set()
         right_recursive = set()
+        dup_rhs = {}
         for lhs in self.rules:
             rules_for_lhs = self.rules[lhs]
             lhs_set.add(lhs)
             for rule in rules_for_lhs:
                 rhs = rule[1]
+                if len(rhs) > 0 and rhs in rhs_rules_set:
+                    li = dup_rhs.get(rhs, [])
+                    li.append(lhs)
+                    dup_rhs[rhs] = li
+                else:
+                    rhs_rules_set[rhs] = lhs
                 for sym in rhs:
                     # We assume any symbol starting with an uppercase letter is
                     # terminal, and anything else is a nonterminal
@@ -892,7 +915,12 @@ class GenericParser(object):
         rhs_set.remove(self._BOF)
         missing_lhs = lhs_set - rhs_set
         missing_rhs = rhs_set - lhs_set
-        return (missing_lhs, missing_rhs, token_set, right_recursive)
+
+        # dup_rhs is missing first entry found, so add that
+        for rhs in dup_rhs:
+            dup_rhs[rhs].append(rhs_rules_set[rhs])
+            pass
+        return (missing_lhs, missing_rhs, token_set, right_recursive, dup_rhs)
 
     def reduce_string(self, rule, last_token_pos=-1):
         if last_token_pos >= 0:

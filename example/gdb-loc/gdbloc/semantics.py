@@ -102,8 +102,8 @@ class LocationGrok(GenericASTTraversal, object):
     def n_arange(self, arange_node):
         if arange_node[0]  == 'range':
             arange_node = arange_node[0]
-        l = len(arange_node)
-        if 1 <= l <= 2:
+        length = len(arange_node)
+        if 1 <= length <= 2:
             # arange ::= location
             # arange ::= DIRECTION
             # arange ::= FUNCNAME
@@ -133,7 +133,7 @@ class LocationGrok(GenericASTTraversal, object):
                 self.result = ListRange(None, last_node.value)
                 pass
             self.prune()
-        elif l == 3:
+        elif length == 3:
             # arange ::= COMMA opt_space location
             # arange ::= location opt_space COMMA
             if arange_node[0] == 'COMMA':
@@ -148,8 +148,8 @@ class LocationGrok(GenericASTTraversal, object):
                 self.result = ListRange(arange_node[0].location, None)
                 self.prune()
                 pass
-        elif l == 5:
-            # arange ::= location opt_space COMMA opt_space {NUMBER | OFFSET | ADDRESS}
+        elif length == 5:
+            # arrange ::= location opt_space COMMA opt_space {NUMBER | OFFSET | ADDRESS}
             assert arange_node[2] == 'COMMA'
             assert arange_node[-1] in ('NUMBER', 'OFFSET', 'ADDRESS')
             self.preorder(arange_node[0])
