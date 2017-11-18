@@ -1,6 +1,30 @@
+2017-11-18  rocky <rb@dustyfeet.com>
+
+	* spark_parser/version.py: Get ready for release 1.8.0
+
+2017-11-17  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/gdbloc/semantics.py,
+	example/python2/py2_format.py, spark_parser/spark.py,
+	test/test_checker.py, test/test_grammar.py, test/test_spark.py: 
+	Check for rules with the same non-nul RHS
+
+2017-11-16  rocky <rb@dustyfeet.com>
+
+	* bin/spark-parser-coverage: Secondary key in profile sort is the
+	rule
+
+2017-11-15  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: In profiling don't add epsilon rules
+
 2017-11-14  rocky <rb@dustyfeet.com>
 
-	* example/expr2/eval.py, example/expr2/scanner.py,
+	* admin-tools/pyenv-newer-versions: Update pyenv versions tested
+
+2017-11-14  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, example/expr2/eval.py, example/expr2/scanner.py,
 	spark_parser/version.py: Get ready for release 1.7.2
 
 2017-11-14  rocky <rb@dustyfeet.com>

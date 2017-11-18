@@ -30,12 +30,12 @@ class ExprEvaluator(GenericASTTraversal, object):
 
     def n_atom(self, node):
         """atom ::= NUMBER | '(' expr ')' """
-        l = len(node)
-        if l == 1:
+        length = len(node)
+        if length == 1:
             self.preorder(node[0])
             node.value = node[0].value
             self.prune()
-        elif l == 3:
+        elif length == 3:
             self.preorder(node[1])
             node.value = node[1].value
             self.prune()
