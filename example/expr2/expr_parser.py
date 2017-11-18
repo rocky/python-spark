@@ -64,6 +64,7 @@ def parse_expr(python_str, out=sys.stdout,
     parser.check_grammar()
     return parser.parse(tokens)
 
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         expression = "(1 + 3)/2"

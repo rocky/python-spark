@@ -1,3 +1,15 @@
+spark 1.8.0 2017-11-18 Cairole
+
+- Improve grammar checking
+  * Add another grammar check in check_sets(): same non-null RHS
+  * check_grammar() now returns the number of warnings issued
+  * Improve output formatting in check_grammar()
+- Profiling improvements
+  * Secondary key in bin/spark-parser-coverage is the rule
+  * Do not profile epsilon productions, they don't go through reductions
+- Remove some Python lint warnings. (Even though Python formatting is imbicile,
+  and for imbiciles)
+
 spark 1.7.2 2017-11-14
 
 - Fix bug when used with profiling introduced in version 1.7.0

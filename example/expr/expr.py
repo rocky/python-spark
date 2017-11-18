@@ -54,6 +54,7 @@ class ExprScanner(GenericScanner):
         r'\d+'
         self.add_token('INTEGER', s)
 
+
 # Some kinds of SPARK parsing you might want to consider
 # DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True, 'dups': True}
 # DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True, 'dups': True}
@@ -135,6 +136,7 @@ def scan_expression(data):
 def parse_expression(tokens):
     parser = ExprParser()
     return parser.parse(tokens)
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
