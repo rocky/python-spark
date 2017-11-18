@@ -295,10 +295,10 @@ class Python2Formatter(GenericASTTraversal, object):
                  | '`' testlist1 '`'
                  | NAME | NUMBER | STRING+)
         """
-        l = len(node)
-        if l == 1:
+        length = len(node)
+        if length == 1:
             self.preorder(node[0])
-        elif l == 3:
+        elif length == 3:
             self.preorder(node[0])
             self.preorder(node[1])
             self.preorder(node[2])
@@ -607,17 +607,18 @@ class Python2Formatter(GenericASTTraversal, object):
                 arg += 1
             elif typ == 'p':
                 p = self.prec
-                l = len(entry)
-                if l == 3:
+                length = len(entry)
+                if length == 3:
                     (index, self.prec, name) = entry[arg]
                     assert node[index] == name, (
                         "at %s[%d], %s vs %s" % (
                             node.kind, arg, node[index[0]].kind, index[1])
                         )
-                elif l == 2:
+                elif length == 2:
                     (index, self.prec) = entry[arg]
                 else:
-                    raise RuntimeError("Invalid %%p tuple length %d; length should be 1 or 2" % l)
+                    raise RuntimeError("Invalid %%p tuple length %d; length should be 1 or 2"
+                                       % length)
 
                 self.preorder(node[index])
                 self.prec = p

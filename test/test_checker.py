@@ -50,7 +50,8 @@ class TestChecker(unittest.TestCase):
 
     def test_right_recursive(self):
         parser = RightRecursive()
-        lhs, rhs, tokens, right_recursive = parser.check_sets()
+        (lhs, rhs, tokens, right_recursive,
+             dup_rhs) = parser.check_sets()
         self.assertEqual(len(lhs), 0)
         self.assertEqual(len(rhs), 0)
         self.assertEqual(len(right_recursive), 1)
@@ -58,7 +59,8 @@ class TestChecker(unittest.TestCase):
 
     def test_unexpanded_nonterminal(self):
         parser = UnexpandedNonterminal()
-        lhs, rhs, tokens, right_recursive = parser.check_sets()
+        (lhs, rhs, tokens, right_recursive,
+             dup_rhs) = parser.check_sets()
         self.assertEqual(len(lhs), 0)
         expect = set(['term2'])
         self.assertEqual(expect, rhs)
@@ -67,7 +69,8 @@ class TestChecker(unittest.TestCase):
 
     def test_used_lhs(self):
         parser = UnusedLHS()
-        lhs, rhs, tokens, right_recursive = parser.check_sets()
+        (lhs, rhs, tokens, right_recursive,
+             dup_rhs) = parser.check_sets()
         expect = set(['factor'])
         self.assertEqual(expect, lhs)
         self.assertEqual(len(rhs), 0)

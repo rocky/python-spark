@@ -8,7 +8,7 @@ import pickle
 def sort_profile_info(path, max_count=1000):
     profile_info = pickle.load(open(path, "rb"))
     items = sorted(profile_info.items(),
-                   key=lambda kv: kv[1],
+                   key=lambda kv: (kv[1], kv[0]),
                    reverse=False)
     return [item for item in items if item[1] <= max_count]
 
