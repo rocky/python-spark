@@ -296,6 +296,11 @@ class GenericParser(object):
 
         for rulelist in list(self.rules.values()):
             lhs = rulelist[0][0]
+            # FIXM:E There may be a bug in removing a rule
+            # try:
+            #     lhs = rulelist[0][0]
+            # except IndexError:
+            #     continue
             self.nullable[lhs] = 0
             for rule in rulelist:
                 rhs = rule[1]
