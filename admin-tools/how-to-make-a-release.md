@@ -1,7 +1,7 @@
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [Get latest sources:](#get-latest-sources)
+- [Merge 2.4 branch](#merge-24)
 - [Change version in spark_parser/version.py. Then:](#change-version-in-sparkparserversionpy-then)
 - [Update ChangeLog:](#update-changelog)
 - [Update NEWS from ChangeLog. Then:](#update-news-from-changelog-then)
@@ -16,9 +16,19 @@
 - [Check on a VM](#check-on-a-vm)
 
 <!-- markdown-toc end -->
-# Get latest sources:
+# Merge 2.4 branch
 
-    $ . ./admin-tool/update-sources.sh
+    $ git checkout python-2.4
+	$ pyenv local 2.4.6
+	$ git merge
+
+Resolve conflicts
+
+	$ make check
+    $ git commit
+	$ git push
+	$ git checkout master
+	$ pyenv local 2.7.4
 
 # Change version in spark_parser/version.py. Then:
 
