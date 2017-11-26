@@ -1,3 +1,11 @@
+spark 1.8.0 2017-11-18 johnnybamazing
+
+- remove_rules() improvements...
+  * Allow comments in rules
+  * Strip blank lines in rules
+  * Remove rule from profiling
+- Document postoder/preorder better
+
 spark 1.8.0 2017-11-18 Cairole
 
 - Improve grammar checking

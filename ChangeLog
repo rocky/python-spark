@@ -1,6 +1,25 @@
+2017-11-26  rocky <rb@dustyfeet.com>
+
+	* admin-tools/how-to-make-a-release.md, spark_parser/version.py: Get
+	ready for release 1.8.1
+
+2017-11-26  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: remove_rules() improvements...  * Allow comments in rules * Strip blank lines in rules * Remove rule from profiling
+
+2017-11-26  rocky <rb@dustyfeet.com>
+
+	* spark_parser/ast.py: Document postorder/preorder better
+
+2017-11-23  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Note something might be amis
+
 2017-11-18  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.8.0
+	* ChangeLog, NEWS, example/expr/expr.py, example/expr2/eval.py,
+	example/expr2/expr_parser.py, example/gdb-loc/gdbloc/semantics.py,
+	spark_parser/version.py: Get ready for release 1.8.0
 
 2017-11-17  rocky <rb@dustyfeet.com>
 
