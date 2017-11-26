@@ -80,7 +80,7 @@ class GenericASTTraversal:
         raise GenericASTTraversalPruningException
 
     def preorder(self, node=None):
-        """Walk the tree in preorder.
+        """Walk the tree in roughly 'preorder' (a bit of a lie explained below).
         For each node with typestring name *name* if the
         node has a method called n_*name*, call that before walking
         children. If there is no method define, call a
@@ -88,8 +88,12 @@ class GenericASTTraversal:
         ill probably want to override this method.
 
         If the node has a method called *name*_exit, that is called
-        after all children have been called.  So in this sense this
-        function is both preorder and postorder combined.
+        after all children have been called.
+
+        In typical use a node with children can call "preorder" in any
+        order it wants which may skip children or order then in ways
+        other than first to last.  In fact, this this happens.  So in
+        this sense this function not strictly preorder.
         """
         if node is None:
             node = self.ast
@@ -113,7 +117,9 @@ class GenericASTTraversal:
             func(node)
 
     def postorder(self, node=None):
-        """Walk the tree in postorder.
+        """Walk the tree in roughly 'postorder' (a bit of a lie
+        explained below).
+
         For each node with typestring name *name* if the
         node has a method called n_*name*, call that before walking
         children. If there is no method define, call a
@@ -122,7 +128,11 @@ class GenericASTTraversal:
 
         If the node has a method called *name*_exit, that is called
         after all children have been called.  So in this sense this
-        function is both preorder and postorder combined.
+        function is a lie.
+
+        In typical use a node with children can call "postorder" in
+        any order it wants which may skip children or order then in
+        ways other than first to last.  In fact, this this happens.
         """
         if node is None:
             node = self.ast
@@ -152,6 +162,6 @@ class GenericASTTraversal:
             func(node)
 
     def default(self, node):
-        """Default acttion to take on an ASTNode. Our defualt is to do nothing.
+        """Default action to take on an ASTNode. Our defualt is to do nothing.
         Subclasses will probably want to define this for other behavior."""
         pass

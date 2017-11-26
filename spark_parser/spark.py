@@ -256,6 +256,9 @@ class GenericParser(object):
         """Remove a grammar rules from  _self.rules_, _self.rule2func_,
             and _self.rule2name_
         """
+        # remove blanks lines and comment lines, e.g. lines starting with "#"
+        doc = os.linesep.join([s for s in doc.splitlines() if s and not re.match("^\s*#", s)])
+
         rules = doc.split()
         index = []
         for i in range(len(rules)):
@@ -275,6 +278,16 @@ class GenericParser(object):
                 del self.rule2func[rule]
                 del self.rule2name[rule]
                 self.ruleschanged = True
+
+                # If we are profiling, remove this rule from that as well
+                if self.profile_info is not None and len(rule[1]) > 0:
+                    rule_str = self.reduce_string(rule)
+                    if rule_str and rule_str in self.profile_info:
+                        del self.profile_info[rule_str]
+                        pass
+                    pass
+                pass
+
         return
 
     remove_rule = remove_rules
@@ -296,6 +309,11 @@ class GenericParser(object):
 
         for rulelist in list(self.rules.values()):
             lhs = rulelist[0][0]
+            # FIXM:E There may be a bug in removing a rule
+            # try:
+            #     lhs = rulelist[0][0]
+            # except IndexError:
+            #     continue
             self.nullable[lhs] = 0
             for rule in rulelist:
                 rhs = rule[1]
