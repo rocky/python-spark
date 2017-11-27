@@ -1,7 +1,19 @@
 2017-11-27  rocky <rb@dustyfeet.com>
 
-	* admin-tools/how-to-make-a-release.md, spark_parser/version.py: Get
-	ready for release 1.8.2
+	* spark_parser/version.py: Get ready for release 1.8.3
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: deleting rule leaves remnants. Work around
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* admin-tools/how-to-make-a-release.md: Administrivia
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, admin-tools/how-to-make-a-release.md,
+	spark_parser/version.py: Get ready for release 1.8.2
 
 2017-11-27  rocky <rb@dustyfeet.com>
 

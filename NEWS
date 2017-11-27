@@ -1,4 +1,4 @@
-spark 1.8.0 2017-11-27 johnnybamazing2
+spark 1.8.2-1.8.3 2017-11-27 johnnybamazing2
 - Fix caused by removing a rule
 
 spark 1.8.1 2017-11-26 johnnybamazing
