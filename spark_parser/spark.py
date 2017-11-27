@@ -335,6 +335,7 @@ class GenericParser(object):
         tbd = []
 
         for rulelist in list(self.rules.values()):
+
             # FIXME: deleting a rule may leave a null entry.
             # Perhaps we should improve deletion so it doesn't leave a trace?
             if not rulelist:
