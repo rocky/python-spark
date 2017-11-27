@@ -28,7 +28,7 @@ Resolve conflicts
     $ git commit
 	$ git push
 	$ git checkout master
-	$ pyenv local 2.7.4
+	$ pyenv local 2.7.14
 
 # Change version in spark_parser/version.py. Then:
 
