@@ -50,7 +50,7 @@ class TestGrammar(unittest.TestCase):
     def test_basic(self):
         parser = BadExpr('expr')
         f = StringIO()
-        assert parser.check_grammar() > 0
+        self.assertTrue(parser.check_grammar() > 0)
 
         parser = Expr('expr')
         f = StringIO()
@@ -63,7 +63,7 @@ term ::= factor
 term ::= term MULT_OP factor
 """
         self.assertEqual(expect, f.getvalue())
-        assert parser.check_grammar() == 0
+        self.assertEqual(parser.check_grammar(), 0)
 
         parser.addRule("expr ::= expr SUB_OP term", nop_func)
         expect = """START ::= |- expr
@@ -77,7 +77,7 @@ term ::= term MULT_OP factor
         f = StringIO()
         parser.dump_grammar(f)
         self.assertEqual(expect, f.getvalue())
-        assert parser.check_grammar() == 0
+        self.assertEqual(parser.check_grammar(), 0)
 
         parser.remove_rules("expr ::= expr ADD_OP term")
         expect = """START ::= |- expr
@@ -90,7 +90,7 @@ term ::= term MULT_OP factor
         f = StringIO()
         parser.dump_grammar(f)
         self.assertEqual(expect, f.getvalue())
-        assert parser.check_grammar() == 0
+        self.assertEqual(parser.check_grammar(), 0)
 
 
 if __name__ == '__main__':
