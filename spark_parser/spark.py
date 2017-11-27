@@ -308,12 +308,14 @@ class GenericParser(object):
         tbd = []
 
         for rulelist in list(self.rules.values()):
+
+            # FIXME: deleting a rule may leave a null entry.
+            # Perhaps we should improve deletion so it doesn't leave a trace?
+            if not rulelist:
+                continue
+
             lhs = rulelist[0][0]
-            # FIXM:E There may be a bug in removing a rule
-            # try:
-            #     lhs = rulelist[0][0]
-            # except IndexError:
-            #     continue
+
             self.nullable[lhs] = 0
             for rule in rulelist:
                 rhs = rule[1]
