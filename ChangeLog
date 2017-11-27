@@ -1,7 +1,16 @@
-2017-11-26  rocky <rb@dustyfeet.com>
+2017-11-27  rocky <rb@dustyfeet.com>
 
 	* admin-tools/how-to-make-a-release.md, spark_parser/version.py: Get
-	ready for release 1.8.1
+	ready for release 1.8.2
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* test/test_grammar.py: assert -> assertEqual, assertTrue
+
+2017-11-26  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, admin-tools/how-to-make-a-release.md,
+	spark_parser/version.py: Get ready for release 1.8.1
 
 2017-11-26  rocky <rb@dustyfeet.com>
 
