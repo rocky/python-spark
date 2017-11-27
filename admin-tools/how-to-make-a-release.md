@@ -42,7 +42,7 @@
     $ source admin-tools/setup-python-2.4.sh
     $ rm ChangeLog
 
-    # $ git merge master
+    $ git merge master
 
 # Update NEWS from master branch
 
