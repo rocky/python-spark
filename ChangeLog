@@ -1,6 +1,12 @@
 2017-11-27  rocky <rb@dustyfeet.com>
 
-	* spark_parser/version.py: Get ready for release 1.8.3
+	* spark_parser/spark.py, spark_parser/version.py: Get ready for
+	release 1.8.4
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* : commit 9abd1f5c136e53fb5547697bf76ce05fcc8caf17 Author: rocky
+	<rb@dustyfeet.com> Date:   Mon Nov 27 12:30:11 2017 -0500
 
 2017-11-27  rocky <rb@dustyfeet.com>
 
@@ -12,21 +18,38 @@
 
 2017-11-27  rocky <rb@dustyfeet.com>
 
-	* ChangeLog, NEWS, admin-tools/how-to-make-a-release.md,
-	spark_parser/version.py: Get ready for release 1.8.2
+	* admin-tools/how-to-make-a-release.md: Get ready for release 1.8.2
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* : commit c596e6cb1ae0f4cc3afda5048fa78a43180237c6 Author: rocky
+	<rb@dustyfeet.com> Date:   Mon Nov 27 12:09:17 2017 -0500
 
 2017-11-27  rocky <rb@dustyfeet.com>
 
 	* test/test_grammar.py: assert -> assertEqual, assertTrue
 
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* test/test_grammar.py: assert -> assertEqual or assertTrue
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Work around a bug in removing rules
+
+2017-11-27  rocky <rb@dustyfeet.com>
+
+	* admin-tools/how-to-make-a-release.md: Administrivia
+
 2017-11-26  rocky <rb@dustyfeet.com>
 
-	* ChangeLog, NEWS, admin-tools/how-to-make-a-release.md,
-	spark_parser/version.py: Get ready for release 1.8.1
+	* : commit 4c7080148890aedb08249255c48b141e48690911 Author: rocky
+	<rb@dustyfeet.com> Date:   Sun Nov 26 18:00:11 2017 -0500
 
 2017-11-26  rocky <rb@dustyfeet.com>
 
-	* spark_parser/spark.py: remove_rules() improvements...  * Allow comments in rules * Strip blank lines in rules * Remove rule from profiling
+	* : commit 29a2883d9f24993698b50a5cf0865bddcdc73091 Author: rocky
+	<rb@dustyfeet.com> Date:   Sun Nov 26 17:51:54 2017 -0500
 
 2017-11-26  rocky <rb@dustyfeet.com>
 
@@ -38,29 +61,28 @@
 
 2017-11-18  rocky <rb@dustyfeet.com>
 
-	* ChangeLog, NEWS, example/expr/expr.py, example/expr2/eval.py,
-	example/expr2/expr_parser.py, example/gdb-loc/gdbloc/semantics.py,
-	spark_parser/version.py: Get ready for release 1.8.0
+	* : commit 0c68cdb26f9c167443becf5d6ac87058a95d5f05 Author: rocky
+	<rb@dustyfeet.com> Date:   Sat Nov 18 09:31:53 2017 -0500
 
-2017-11-17  rocky <rb@dustyfeet.com>
+2017-11-18  rocky <rb@dustyfeet.com>
 
-	* example/gdb-loc/gdbloc/semantics.py,
-	example/python2/py2_format.py, spark_parser/spark.py,
-	test/test_checker.py, test/test_grammar.py, test/test_spark.py: 
-	Check for rules with the same non-nul RHS
+	* : commit 6905e97d14b35d99d3e5902ea54fe8fb064fe705 Author: rocky
+	<rb@dustyfeet.com> Date:   Fri Nov 17 18:05:11 2017 -0500
 
 2017-11-16  rocky <rb@dustyfeet.com>
 
 	* bin/spark-parser-coverage: Secondary key in profile sort is the
 	rule
 
-2017-11-15  rocky <rb@dustyfeet.com>
+2017-11-16  rocky <rb@dustyfeet.com>
 
-	* spark_parser/spark.py: In profiling don't add epsilon rules
+	* : commit eaff464338acfd214ea428755244abebf7772ae9 Author: rocky
+	<rb@dustyfeet.com> Date:   Wed Nov 15 09:54:09 2017 -0500
 
 2017-11-14  rocky <rb@dustyfeet.com>
 
-	* admin-tools/pyenv-newer-versions: Update pyenv versions tested
+	* : commit 58ada730390425d44ae5fceaec2fc2243e10c1af Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Nov 14 21:24:52 2017 -0500
 
 2017-11-14  rocky <rb@dustyfeet.com>
 
@@ -77,9 +99,8 @@
 
 2017-11-14  rocky <rb@dustyfeet.com>
 
-	* spark_parser/spark.py: Fix bug when used with profiling...  reduce_string() should do the right thing if there is no token
-	position which happens in profiling when recording which rule was
-	used
+	* : commit e8f4d8aa0a7895a483a62b70f580f7bd49664c1e Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Nov 14 10:23:44 2017 -0500
 
 2017-11-13  rocky <rb@dustyfeet.com>
 
@@ -88,11 +109,22 @@
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
+	* .travis.yml: Fix travis for Python2.4 branch
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
 	* Makefile: To aggressive distclean
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
-	* test/test_checker.py: Nuke 2.3 stuff in this branch
+	* : commit c4097c225f6939c0d83378b3b149f91710cd8f28 Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Oct 24 22:20:52 2017 -0400
+
+2017-10-24  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py, test/test_misc.py: Sync with
+	master
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
@@ -100,9 +132,8 @@
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
-	* ChangeLog, NEWS, example/gdb-loc/gdbloc/semantics.py,
-	example/gdb-loc/pytest/test_semantics.py, spark_parser/version.py: 
-	Get ready for release 1.7.1
+	* : commit 86c34da793ee7963384900b9bb2a357563751d29 Author: rocky
+	<rb@dustyfeet.com> Date:   Tue Oct 24 21:31:14 2017 -0400
 
 2017-10-24  rocky <rb@dustyfeet.com>
 
@@ -149,12 +180,42 @@
 
 2017-10-10  rocky <rb@dustyfeet.com>
 
+	* NEWS, example/README.md: Get ready for release 1.7.0.
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
 	* ChangeLog, NEWS, example/README.md: Typo
 
 2017-10-10  rocky <rb@dustyfeet.com>
 
 	* : commit 0b00a93ea702835ce60bbec8f552ff3670dd21ce Author: rocky
 	<rb@dustyfeet.com> Date:   Tue Oct 10 12:47:18 2017 -0400
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/.gitignore, example/gdb-loc/Makefile,
+	example/gdb-loc/README.md, example/gdb-loc/gdbloc/__init__.py,
+	example/gdb-loc/gdbloc/namedtuple24.py,
+	example/gdb-loc/gdbloc/parser.py,
+	example/gdb-loc/gdbloc/scanner.py,
+	example/gdb-loc/gdbloc/semantics.py, example/gdb-loc/gdbloc/tok.py,
+	example/gdb-loc/pytest/test_parser.py,
+	example/gdb-loc/pytest/test_scanner.py,
+	example/gdb-loc/pytest/test_semantics.py, example/gdb-loc/setup.py: 
+	Python 2.4 compatibility after master merge
+
+2017-10-10  rocky <rb@dustyfeet.com>
+
+	* .gitignore, Makefile, NEW-FEATURES.rst, README.rst,
+	example/README.md, example/expr/expr.py, example/expr2/README.md,
+	example/expr2/parser.py, example/expr2/scanner.py,
+	example/python2/README.md, example/python2/py2_format.py,
+	example/python2/py2_parser.py, example/python2/py2_token.py,
+	example/python2/test/test_class.py, spark_parser/ast.py,
+	spark_parser/scanner.py, spark_parser/spark.py,
+	spark_parser/version.py, test/test_checker.py,
+	test/test_grammar.py, test/test_misc.py, test/test_spark.py: Sync
+	with master
 
 2017-10-10  rocky <rb@dustyfeet.com>
 
@@ -255,6 +316,10 @@
 
 2017-09-17  rocky <rb@dustyfeet.com>
 
+	* example/python2/py2_format.py: template -> template_engine
+
+2017-09-17  rocky <rb@dustyfeet.com>
+
 	* example/python2/py2_format.py: engine -> template-engine
 
 2017-09-09  rocky <rb@dustyfeet.com>
@@ -285,9 +350,15 @@
 
 	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
 
+2017-05-18  rocky <rb@dustyfeet.com>
+
+	* : commit d5890b9791867727fd421880a4230533ce8663e6 Author: rocky
+	<rb@dustyfeet.com> Date:   Thu May 18 08:30:34 2017 -0400
+
 2017-05-17  rocky <rb@dustyfeet.com>
 
-	* appveyor.yml: Appveyor take 4
+	* : commit c7e99421434181b50f5bb768cc1b524c77a24394 Author: rocky
+	<rb@dustyfeet.com> Date:   Wed May 17 23:20:24 2017 -0400
 
 2017-05-17  rocky <rb@dustyfeet.com>
 
@@ -318,8 +389,18 @@
 
 2017-01-31  rocky <rb@dustyfeet.com>
 
-	* : commit 21fa172cc4010ba39cab8f2f4cbb5806bd78186e Author: rocky
-	<rb@dustyfeet.com> Date:   Tue Jan 31 18:58:59 2017 -0500
+	* bin/spark-parser-coverage, setup.py, test/test_grammar.py,
+	test/test_misc.py: Get ready for release 1.6.0 (python 2.4) 2.4 vs 2.7 language differences
+
+2017-01-31  rocky <rb@dustyfeet.com>
+
+	* : commit 35bb6e97834be6e811bd9498234e249a65783733 Merge: 21fa172
+	37afb38 Author: rocky <rb@dustyfeet.com> Date:   Tue Jan 31 19:11:28
+	2017 -0500
+
+2017-01-31  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, test/test_grammar.py: Get ready for release 1.6.0 test_grammar: tests for functions:  - dumpGrammar()  - addRule(),  - remove_rule()
 
 2017-01-31  rocky <rb@dustyfeet.com>
 
@@ -337,6 +418,28 @@
 
 	* NEW-FEATURES.rst, NEWS, spark_parser/spark.py,
 	spark_parser/version.py: Add the ability to remove a rule Go over new features and over NEWS
+
+2017-01-30  rocky <rb@dustyfeet.com>
+
+	* NEWS, spark_parser/spark.py, spark_parser/version.py,
+	test/test_grammar.py: Add ability to remove a rule
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* bin/spark-parser-coverage, setup.py: Add spark-parser-coverage CLI
+	program
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Add debug_reduce rule comment
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Add grammar coverage code
+
+2017-01-29  rocky <rb@dustyfeet.com>
+
+	* spark_parser/spark.py: Bump date
 
 2017-01-29  rocky <rb@dustyfeet.com>
 
@@ -382,9 +485,11 @@
 
 	* spark_parser/spark.py, test/test_misc.py: Fix bug in dumpGrammar()
 
-2016-12-08  R. Bernstein <rocky@users.noreply.github.com>
+2016-12-25  rocky <rb@dustyfeet.com>
 
-	* NEW-FEATURES.rst: Update NEW-FEATURES.rst
+	* : commit 0bf3a5c2505a059064daf5e96b40c89900818822 Author: R.
+	Bernstein <rocky@users.noreply.github.com> Date:   Thu Dec 8
+	15:24:09 2016 -0500
 
 2016-12-08  R. Bernstein <rocky@users.noreply.github.com>
 
@@ -482,8 +587,14 @@
 
 2016-11-26  rocky <rb@dustyfeet.com>
 
-	* : commit 7bfd0d3537704f37d983298c206261181526408f Author: rocky
-	<rb@dustyfeet.com> Date:   Sat Nov 26 12:46:56 2016 -0500
+	* : commit dc909dda54c53891ee8384b14443cb3797e5afcc Merge: 7bfd0d3
+	68bfda7 Author: rocky <rb@dustyfeet.com> Date:   Sat Nov 26 12:50:23
+	2016 -0500
+
+2016-11-26  rocky <rb@dustyfeet.com>
+
+	* ChangeLog, NEWS, spark_parser/version.py: Get ready for release
+	1.5.0
 
 2016-11-26  R. Bernstein <rocky@users.noreply.github.com>
 
@@ -505,6 +616,26 @@
 	setup.py, spark_parser/spark.py, spark_parser/version.py,
 	test/test_checker.py, tox.ini: Get ready for release 1.4.3
 
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* README2.rst: Make appropriate for both 2.4 branch and master
+
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* .travis.yml, ChangeLog, NEWS, README2.rst,
+	example/python2/py2_scan.py, setup.py, spark_parser/spark.py,
+	spark_parser/version.py, tox.ini: Get ready for release 1.4.3 Do some linting too
+
+2016-11-23  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_format.py, example/python2/test/helper.py,
+	spark_parser/spark.py, test/test_checker.py: Make it work with
+	Python 2.3
+
+2016-11-22  rocky <rb@dustyfeet.com>
+
+	* NEWS, spark_parser/version.py: Get ready for release 1.4.2
+
 2016-11-22  rocky <rb@dustyfeet.com>
 
 	* ChangeLog, NEWS, example/python2/py2_scan.py,
@@ -515,6 +646,12 @@
 
 	* example/python2/test/helper.py, spark_parser/spark.py: Fix bug
 	introdoced in last release...  guard agains self.debug == None Reinstate "with ..." will handle 2.4-2.5 in a branch
+
+2016-11-21  rocky <rb@dustyfeet.com>
+
+	* .travis.yml, README.rst, README2.rst, circle.yml,
+	example/python2/py2_scan.py, spark_parser/ast.py,
+	spark_parser/spark.py: Try Python 2.4
 
 2016-11-21  rocky <rb@dustyfeet.com>
 
@@ -647,7 +784,7 @@
 2016-06-10  rocky <rb@dustyfeet.com>
 
 	* example/python2/py2_format.py, example/python2/py2_parser.py,
-	example/python2/py2_scan.py, example/python2/test/format/expr.right:
+	example/python2/py2_scan.py, example/python2/test/format/expr.right: 
 	Almost all of the grammar added.  py2_scan.py: add "and" and "or" reserved words
 
 2016-06-10  rocky <rb@dustyfeet.com>
@@ -1012,7 +1149,7 @@
 2016-04-28  rocky <rb@dustyfeet.com>
 
 	* NEWS, example/expr/expr.py, setup.py, spark/__init__.py,
-	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py:
+	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py: 
 	Get ready for release 1.0.2
 
 2016-04-27  rocky <rb@dustyfeet.com>
@@ -1104,3 +1241,4 @@
 2016-04-20  rocky <rb@dustyfeet.com>
 
 	* Initial guess at Spark package
+
