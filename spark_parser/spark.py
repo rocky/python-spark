@@ -373,9 +373,9 @@ class GenericParser(object):
             while i < n:
                 sym = rhs[i]
                 if (sym not in self.rules or
-                    not self.nullable[sym]):
+                    not (sym in self.nullable and self.nullable[sym])):
                         candidate = 0
-                        i = i + 1
+                        i += 1
                         continue
 
                 newrhs = list(rhs)
