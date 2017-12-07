@@ -8,6 +8,9 @@ is the grammar as we found it in the Python 2.6.9 distribution.
 Although this is woefully incomplete, the structure for how to proceed
 is straightforward.
 
+`format-python.py` is a command-line program that can be used to
+read a Python file and format Python modules in this directory.
+
 The individual Python modules:
 
 ## Scanner
@@ -45,4 +48,4 @@ cause node _n_ to be processed.
 * stop its parent from further traversal of sibling nodes. This is done by calling `self.prune()`.
 
 Since a lot of the semantic actions is repetitive, there various patterns
-can be dictated by table-driven rules. The method `engine` handles this.
+can be dictated by table-driven rules. The method `template_engine` handles this.

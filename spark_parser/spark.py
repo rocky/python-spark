@@ -100,6 +100,14 @@ class GenericParser(object):
         # When set, shows additional debug output
         self.debug = debug
 
+        # Have a place to tag list-like rules. These include rules of the form:
+        #   a ::= x+
+        #   b ::= x*
+        #
+        # These kinds of rules, we should create as a list when building a
+        # parse tree rather than a sequence of nested derivations
+        self.list_like = set()
+
         self.collectRules()
         if start not in self.rules:
             raise TypeError('Start symbol "%s" is not in LHS of any rule' % start)
@@ -213,12 +221,14 @@ class GenericParser(object):
                 if rule[1][0] == rule[0]:
                     raise TypeError("Complete recursive rule %s" % rule2str(rule))
 
-                if rule[1][-1][-1] in ('*', '+', '?'):
-                    repeat = rule[1][-1][-1]
+                repeat = rule[1][-1][-1]
+                if repeat in ('*', '+', '?'):
                     nt = rule[1][-1][:-1]
+
                     if repeat == '?':
                         new_rule_pair = [rule[0], list((nt,))]
                     else:
+                        self.list_like.add(nt)
                         new_rule_pair = [rule[0], [rule[0]] + list((nt,))]
                     new_rule = rule2str(new_rule_pair)
                     self.addRule(new_rule, func, _preprocess)
