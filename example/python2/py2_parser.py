@@ -26,6 +26,15 @@ class PythonParser(GenericASTBuilder):
         self.start = start
         self.debug = debug
 
+        # Put left-recursive list non-terminals:
+        # x ::= x y
+        # x ::=
+        self.collect = frozenset(('stmts', 'comments', 'dot_names', 'dots',
+                        'comp_op_exprs', 'newline_or_stmts',
+                        'comma_names', 'comma_fpdef_opt_eqtests',)
+        )
+
+
     def debug_reduce(self, rule, tokens, parent, i):
         """Customized format and print for our kind of tokens
         which gets called in debugging grammar reduce rules
@@ -40,19 +49,12 @@ class PythonParser(GenericASTBuilder):
         print("%s%s ::= %s" % (prefix, rule[0], ' '.join(rule[1])))
 
     def nonterminal(self, nt, args):
-        # Put left-recursive list non-terminals:
-        # x ::= x y
-        # x ::=
-        collect = ('stmts', 'comments', 'dot_names', 'dots',
-                   'comp_op_exprs', 'newline_or_stmts',
-                   'comma_names', 'comma_fpdef_opt_eqtests',
-                   )
         # nonterminal with a (reserved) single word derivation
         no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt', 'return_stmt')
 
         has_len = hasattr(args, '__len__')
 
-        if nt in collect and len(args) > 1:
+        if nt in self.collect and len(args) > 1:
             #
             #  Collect iterated thingies together.
             #
