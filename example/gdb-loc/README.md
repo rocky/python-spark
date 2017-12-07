@@ -6,9 +6,10 @@ Specifically:
 * "breakpoint" command positions with optional conditions
 * "list" comand source text ranges
 
-Perhaps this could be done with a very complicated regular expression.
-However breaking it up into two levels I think helps clarity a lot.
-And even what I have here is a little bit complicated.
+This could be done with a very complicated regular expression: there
+is nothing in the way of nesting here. However breaking it up into two
+levels I think helps clarity a lot.  And even what I have here is a
+little bit complicated.
 
 In the parsing, we use a reduction check so we can distinguish context
 when an identifier is used as a filename or as a separator word like

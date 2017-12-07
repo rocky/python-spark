@@ -79,6 +79,8 @@ x ::= TOKEN
         except TypeError:
             self.assertTrue(True)
 
+        self.assertEqual({'stmt', 'STARS'},  parser.list_like)
+
         # Check erroneous start symbol
         try:
             parser = Rules('bad-start')
