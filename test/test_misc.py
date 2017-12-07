@@ -83,7 +83,7 @@ x ::= TOKEN
         except TypeError:
             self.assertEqual(True, True)
 
-        self.assertEqual({'stmt', 'STARS'},  parser.list_like)
+        self.assertEqual(set(['stmt', 'STARS']),  parser.list_like)
 
         # Check erroneous start symbol
         try:
