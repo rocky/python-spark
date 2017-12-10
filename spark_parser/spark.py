@@ -106,7 +106,8 @@ class GenericParser(object):
         #
         # These kinds of rules, we should create as a list when building a
         # parse tree rather than a sequence of nested derivations
-        self.list_like = set()
+        self.list_like_nt = set()
+        self.optional_nt = set()
 
         self.collectRules()
         if start not in self.rules:
@@ -227,8 +228,9 @@ class GenericParser(object):
 
                     if repeat == '?':
                         new_rule_pair = [rule[0], list((nt,))]
+                        self.optional_nt.add(rule[0])
                     else:
-                        self.list_like.add(nt)
+                        self.list_like_nt.add(rule[0])
                         new_rule_pair = [rule[0], [rule[0]] + list((nt,))]
                     new_rule = rule2str(new_rule_pair)
                     self.addRule(new_rule, func, _preprocess)

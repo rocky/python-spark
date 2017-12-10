@@ -79,7 +79,8 @@ x ::= TOKEN
         except TypeError:
             self.assertTrue(True)
 
-        self.assertEqual(set(['stmt', 'STARS']),  parser.list_like)
+        self.assertEqual(set(['stmts', 'ratings']),  parser.list_like_nt)
+        self.assertEqual(set(),  parser.optional_nt)
 
         # Check erroneous start symbol
         try:
@@ -97,6 +98,7 @@ x ::= TOKEN
                          [(('START', ('|-', 'opt_period')), 'ambda>'),
                           (('opt_period', ()), 'rules'),
                           (('opt_period', ('PERIOD',)), 'rules'), ])
+        self.assertEqual(set(['opt_period']),  parser.optional_nt)
 
 
 if __name__ == '__main__':
