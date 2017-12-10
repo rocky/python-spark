@@ -1,3 +1,25 @@
+spark 1.8.5 2017-12-10 Dr Gecko
+
+* Create set of list-like and optional nonterminals
+  Those are nonterminals used in *, +, and ? rules
+
+2017-12-07  rocky <rb@dustyfeet.com>
+
+	* example/python2/py2_parser.py: Pull constant out of nonterminal
+	function
+
+2017-12-07  rocky <rb@dustyfeet.com>
+
+	* test/test_misc.py: Python 2.6 compatability
+
+2017-12-07  rocky <rb@dustyfeet.com>
+
+	* example/gdb-loc/README.md, example/python2/README.md,
+	example/python2/format-python.py, spark_parser/spark.py,
+	test/test_misc.py: Create set of list-like nonterminals
+	automatically
+
+
 spark 1.8.2-1.8.4 2017-11-27 johnnybamazing2
 - Fixes for removing a rules
 
