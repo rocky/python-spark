@@ -1,4 +1,4 @@
-#  Copyright (c) 2016-2017 Rocky Bernstein
+#  Copyright (c) 2016-2018 Rocky Bernstein
 """
 More complex expression parsing
 """
@@ -55,11 +55,22 @@ def parse_expr(python_str, out=sys.stdout,
         for t in tokens:
             print(t)
 
-    # For heavy grammar debugging
-    # parser_debug = {'rules': True, 'transition': True, 'reduce': True,
-    #                 'errorstack': True, 'dups': True}
-    # parser_debug = {'rules': False, 'transition': False, 'reduce': True,
-    #                'errorstack': True, 'dups': True}
+    # Some kinds of parsing debugging options you might want to consider...
+    #
+    # The most verbose debugging::
+    # parser_debug = {'rules': True,
+    #                 'transition': True,
+    #                 'reduce' : True,
+    #                 'dups': True
+    #                 }
+    #
+    # The kind of debugging I generally use:
+    # parser_debug = {'rules': False,
+    #                 'transition': False,
+    #                 'reduce' : True,   # show grammar rule reductions
+    #                 'dups': True
+    # }
+
     parser = ExprParser(parser_debug)
     parser.check_grammar()
     return parser.parse(tokens)
