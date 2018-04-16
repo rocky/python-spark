@@ -1,3 +1,10 @@
+spark 1.8.6 2018-04-06
+
+* spark-parser-coverage: Canonicalize to reduce fallse-positoin
+  unused rules. Specifically we remove epsilon
+  transition marks
+
+
 spark 1.8.5 2017-12-10 Dr Gecko
 
 * Create set of list-like and optional nonterminals
