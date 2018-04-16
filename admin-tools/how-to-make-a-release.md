@@ -18,8 +18,7 @@
 <!-- markdown-toc end -->
 # Merge 2.4 branch
 
-    $ git checkout python-2.4
-	$ pyenv local 2.4.6
+    $ . ./admin-tools/setup-python-2.4.sh
 	$ git merge
 
 Resolve conflicts
@@ -27,8 +26,7 @@ Resolve conflicts
 	$ make check
     $ git commit
 	$ git push
-	$ git checkout master
-	$ pyenv local 2.7.14
+	$ . ./admin-tools/setup-master.sh
 
 # Change version in spark_parser/version.py. Then:
 

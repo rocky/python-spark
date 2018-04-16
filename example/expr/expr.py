@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#  Copyright (c) 2018 Rocky Bernstein
 """
 SPARK example to parse simple arithmetic expressions
 """
@@ -55,9 +56,21 @@ class ExprScanner(GenericScanner):
         self.add_token('INTEGER', s)
 
 
-# Some kinds of SPARK parsing you might want to consider
-# DEFAULT_DEBUG = {'rules': True, 'transition': True, 'reduce' : True, 'dups': True}
-# DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : True, 'dups': True}
+# Some kinds of parsing debugging options you might want to consider...
+#
+# The most verbose debugging::
+# DEFAULT_DEBUG = {'rules': True,
+#                  'transition': True,
+#                  'reduce' : True,
+#                  'dups': True
+#                 }
+#
+# The kind of debugging I generally use:
+# DEFAULT_DEBUG = {'rules': False,
+#                  'transition': False,
+#                  'reduce' : True,   # show grammar rule reductions
+#                  'dups': True
+# }
 DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce': False, 'dups': True}
 
 class ExprParser(GenericParser):
