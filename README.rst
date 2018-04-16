@@ -1,12 +1,16 @@
 |buildstatus| |Supported Python Versions|
 
-SPARK - An Earley Algorithm Parser toolkit.
+An Earley Algorithm Parser toolkit.
 ===========================================
 
-SPARK stands for Scanning, Parsing, and Rewriting Kit. It uses Jay
-Earley's algorithm for parsing context free grammars, and comes with
-some generic Abstract Syntax Tree routines. There is also a prototype
-scanner which does its job by combining Python regular expressions.
+This package uses Jay Earley's algorithm for parsing context free
+grammars, and comes with some generic Abstract Syntax Tree
+routines. There is also a prototype scanner which does its job by
+combining Python regular expressions.
+
+(SPARK stands for Scanning, Parsing, and Rewriting Kit. It is a poor
+name since it conflicts with a more popular package of the same
+name. In the future we will rename this.)
 
 The original version of this was written by John Aycock for his Ph.d
 thesis and was described in his 1998 paper: "Compiling Little
