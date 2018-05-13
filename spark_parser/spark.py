@@ -442,9 +442,16 @@ class GenericParser(object):
                 lhs, rhs = rule
                 if dot > 0:
                     if full:
-                        state_stack.add(' '.join(rhs[:dot]) + ' . ' + ' '.join(rhs[dot:]))
+                        state_stack.add(
+                            "%s ::= %s . %s" %
+                            (lhs,
+                            ' '.join(rhs[:dot]),
+                            ' '.join(rhs[dot:])))
                     else:
-                        state_stack.add(' '.join(rhs[:dot]))
+                        state_stack.add(
+                            "%s ::= %s" %
+                            (lhs,
+                            ' '.join(rhs[:dot])))
                     pass
                 pass
             pass
