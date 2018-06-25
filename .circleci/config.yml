@@ -42,7 +42,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run:
         working_directory: ~/rocky/python-spark
-	command: pyenv install 2.7.13 && pyenv local 2.7.13 && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
+        command: pyenv install 2.7.13 && pyenv local 2.7.13 && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
     # This is based on your 1.0 configuration file or project settings
     - run:
         working_directory: ~/rocky/python-spark
