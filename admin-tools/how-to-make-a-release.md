@@ -7,7 +7,7 @@
 - [Update NEWS from ChangeLog. Then:](#update-news-from-changelog-then)
 - [Make sure pyenv is running and check newer versions](#make-sure-pyenv-is-running-and-check-newer-versions)
 - [Switch to python-2.4, sync that up and build that first since it creates a tarball which we don't want.](#switch-to-python-24-sync-that-up-and-build-that-first-since-it-creates-a-tarball-which-we-dont-want)
-- [Update NEWS from master branch](#update-news-from-master-branch)
+- [Update NEWS.md from master branch](#update-news-from-master-branch)
 - [Check against all versions](#check-against-all-versions)
 - [Make packages and tag](#make-packages-and-tag)
 - [Upload single package and look at Rst Formating](#upload-single-package-and-look-at-rst-formating)
@@ -39,9 +39,9 @@ Resolve conflicts
 
     $ make ChangeLog
 
-#  Update NEWS from ChangeLog. Then:
+#  Update NEWS.md from ChangeLog. Then:
 
-	$ emacs NEWS
+	$ emacs NEWS.md
     $ make check
     $ git commit --amend .
     $ git push   # get CI testing going early
