@@ -1,7 +1,6 @@
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [Merge 2.4 branch](#merge-24)
 - [Change version in spark_parser/version.py. Then:](#change-version-in-sparkparserversionpy-then)
 - [Update ChangeLog:](#update-changelog)
 - [Update NEWS from ChangeLog. Then:](#update-news-from-changelog-then)
@@ -16,18 +15,6 @@
 - [Check on a VM](#check-on-a-vm)
 
 <!-- markdown-toc end -->
-# Merge 2.4 branch
-
-    $ . ./admin-tools/setup-python-2.4.sh
-	$ git merge
-
-Resolve conflicts
-
-	$ make check
-    $ git commit
-	$ git push
-	$ . ./admin-tools/setup-master.sh
-
 # Change version in spark_parser/version.py. Then:
 
 	$ emacs spark_parser/version.py

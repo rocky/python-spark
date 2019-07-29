@@ -1,7 +1,7 @@
 import sys
 
 PYTHON3 = (sys.version_info >= (3, 0))
-PYTHON38 = (sys.version_info >= (3, 8))
+PYTHON37 = (sys.version_info >= (3, 7))
 
 if PYTHON3:
     intern = sys.intern
@@ -18,7 +18,7 @@ class AST(UserList):
     def __getslice__(self, low, high):
         return self.data[low:high]
 
-    if PYTHON38:
+    if PYTHON37:
         def __getitem__(self, i):
             return self.data[i]
 
