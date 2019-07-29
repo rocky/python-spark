@@ -69,7 +69,8 @@ Resolve conflicts
     $ git tag release-python-2.4-$VERSION
 
     $ admin-tools/make-dist-newer.sh
-    $ git tag release-$VERSION
+
+Go to https://github.com/rocky/python-spark/releases and copy from NEWS.md
 
 # Upload single package and look at Rst Formating
 
