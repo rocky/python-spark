@@ -27,8 +27,8 @@ def sort_profile_info(path, max_count=1000):
             used_rules.append((count, rule))
 
     for count, rule in used_rules:
-        if rule.find('\e_') > -1:
-            canonic_rule = rule.replace('\e_', '', 1000)
+        if rule.find("\\e_") > -1:
+            canonic_rule = rule.replace("\\e_", "", 1000)
             if canonic_rule in unused_rules:
                 unused_rules.remove(canonic_rule)
                 pass
