@@ -1,7 +1,12 @@
+1.8.9 2018-07-28 S
+======================================
+
+- 3.8 change needed in Python 3.7.4
+
 1.8.8 2018-07-28 Survived another year
 ======================================
 
-- Changes for Python 3.7.4 and 3.8
+- Changes for Python 3.8
 
 1.8.7 2018-05-18 Paper Tiger
 ============================
