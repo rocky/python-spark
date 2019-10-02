@@ -1,4 +1,6 @@
-|buildstatus| |Supported Python Versions|
+|buildstatus| |Pypi Installs| |Supported Python Versions|
+
+|packagestatus|
 
 An Earley Algorithm Parser toolkit.
 ===========================================
@@ -28,9 +30,9 @@ This uses `setup.py`, so it follows the standard Python routine:
 
 ::
 
-    python setup.py install # may need sudo
-    # or if you have pyenv:
-    python setup.py develop
+    $ pip install -e .  # set up to run from source tree
+                        # Or if you want to install instead
+    $ python setup.py develop
 
 Example
 -------
@@ -52,3 +54,6 @@ See Also
 .. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
 		 :target: https://travis-ci.org/rocky/python-spark
 .. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/spark_parser.svg
+.. |packagestatus| image:: https://repology.org/badge/vertical-allrepos/python:spark.svg
+		 :target: https://repology.org/project/python:spark/versions
+.. |Pypi Installs| image:: https://pepy.tech/badge/spark_parser
