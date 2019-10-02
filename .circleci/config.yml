@@ -1,11 +1,3 @@
-# This configuration was automatically generated from a CircleCI 1.0 config.
-# It should include any build commands you had along with commands that CircleCI
-# inferred from your project structure. We strongly recommend you read all the
-# comments in this file to understand the structure of CircleCI 2.0, as the idiom
-# for configuration has changed substantially in 2.0 to allow arbitrary jobs rather
-# than the prescribed lifecycle of 1.0. In general, we recommend using this generated
-# configuration as a reference rather than using it in production, though in most
-# cases it should duplicate the execution of your original 1.0 config.
 version: 2
 jobs:
   build:
@@ -27,9 +19,9 @@ jobs:
     # VM instead of a container) see https://circleci.com/docs/2.0/executor-types/
     # To see the list of pre-built images that CircleCI provides for most common languages see
     # https://circleci.com/docs/2.0/circleci-images/
-    docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      command: /sbin/init
+    machine:
+      python:
+        version: 2.7.14
     steps:
     # Machine Setup
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
@@ -42,11 +34,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run:
         working_directory: ~/rocky/python-spark
-        command: pyenv install 2.7.13 && pyenv local 2.7.13 && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
-    # This is based on your 1.0 configuration file or project settings
-    - run:
-        working_directory: ~/rocky/python-spark
-        command: pyenv local 2.7.13
+        command: pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
     # Dependencies
     #   This would typically go in either a build or a build-and-test job when using workflows
     # Restore the dependency cache
