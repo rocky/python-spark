@@ -1,7 +1,5 @@
 |Supported Python Versions|
 
-|packagestatus|
-
 An Earley Algorithm Parser toolkit.
 ===========================================
 
@@ -29,10 +27,9 @@ Installation
 This uses `setup.py`, so it follows the standard Python routine:
 
 ::
-
-    $ pip install -e .  # set up to run from source tree
-                        # Or if you want to install instead
-    $ python setup.py develop
+    python setup.py install # may need sudo
+    # or if you have pyenv:
+    python setup.py develop
 
 Example
 -------
