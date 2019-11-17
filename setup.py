@@ -70,6 +70,7 @@ setup(
 >>>>>>> e05f2c6 (Get ready for release 1.6.0 (python 2.4))
        license            = license,
        long_description   = long_description,
+       long_description_content_type = "text/x-rst",
        maintainer         = maintainer,
        maintainer_email   = maintainer_email,
        packages           = find_packages(),
