@@ -68,6 +68,7 @@ setup(
        install_requires   = ['click'],
        license            = license,
        long_description   = long_description,
+       long_description_content_type = "text/x-rst",
        maintainer         = maintainer,
        maintainer_email   = maintainer_email,
        packages           = find_packages(),
