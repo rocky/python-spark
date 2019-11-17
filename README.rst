@@ -1,4 +1,4 @@
-|buildstatus| |Supported Python Versions|
+|buildstatus| |Pypi Installs| |Latest Version| |Supported Python Versions|
 
 |packagestatus|
 
@@ -54,5 +54,8 @@ See Also
 .. |buildstatus| image:: https://travis-ci.org/rocky/python-spark.svg
 		 :target: https://travis-ci.org/rocky/python-spark
 .. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/spark_parser.svg
+.. |Latest Version| image:: https://badge.fury.io/py/spark-parser.svg
+		 :target: https://badge.fury.io/py/spark-parser
+.. |Pypi Installs| image:: https://pepy.tech/badge/spark-parser/month
 .. |packagestatus| image:: https://repology.org/badge/vertical-allrepos/python:spark.svg
 		 :target: https://repology.org/project/python:spark/versions
