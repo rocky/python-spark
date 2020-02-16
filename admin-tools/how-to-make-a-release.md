@@ -61,6 +61,7 @@ Go to https://github.com/rocky/python-spark/releases and copy from NEWS.md
 
 # Upload single package and look at Rst Formating
 
+	$ twine check dist/xasm-${VERSION}*
     $ twine upload dist/spark_parser-${VERSION}-py3.3.egg
 
 # Upload rest of versions
