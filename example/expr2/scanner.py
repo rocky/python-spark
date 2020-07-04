@@ -63,12 +63,17 @@ x = 2y + z
         r'[&|^]'
         self.add_token('BIT_OP', s)
 
+    def t_bool_op(self, s):
+        r'or|and'
+        self.add_token('BOOL_OP', s)
+
+
     def t_shift(self, s):
         r'<<|>>'
         self.add_token('SHIFT_OP', s)
 
     def t_mult(self, s):
-        r'[/*%]|//'
+        r'[*][*]|//|[/*%]'
         self.add_token('MULT_OP', s)
 
     # Recognize integers
@@ -76,9 +81,14 @@ x = 2y + z
         r'(0x[0-9a-f]+|0b[01]+|0o[0-7]+|\d+\.\d|\d+)j?'
         self.add_token('NUMBER', s)
 
+    # Recognize Boolean constants
+    def t_bool(self, s):
+        r'True|False'
+        self.add_token('BOOL', bool(s))
+
 
 if __name__ == "__main__":
-    tokens = ExprScanner().tokenize("(10.5 + 2 / 30) // 3 >> 1")
+    tokens = ExprScanner().tokenize("(10.5 + 2**1 / 30) // 3 >> 1")
     for t in tokens:
         print(t)
     pass

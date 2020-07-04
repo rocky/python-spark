@@ -5,7 +5,24 @@
 
 from expr_parser import parse_expr
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
+import operator
 
+BINARY_OPERATORS = {
+    "**": pow,
+    "*": operator.mul,
+    "/": operator.truediv,
+    "//": operator.floordiv,
+    "%": operator.mod,
+    "+": operator.add,
+    "-": operator.sub,
+    "<<": operator.lshift,
+    ">>": operator.rshift,
+    "&": operator.and_,
+    "^": operator.xor,
+    "|": operator.or_,
+}
+
+BINOP_SET = frozenset(BINARY_OPERATORS.keys())
 
 class ExprFormatterError(Exception):
     def __init__(self, errmsg):
@@ -34,6 +51,10 @@ class ExprEvaluator(GenericASTTraversal, object):
             node.value = int(node.attr)
         self.prune()
 
+    def n_BOOL(self, node):
+        node.value = node.attr
+        self.prune()
+
     def n_atom(self, node):
         """atom ::= NUMBER | '(' expr ')' """
         length = len(node)
@@ -49,25 +70,11 @@ class ExprEvaluator(GenericASTTraversal, object):
             assert False, "Expecting atom to have length 1 or 3"
 
     def n_expr(self, node):
-        """arith_expr ::= arith_expr ADD_OP term | term"""
-        if len(node) == 1:
-            self.preorder(node[0])
-            node.value = node[0].value
-            self.prune()
-        else:
-            self.preorder(node[0])
-            self.preorder(node[2])
-            if node[1].attr == "+":
-                node.value = node[0].value + node[2].value
-            elif node[1].attr == "-":
-                node.value = node[0].value - node[2].value
-            else:
-                assert False, "Expecting operator to be '+' or '-'"
-            self.prune()
-        assert False, "Expecting atom to have length 1 or 3"
+        """
+        expr ::= expr ADD_OP term | term
+        term ::= term MULT_OP term | atom
+        """
 
-    def n_term(self, node):
-        """term ::= term MULT_OP atom | atom"""
         if len(node) == 1:
             self.preorder(node[0])
             node.value = node[0].value
@@ -75,14 +82,12 @@ class ExprEvaluator(GenericASTTraversal, object):
         else:
             self.preorder(node[0])
             self.preorder(node[2])
-            if node[1].attr == "*":
-                node.value = node[0].value * node[2].value
-            elif node[1].attr == "/":
-                node.value = node[0].value / node[2].value
-            else:
-                assert False, "Expecting operator to be '*' or '/'"
+            op = node[1].attr
+            assert op in BINOP_SET, "Expecting operator to be in %s" % op
+            node.value = BINARY_OPERATORS[node[1].attr](node[0].value, node[2].value)
             self.prune()
         assert False, "Expecting atom to have length 1 or 3"
+    n_factor = n_term = n_expr
 
 
 def eval_expr(
@@ -119,7 +124,7 @@ if __name__ == "__main__":
 
     def eval_test(eval_str):
         result = eval_expr(
-            eval_str, show_tokens=False, show_parse_tree=False, showgrammar=False
+            eval_str, show_tokens=False, show_parse_tree=True, showgrammar=False,
         )
         print("%s = %s" % (eval_str, result))
         return
@@ -130,3 +135,4 @@ if __name__ == "__main__":
     eval_test("1 * 2 + 3")
     eval_test("1 + 2 * 3")
     eval_test("(1 + 2) * 3")
+    eval_test("(10.5 + 2 * 5) // (2 << 1) / 5")

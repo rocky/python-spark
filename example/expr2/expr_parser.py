@@ -39,9 +39,12 @@ class ExprParser(GenericASTBuilder):
     ##########################################################
     def p_expr(self, args):
         '''
-        expr       ::= expr ADD_OP term
+        expr       ::= expr BOOL_OP term
+        expr       ::= expr SHIFT_OP term
         expr       ::= term
-        term       ::= term MULT_OP atom
+        term       ::= term MULT_OP factor
+        factor     ::= term
+        term       ::= term ADD_OP atom
         term       ::= atom
         atom       ::= NUMBER
         atom       ::= LPAREN expr RPAREN
