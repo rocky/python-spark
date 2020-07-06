@@ -1,5 +1,4 @@
-# This has to be here so that import relative of scanner.py from
-# inside parser.py works
+# This has to be here so that imports work.
 
-# Python is a bit lame here. Other languages have something like
-# Ruby's require_relative
+# Python is a bit lame here. Other languages like Ruby and NodeJS
+# handle this more simply and elegantly.
