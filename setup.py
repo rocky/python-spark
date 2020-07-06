@@ -81,4 +81,5 @@ setup(
        url                = web,
        tests_require     = ['nose>=1.0'],
        version            = VERSION,
-       zip_safe           = zip_safe)
+       zip_safe           = zip_safe
+)
