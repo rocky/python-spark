@@ -4,4 +4,4 @@
 # This file should define a variable VERSION which we use as the
 # package version number.
 
-VERSION = "1.8.9"  # noqa
+__version__ = "1.8.9"  # noqa

@@ -1,5 +1,5 @@
 import sys
-from spark_parser.version import VERSION
+from spark_parser.version import __version__ as VERSION
 
 __version__ = 'SPARK-%s Python2 and Python3 compatible' % VERSION
 __docformat__ = 'restructuredtext'

@@ -11,7 +11,7 @@
 
 # Things that change more often go here.
 copyright = """
-Copyright (C) 2016 Rocky Bernstein <rb@dustyfeet.com>.
+Copyright (C) 2016, 2022 Rocky Bernstein <rb@dustyfeet.com>.
 """
 
 classifiers = [
@@ -101,6 +101,6 @@ setup(
     test_suite="nose.collector",
     url=web,
     tests_require=["nose>=1.0"],
-    version=VERSION,
+    version=__version__,
     zip_safe=zip_safe,
 )
