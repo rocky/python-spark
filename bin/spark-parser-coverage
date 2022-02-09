@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 import click
+import os
 import pickle
 from spark_parser.version import __version__
 
@@ -54,7 +55,7 @@ def sort_profile_info(path, max_count=1000):
     return [item for item in unused_items + used_items
                 if item[0] <= max_count]
 
-DEFAULT_COVERAGE_FILE = "/tmp/spark-grammar.cover",
+DEFAULT_COVERAGE_FILE =os.environ.get("SPARK_PARSER_COVERAGE", "/tmp/spark-grammar.cover")
 DEFAULT_COUNT = 100
 @click.command()
 @click.version_option(version=__version__)
