@@ -59,11 +59,10 @@ DEFAULT_COVERAGE_FILE =os.environ.get("SPARK_PARSER_COVERAGE", "/tmp/spark-gramm
 DEFAULT_COUNT = 100
 @click.command()
 @click.version_option(version=__version__)
-@click.option('--path', type=str, default=DEFAULT_COVERAGE_FILE,
-              help=("grammar coverage file (default %s)" % DEFAULT_COVERAGE_FILE))
 @click.option('--max-count', type=int, default=DEFAULT_COUNT,
-              help=("limit output to rules having no more than this many hits (default %d)" % DEFAULT_COUNT))
-def run(path, max_count):
+              help=(f"limit output to rules having no more than this many hits (default {DEFAULT_COUNT})"))
+@click.argument('path', type=click.Path(), default=DEFAULT_COVERAGE_FILE)
+def run(max_count, path: str):
     """Print grammar reduce statistics for a series of spark-parser parses
     """
     for count, rule in sort_profile_info(path, max_count):
