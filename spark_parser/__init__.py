@@ -1,16 +1,46 @@
-import sys
-from spark_parser.version import __version__ as VERSION
+"""
+  Copyright (c) 2022 by Rocky Bernstein
 
-__version__ = 'SPARK-%s Python2 and Python3 compatible' % VERSION
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
+import sys
+from spark_parser.version import __version__
+
 __docformat__ = 'restructuredtext'
 
-PYTHON3 = (sys.version_info >= (3, 0))
+from spark_parser.ast import AST
+from spark_parser.ast import GenericASTTraversal, GenericASTTraversalPruningException
+from spark_parser.spark import DEFAULT_DEBUG, rule2str, GenericASTBuilder, GenericParser
+from spark_parser.scanner import GenericScanner, GenericToken
 
-from spark_parser.ast import AST as AST
-from spark_parser.ast import GenericASTTraversal as GenericASTTraversal
-from spark_parser.ast import GenericASTTraversalPruningException as GenericASTTraversalPruningException
-from spark_parser.spark import DEFAULT_DEBUG, rule2str
-from spark_parser.spark import GenericParser as GenericParser
-from spark_parser.spark import GenericASTBuilder as GenericASTBuilder
-from spark_parser.scanner import GenericScanner as GenericScanner
-from spark_parser.scanner import GenericToken as GenericToken
+__all__ = [
+    "__version__",
+    "AST",
+    "DEFAULT_DEBUG",
+    "DEFAULT_DEBUG",
+    "GenericASTBuilder",
+    "GenericASTTraversal",
+    "GenericASTTraversalPruningException",
+    "GenericParser",
+    "GenericScanner",
+    "GenericToken"
+    "rule2str",
+    ]

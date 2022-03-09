@@ -1,11 +1,7 @@
 import unittest
 from spark_parser.spark import GenericParser
-from spark_parser import PYTHON3
 
-if PYTHON3:
-    from io import StringIO
-else:
-    from StringIO import StringIO
+from io import StringIO
 
 class Rules(GenericParser):
     """Testing duplicate rules"""
