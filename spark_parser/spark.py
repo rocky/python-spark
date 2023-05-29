@@ -1,5 +1,5 @@
 """
-Copyright (c) 2015-2017, 2020 Rocky Bernstein
+Copyright (c) 2015-2017, 2020, 2023 Rocky Bernstein
 Copyright (c) 1998-2002 John Aycock
 
   Permission is hereby granted, free of charge, to any person obtaining
@@ -22,7 +22,10 @@ Copyright (c) 1998-2002 John Aycock
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import os, pickle, re, sys
+import os
+import pickle
+import re
+import sys
 
 if sys.version[0:3] <= "2.3":
     from sets import Set as set
@@ -87,9 +90,9 @@ class GenericParser(object):
 
     def __init__(self, start, debug=DEFAULT_DEBUG, coverage_path=None):
         """_start_ : grammar start symbol;
-           _debug_ : produce optional parsing debug information
-           _profile_ : if not None should be a file path to open
-           with where to store profile is stored
+        _debug_ : produce optional parsing debug information
+        _profile_ : if not None should be a file path to open
+        with where to store profile is stored
         """
 
         self.rules = {}
@@ -229,7 +232,6 @@ class GenericParser(object):
             # Handle a stripped-down form of *, +, and ?:
             #   allow only one nonterminal on the right-hand side
             if len(rule[1]) == 1:
-
                 if rule[1][0] == rule[0]:
                     raise TypeError("Complete recursive rule %s" % rule2str(rule))
 
@@ -277,7 +279,7 @@ class GenericParser(object):
 
     def remove_rules(self, doc):
         """Remove a grammar rules from  _self.rules_, _self.rule2func_,
-            and _self.rule2name_
+        and _self.rule2name_
         """
         # remove blanks lines and comment lines, e.g. lines starting with "#"
         doc = os.linesep.join(
@@ -333,7 +335,6 @@ class GenericParser(object):
         tbd = []
 
         for rulelist in list(self.rules.values()):
-
             # FIXME: deleting a rule may leave a null entry.
             # Perhaps we should improve deletion so it doesn't leave a trace?
             if not rulelist:
@@ -435,7 +436,7 @@ class GenericParser(object):
             print("Token context:\n\t%s" % ("\n\t".join(tokens)))
         raise SystemExit
 
-    def errorstack(self, tokens, i, full=False):
+    def errorstack(self, tokens, i: int, full=False):
         """Show the stacks of completed symbols.
         We get this by inspecting the current transitions
         possible and from that extracting the set of states
@@ -492,6 +493,7 @@ class GenericParser(object):
             self.states = {0: self.makeState0()}
             self.makeState(0, self._BOF)
 
+        i = 0
         for i in range(len(tokens)):
             sets.append([])
 
@@ -505,6 +507,7 @@ class GenericParser(object):
         finalitem = (self.finalState(tokens), 0)
         if finalitem not in sets[-2]:
             if len(tokens) > 0:
+                i = min(i, 1)
                 if self.debug.get("errorstack", False):
                     self.errorstack(
                         tokens, i - 1, str(self.debug["errorstack"]) == "full"
@@ -523,7 +526,7 @@ class GenericParser(object):
         return sym.startswith(self._NULLABLE)
 
     def skip(self, xxx_todo_changeme, pos=0):
-        (lhs, rhs) = xxx_todo_changeme
+        _, rhs = xxx_todo_changeme
         n = len(rhs)
         while pos < n:
             if not self.isnullable(rhs[pos]):
@@ -872,13 +875,13 @@ class GenericParser(object):
         list = [a_b[1] for a_b in sortlist]
         return rules[name2index[self.resolve(list)]]
 
-    def resolve(self, list):
+    def resolve(self, rule: list):
         """
         Resolve ambiguity in favor of the shortest RHS.
         Since we walk the tree from the top down, this
         should effectively resolve in favor of a "shift".
         """
-        return list[0]
+        return rule[0]
 
     def dump_grammar(self, out=sys.stdout):
         """
@@ -1044,8 +1047,10 @@ class GenericASTBuilder(GenericParser):
         self.AST = AST
 
     def preprocess(self, rule, func):
-        rebind = lambda lhs, self=self: lambda args, lhs=lhs, self=self: self.buildASTNode(
-            args, lhs
+        rebind = (
+            lambda lhs, self=self: lambda args, lhs=lhs, self=self: self.buildASTNode(
+                args, lhs
+            )
         )
         lhs, rhs = rule
         return rule, rebind(lhs)
