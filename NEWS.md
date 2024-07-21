@@ -16,7 +16,7 @@
 1.8.6 2018-04-06
 ================
 
-* spark-parser-coverage: Canonicalize to reduce fallse-positoin
+* spark-parser-coverage: Canonicalize to reduce false-positive
   unused rules. Specifically we remove epsilon
   transition marks
 
@@ -56,8 +56,8 @@
 - Profiling improvements
   * Secondary key in bin/spark-parser-coverage is the rule
   * Do not profile epsilon productions, they don't go through reductions
-- Remove some Python lint warnings. (Even though Python formatting is imbicile,
-  and for imbiciles)
+- Remove some Python lint warnings. (Even though Python formatting is imbecile,
+  and for imbeciles)
 
 spark 1.7.2 2017-11-14
 ======================
@@ -81,7 +81,7 @@ A number of incompatible changes, but necessary in code this old...
   we now store tokens in parse object
 - xxx.type -> xxx.kind to reduce confusion with built-in type
 - some camelCase methods made "pythonic", e.g. check_grammar(), check_reduce()
-- Allow checK_grammar to take a list of start symbols.
+- Allow check_grammar to take a list of start symbols.
 - Add gdb-loc demo: gdb breakpoint and list expressions
 - Update docs
 
@@ -120,7 +120,7 @@ spark 1.5.2 2017-01-27
 
 - User-definable reduction check. This
   allows one to specify an additional check before
-  a rediction is made. For example in uncompyle6 we
+  a reduction is made. For example in uncompyle6 we
   check whether a SETUP_LOOP target jumps to the last
   token of the rule. Or that an augmented assignment statement
   doesn't have inplace-binary operators
@@ -137,7 +137,7 @@ spark 1.5.2 2017-01-27
 ================
 
 - handle Python 2.3 via the 2.4 branch
-- change grammer dup debug switch from 'rules' (already used)
+- change grammar dup debug switch from 'rules' (already used)
   to 'dup'
 
 1.4.2 2016-11-22
