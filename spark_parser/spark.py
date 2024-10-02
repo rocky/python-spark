@@ -825,38 +825,53 @@ class GenericParser(object):
         return self.rule2func[self.new2old[rule]](attr)
 
     def buildTree(self, nt, item, tokens, k):
-        if self.debug["rules"]:
-            print("NT", nt)
-        state, parent = item
+        # Stack elements: (non-terminal, item, token index, parent index, attributes, rule)
+        stack = [(nt, item, k, None, [], None)]
+        while stack:
+            nt, item, k, parent_idx, attr, rule = stack.pop()
+            state, parent = item
 
-        choices = []
-        for rule in self.states[state].complete:
-            if rule[0] == nt:
-                choices.append(rule)
-        rule = choices[0]
-        if len(choices) > 1:
-            rule = self.ambiguity(choices)
-        # print(rule) # debug
+            # Find applicable rules if not already given
+            if rule is None:
+                choices = [rule for rule in self.states[state].complete if rule[0] == nt]
+                rule = choices[0] if len(choices) == 1 else self.ambiguity(choices)
+            rhs = rule[1]
 
-        rhs = rule[1]
-        attr = [None] * len(rhs)
+            # Process symbols in reverse order, skipping over those already completed
+            for i in range(len(rhs) - 1 - len(attr), -1, -1):
+                sym = rhs[i]
+                if sym not in self.newrules:
+                    if sym != self._BOF:
+                        attr.append(tokens[k - 1])
+                        key = (item, k)
+                        item, k = self.predecessor(key, None)
+                    else:
+                        attr.append(None)
+                    continue
 
-        for i in range(len(rhs) - 1, -1, -1):
-            sym = rhs[i]
-            if sym not in self.newrules:
-                if sym != self._BOF:
-                    attr[i] = tokens[k - 1]
-                    key = (item, k)
-                    item, k = self.predecessor(key, None)
-            # elif self.isnullable(sym):
-            elif self._NULLABLE == sym[0 : len(self._NULLABLE)]:
-                attr[i] = self.deriveEpsilon(sym)
-            else:
+                if self._NULLABLE == sym[0:len(self._NULLABLE)]:
+                    attr.append(self.deriveEpsilon(sym))
+                    continue
+
                 key = (item, k)
                 why = self.causal(key)
-                attr[i] = self.buildTree(sym, why[0], tokens, why[1])
-                item, k = self.predecessor(key, why)
-        return self.rule2func[self.new2old[rule]](attr)
+                if why:
+                    item, k = self.predecessor(key, why)
+                    # Push the current state back onto the stack with updated attributes and rule
+                    stack.append((nt, item, k, parent_idx, attr, rule))
+                    # Push the new state onto the stack
+                    stack.append((sym, why[0], why[1], k, [], None))
+                    break  # Break the loop to let the stack process the new state
+            else:
+                # If we've processed all symbols, construct the node
+                node = self.rule2func[self.new2old[rule]](attr[::-1])
+                if parent_idx is not None:  # If there's a parent, update its attributes
+                    parent_attr = stack[-1][-2]
+                    parent_attr.append(node)
+                    continue
+
+        # Return the last node in the stack, which should be the first node
+        return node
 
     def ambiguity(self, rules):
         #
