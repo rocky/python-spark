@@ -19,7 +19,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 2.3",
     "Programming Language :: Python :: 2.4",
     "Programming Language :: Python :: 2.5",
     "Programming Language :: Python :: 2.6",
@@ -31,6 +30,10 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Code Generators",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -83,7 +86,7 @@ if (3, 0) <= sys.version_info[:2] <= (3, 2):
 else:
     click_version = ""
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     classifiers=classifiers,
