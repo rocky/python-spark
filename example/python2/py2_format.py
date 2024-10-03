@@ -94,104 +94,104 @@ evaluating the escape code.
 """
 # from __future__ import print_function
 
-import re, sys
+import re
+import sys
 
-from py2_parser import parse_python2
-from spark_parser import GenericASTTraversal # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
+from example.python2.py2_parser import parse_python2
+from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
-PYTHON3 = (sys.version_info >= (3, 0))
+PYTHON3 = sys.version_info >= (3, 0)
 
 if PYTHON3:
     from io import StringIO
-    minint = -sys.maxsize-1
+
+    minint = -sys.maxsize - 1
     maxint = sys.maxsize
 else:
     from StringIO import StringIO
-    minint = -sys.maxint-1
+
+    minint = -sys.maxint - 1
     maxint = sys.maxint
 
-TAB = ' ' *4   # is less spacy than "\t"
-INDENT_PER_LEVEL = ' ' # additional intent per pretty-print level
+TAB = " " * 4  # is less spacy than "\t"
+INDENT_PER_LEVEL = " "  # additional intent per pretty-print level
 
-TABLE_R = {
-}
+TABLE_R = {}
 
 TABLE_R0 = {}
 
 TABLE_DIRECT = {
-    'break_stmt':       ( '%|break\n', ),
-    'continue_stmt':    ( '%|continue\n', ),
-    'del_stmt':	        ( '%|del %c\n',
-                          (1, 'exprlist')),
-    'expr_stmt':	( '%|%c %c %c\n',
-                          (0, 'testlist'), 1, 2),
-    'global_stmt':	( '%|global %C\n', (1, maxint, '') ),
-    'print_stmt':       ( '%|print %c\n',
-                          (1, 'test_params_or_redirect') ),
-    'pass_stmt':        ( '%|pass\n', ),
-    'import_from':      ( '%|from %c import %c\n',
-                          (1, 'dots_dotted_name_or_dots'), (2, 'import_list') ),
-    'import_name':      ( '%|import %c\n', 1 ),
-    'newline_or_stmt':  ('%c\n', 0),
-    'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
-    'comma_name':	( ', %c', 1),
-
+    "break_stmt": ("%|break\n",),
+    "continue_stmt": ("%|continue\n",),
+    "del_stmt": ("%|del %c\n", (1, "exprlist")),
+    "expr_stmt": ("%|%c %c %c\n", (0, "testlist"), 1, 2),
+    "global_stmt": ("%|global %C\n", (1, maxint, "")),
+    "print_stmt": ("%|print %c\n", (1, "test_params_or_redirect")),
+    "pass_stmt": ("%|pass\n",),
+    "import_from": (
+        "%|from %c import %c\n",
+        (1, "dots_dotted_name_or_dots"),
+        (2, "import_list"),
+    ),
+    "import_name": ("%|import %c\n", 1),
+    "newline_or_stmt": ("%c\n", 0),
+    "elif_suites": ("%|elif %c:\n%?%+%c%-", 2, 4),
+    "comma_name": (", %c", 1),
     # FIXME: Not quite right. Should handle else_suite_opt at index 4
-    'while_stmt':	( '%|while %c:\n%+%c%-',
-                          (1, 'test'), (3, 'suite') ),
-
-    'classdef':         ( '%|class %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
-    'funcdef':          ( '%|def %c%c:\n%+%c%-\n\n', 1, 2, 4 ),
-    'exprlist':         ( '%c%c%c', 0, 1 , 2 ),
-    'comp_op_exprs':    ( ' %c %c', 0, 1 ),
-    'or_and_test':      ( ' %c %c', 0, 1 ),
-    'comma_import_as_name': (', %c',
-                             (1, 'import_as_name') ),
-    'comma_dotted_as_names': ('%C', (1, maxint, ', ') ),
-
-    'NAME':	 ( '%{attr}', ),
-    'STRING':	 ( '%{attr}', ),
-    'NUMBER':	 ( '%{attr}', ),
-    'BINOP':	 ( '%{attr}', ),
-    'COMP_OP':	 ( '%{attr}', ),
-    'UNOP':	 ( '%{attr}', ),
-    'AUGASSIGN': ( '%{attr}', ),
-    'OR':	 ( 'or', ),
-    'AND':	 ( 'and', ),
-    'AS':	 ( 'as', ),
-    'LPAREN':	 ( '(', ),
-    'RPAREN':	 ( ')', ),
-    'LBRACE':	 ( '{', ),
-    'RBRACE':	 ( '}', ),
-    'LBRACKET':	 ( '[', ),
-    'RBRACKET':	 ( ']', ),
-    'PLUS':	 ( '+', ),
-    'MINUS':	 ( '-', ),
-    'TILDE':	 ( '~', ),
-    'COLON':	 ( ':', ),
-    'DOT':	 ( '.', ),
-    'EQUAL':	 ( '=', ),
-    'STAR':	 ( '*', ),
-    'STARSTAR':	 ( '**', ),
-
+    "while_stmt": ("%|while %c:\n%+%c%-", (1, "test"), (3, "suite")),
+    "classdef": ("%|class %c%c:\n%+%c%-\n\n", 1, 2, 4),
+    "funcdef": ("%|def %c%c:\n%+%c%-\n\n", 1, 2, 4),
+    "exprlist": ("%c%c%c", 0, 1, 2),
+    "comp_op_exprs": (" %c %c", 0, 1),
+    "or_and_test": (" %c %c", 0, 1),
+    "comma_import_as_name": (", %c", (1, "import_as_name")),
+    "comma_dotted_as_names": ("%C", (1, maxint, ", ")),
+    "NAME": ("%{attr}",),
+    "STRING": ("%{attr}",),
+    "NUMBER": ("%{attr}",),
+    "BINOP": ("%{attr}",),
+    "COMP_OP": ("%{attr}",),
+    "UNOP": ("%{attr}",),
+    "AUGASSIGN": ("%{attr}",),
+    "OR": ("or",),
+    "AND": ("and",),
+    "AS": ("as",),
+    "LPAREN": ("(",),
+    "RPAREN": (")",),
+    "LBRACE": ("{",),
+    "RBRACE": ("}",),
+    "LBRACKET": ("[",),
+    "RBRACKET": ("]",),
+    "PLUS": ("+",),
+    "MINUS": ("-",),
+    "TILDE": ("~",),
+    "COLON": (":",),
+    "DOT": (".",),
+    "EQUAL": ("=",),
+    "STAR": ("*",),
+    "STARSTAR": ("**",),
 }
 
-MAP_DIRECT = (TABLE_DIRECT, )
+MAP_DIRECT = (TABLE_DIRECT,)
 MAP_R0 = (TABLE_R0, -1, 0)
 MAP_R = (TABLE_R, -1)
 
 MAP = {
-    'file_input':	MAP_R,
-    'stmt':		MAP_R,
-    'designator':	MAP_R,
+    "file_input": MAP_R,
+    "stmt": MAP_R,
+    "designator": MAP_R,
 }
 
-escape = re.compile(r'''
+escape = re.compile(
+    r"""
             (?P<prefix> [^%]* )
             % ( \[ (?P<child> -? \d+ ) \] )?
                 ((?P<kind> [^{] ) |
                  ( [{] (?P<expr> [^}]* ) [}] ))
-        ''', re.VERBOSE)
+        """,
+    re.VERBOSE,
+)
+
 
 class Python2FormatterError(Exception):
     def __init__(self, errmsg):
@@ -200,46 +200,52 @@ class Python2FormatterError(Exception):
     def __str__(self):
         return self.errmsg
 
+
 class Python2Formatter(GenericASTTraversal, object):
-    stacked_params = ('f', 'indent', 'isLambda', '_globals')
+    stacked_params = ("f", "indent", "isLambda", "_globals")
 
     def __init__(self):
         GenericASTTraversal.__init__(self, ast=None)
         params = {
-            'indent': '',
-            }
+            "indent": "",
+        }
         self.params = params
         self.ERROR = None
         self.pending_newlines = 0
         self.hide_internal = True
         return
 
-    f = property(lambda s: s.params['f'],
-                 lambda s, x: s.params.__setitem__('f', x),
-                 lambda s: s.params.__delitem__('f'),
-                 None)
+    f = property(
+        lambda s: s.params["f"],
+        lambda s, x: s.params.__setitem__("f", x),
+        lambda s: s.params.__delitem__("f"),
+        None,
+    )
 
-    indent = property(lambda s: s.params['indent'],
-                 lambda s, x: s.params.__setitem__('indent', x),
-                 lambda s: s.params.__delitem__('indent'),
-                 None)
+    indent = property(
+        lambda s: s.params["indent"],
+        lambda s, x: s.params.__setitem__("indent", x),
+        lambda s: s.params.__delitem__("indent"),
+        None,
+    )
 
     def indentMore(self, indent=TAB):
         self.indent += indent
 
     def indentLess(self, indent=TAB):
-        self.indent = self.indent[:-len(indent)]
+        self.indent = self.indent[: -len(indent)]
 
     def traverse(self, node, indent=None, isLambda=False):
-        if indent is None: indent = self.indent
+        if indent is None:
+            indent = self.indent
         p = self.pending_newlines
         self.pending_newlines = 0
         self.params = {
-            'f': StringIO(),
-            'indent': indent,
-            }
+            "f": StringIO(),
+            "indent": indent,
+        }
         self.preorder(node)
-        self.f.write('\n'*self.pending_newlines)
+        self.f.write("\n" * self.pending_newlines)
         result = self.f.getvalue()
         self.pending_newlines = p
         return result
@@ -248,12 +254,12 @@ class Python2Formatter(GenericASTTraversal, object):
     # It can be simplified and probalby made appropriate
     # for this use by removing the pending lines.
     def write(self, *data):
-        if (len(data) == 0) or (len(data) == 1 and data[0] == ''):
+        if (len(data) == 0) or (len(data) == 1 and data[0] == ""):
             return
-        out = ''.join([str(j) for j in data])
+        out = "".join([str(j) for j in data])
         n = 0
         for i in out:
-            if i == '\n':
+            if i == "\n":
                 n += 1
                 if n == len(out):
                     self.pending_newlines = max(self.pending_newlines, n)
@@ -266,34 +272,34 @@ class Python2Formatter(GenericASTTraversal, object):
                 break
 
         if self.pending_newlines > 0:
-            self.f.write('\n'*self.pending_newlines)
+            self.f.write("\n" * self.pending_newlines)
             self.pending_newlines = 0
 
         for i in out[::-1]:
-            if i == '\n':
+            if i == "\n":
                 self.pending_newlines += 1
             else:
                 break
 
         if self.pending_newlines:
-            out = out[:-self.pending_newlines]
+            out = out[: -self.pending_newlines]
         self.f.write(out)
 
     def println(self, *data):
-        if data and not(len(data) == 1 and data[0] ==''):
+        if data and not (len(data) == 1 and data[0] == ""):
             self.write(*data)
         self.pending_newlines = max(self.pending_newlines, 1)
 
-    OTHER_SYM = {'{': '}', '[': ']', '(': ')', '`': '`'}
+    OTHER_SYM = {"{": "}", "[": "]", "(": ")", "`": "`"}
 
     # redo: 'atom": ( '%? %c %c', 0, 1, 2),
     def n_atom(self, node):
         """atom ::=
-             ('(' [yield_expr|testlist_gexp] ')'
-                 | '[' [listmaker] ']'
-                 | '{' [dictmaker] '}'
-                 | '`' testlist1 '`'
-                 | NAME | NUMBER | STRING+)
+        ('(' [yield_expr|testlist_gexp] ')'
+            | '[' [listmaker] ']'
+            | '{' [dictmaker] '}'
+            | '`' testlist1 '`'
+            | NAME | NUMBER | STRING+)
         """
         length = len(node)
         if length == 1:
@@ -307,8 +313,8 @@ class Python2Formatter(GenericASTTraversal, object):
         self.prune()
 
     def n_subscript(self, node):
-        if node == 'DOT' and len(node) == 3:
-            self.write('...')
+        if node == "DOT" and len(node) == 3:
+            self.write("...")
             self.prune
         for n in node:
             self.preorder(n)
@@ -321,9 +327,9 @@ class Python2Formatter(GenericASTTraversal, object):
     def n_import_as_name(self, node):
         self.preorder(node[0])
         if len(node) == 3:
-            self.write(' as ')
+            self.write(" as ")
             self.preorder(node[2])
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     # redo as
     # 'dotted_name': ('%c%?%c', 0, 1)
@@ -331,19 +337,19 @@ class Python2Formatter(GenericASTTraversal, object):
         self.preorder(node[0])
         if len(node) == 2:
             self.preorder(node[1])
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     # redo as
     # 'dotted_as_name': ('%c%? as %c', 0, 2)
     def n_dotted_as_name(self, node):
         self.preorder(node[0])
         if len(node) == 3:
-            self.write(' as ')
+            self.write(" as ")
             self.preorder(node[2])
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     def n_dots_dotted_name_or_dots(self, node):
-        if node[0] == 'DOT':
+        if node[0] == "DOT":
             pass
         else:
             self.preorder(node[0])
@@ -353,45 +359,45 @@ class Python2Formatter(GenericASTTraversal, object):
     # redo as
     # 'assert_stmt': ('%|assert %c%?, %c\n', 1, 2)
     def n_assert_stmt(self, node):
-        self.write(self.indent, 'assert ')
+        self.write(self.indent, "assert ")
         self.preorder(node[1])
         if len(node) == 4:
-            self.write(', ')
+            self.write(", ")
             self.preorder(node[3])
         self.println()
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     def n_yield(self, node):
-        self.write('yield ')
+        self.write("yield ")
         self.preorder(node[0])
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     def n_binary_expr(self, node):
         self.preorder(node[0])
-        self.write(' ')
+        self.write(" ")
         self.preorder(node[-1])
-        self.write(' ')
+        self.write(" ")
         self.preorder(node[1])
         self.prune()
 
     def n_factor(self, node):
         self.preorder(node[0])
         if len(node) > 1:
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[1])
         self.prune()
 
     def n_and_not_tests(self, node):
         if len(node) > 0:
             self.preorder(node[0])
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[1])
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[2])
         self.prune()
 
     def n_comment(self, node):
-        if node[0].attr[0] in [' ', '\t']:
+        if node[0].attr[0] in [" ", "\t"]:
             # remove last \n stored in pending newlines
             self.pending_newlines = 0
             self.write(node[0].attr, "\n")
@@ -404,33 +410,33 @@ class Python2Formatter(GenericASTTraversal, object):
         exec_stmt ::= EXEC expr IN test
         exec_stmt ::= EXEC expr IN test COMMA test
         """
-        self.write(self.indent, 'exec ')
+        self.write(self.indent, "exec ")
         self.preorder(node[1])
 
         if len(node) > 2:
-            self.write(self.indent, ' in ')
+            self.write(self.indent, " in ")
             self.preorder(node[3])
             if len(node) > 5:
-                self.write(self.indent, ', ')
+                self.write(self.indent, ", ")
                 self.preorder(node[5])
         self.println()
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     # 'return_stmt':      ( '%|return %?%c\n', 1),
     def n_return_stmt(self, node):
-        assert node[0] == 'RETURN'
-        self.write(self.indent, 'return ')
+        assert node[0] == "RETURN"
+        self.write(self.indent, "return ")
         if len(node) > 1:
             self.preorder(node[1])
         self.println()
-        self.prune() # stop recursing
+        self.prune()  # stop recursing
 
     def n_if_stmt(self, node):
-        assert node[0] == 'IF'
-        self.write(self.indent, 'if ')
+        assert node[0] == "IF"
+        self.write(self.indent, "if ")
         self.preorder(node[1])
-        assert node[2] == 'COLON'
-        self.write(':\n')
+        assert node[2] == "COLON"
+        self.write(":\n")
         self.indentMore()
         self.preorder(node[3])
         self.indentLess()
@@ -441,19 +447,19 @@ class Python2Formatter(GenericASTTraversal, object):
         self.prune()
 
     def n_with_stmt(self, node):
-        assert node[0] == 'WITH'
-        self.write(self.indent, 'with ')
+        assert node[0] == "WITH"
+        self.write(self.indent, "with ")
         self.preorder(node[1])
         i = 2
         # Redo as n_with_var
         if len(node[1]) > 0:
-            self.write(' as ')
+            self.write(" as ")
             self.preorder(node[2][0][1])
             i = 3
-        assert node[i] == 'COLON'
+        assert node[i] == "COLON"
         self.write(":\n")
         self.indentMore()
-        self.preorder(node[i+1])
+        self.preorder(node[i + 1])
         self.indentLess()
         self.prune()
 
@@ -461,8 +467,8 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'else_stmt_opt':	( '%|else:\n%?%+%c%-', 1 ),
     def n_else_suite_opt(self, node):
         if len(node) > 0:
-            self.write(self.indent, 'else: ')
-            self.println('')
+            self.write(self.indent, "else: ")
+            self.println("")
             self.indentMore()
             self.preorder(node[2])
         self.indentLess()
@@ -472,10 +478,10 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'elif_suites':	( '%|elif %c:\n%?%+%c%-', 2, 4),
     def n_elif_suites(self, node):
         if len(node) > 0:
-            assert node[1] == 'ELIF'
-            self.write(self.indent, 'elif ')
+            assert node[1] == "ELIF"
+            self.write(self.indent, "elif ")
             self.preorder(node[2])
-            self.println(':')
+            self.println(":")
             self.indentMore()
             self.preorder(node[4])
             self.indentLess()
@@ -487,7 +493,7 @@ class Python2Formatter(GenericASTTraversal, object):
         if len(node) > 0:
             j = 1
             while j < len(node):
-                self.write(', ')
+                self.write(", ")
                 self.preorder(node[j])
                 j += 3
             self.prune()
@@ -497,8 +503,8 @@ class Python2Formatter(GenericASTTraversal, object):
     def n_comma_tests(self, node):
         if len(node) > 0:
             self.preorder(node[0])
-            assert node[1] == 'COMMA'
-            self.write(', ')
+            assert node[1] == "COMMA"
+            self.write(", ")
             self.preorder(node[2])
             self.prune()
 
@@ -508,21 +514,21 @@ class Python2Formatter(GenericASTTraversal, object):
         self.preorder(node[0])
         if len(node) > 0:
             self.preorder(node[1])
-            self.write(', ')
+            self.write(", ")
             self.prune()
 
     def n_binop_arith_exprs(self, node):
         if len(node) > 0:
             self.preorder(node[0])
-            assert node[1], 'binop'
-            self.write(' ')
+            assert node[1], "binop"
+            self.write(" ")
             self.preorder(node[1])
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[2])
             self.prune()
 
     def n_op_factor(self, node):
-        self.write(' ')
+        self.write(" ")
         self.preorder(node[0])
         if len(node) > 1:
             self.preorder(node[1])
@@ -532,21 +538,21 @@ class Python2Formatter(GenericASTTraversal, object):
     # 'n_starstar_factor_opt": ( '%? %c %c', 0, 1),
     def n_starstar_factor_opt(self, node):
         if len(node) > 0:
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[0])
-            self.write(' ')
+            self.write(" ")
             self.preorder(node[1])
         self.prune()
 
     def n_for_stmt(self, node):
-        assert node[0] == 'FOR'
-        self.write(self.indent, 'for ')
+        assert node[0] == "FOR"
+        self.write(self.indent, "for ")
         self.preorder(node[1])
-        assert node[2] == 'IN'
-        self.write(' in ')
+        assert node[2] == "IN"
+        self.write(" in ")
         self.preorder(node[3])
-        assert node[4] == 'COLON'
-        self.write(':\n')
+        assert node[4] == "COLON"
+        self.write(":\n")
         self.indentMore()
         self.preorder(node[5])
         self.indentLess()
@@ -579,51 +585,60 @@ class Python2Formatter(GenericASTTraversal, object):
         m = escape.search(fmt)
         while m:
             i = m.end()
-            self.write(m.group('prefix'))
+            self.write(m.group("prefix"))
 
-            typ = m.group('kind') or '{'
+            typ = m.group("kind") or "{"
             node = startnode
             try:
-                if m.group('child'):
-                    node = node[int(m.group('child'))]
+                if m.group("child"):
+                    node = node[int(m.group("child"))]
             except:
                 print(node.__dict__)
                 raise
 
-            if   typ == '%':	self.write('%')
-            elif typ == '+':	self.indentMore()
-            elif typ == '-':	self.indentLess()
-            elif typ == '|':	self.write(self.indent)
-            elif typ == 'c':
+            if typ == "%":
+                self.write("%")
+            elif typ == "+":
+                self.indentMore()
+            elif typ == "-":
+                self.indentLess()
+            elif typ == "|":
+                self.write(self.indent)
+            elif typ == "c":
                 index = entry[arg]
                 if isinstance(index, tuple):
-                    assert node[index[0]] == index[1], (
-                        "at %s[%d], %s vs %s" % (
-                            node.kind, arg, node[index[0]].kind, index[1])
-                        )
+                    assert node[index[0]] == index[1], "at %s[%d], %s vs %s" % (
+                        node.kind,
+                        arg,
+                        node[index[0]].kind,
+                        index[1],
+                    )
                     index = index[0]
                 if isinstance(index, int):
                     self.preorder(node[index])
                 arg += 1
-            elif typ == 'p':
+            elif typ == "p":
                 p = self.prec
                 length = len(entry)
                 if length == 3:
                     (index, self.prec, name) = entry[arg]
-                    assert node[index] == name, (
-                        "at %s[%d], %s vs %s" % (
-                            node.kind, arg, node[index[0]].kind, index[1])
-                        )
+                    assert node[index] == name, "at %s[%d], %s vs %s" % (
+                        node.kind,
+                        arg,
+                        node[index[0]].kind,
+                        index[1],
+                    )
                 elif length == 2:
                     (index, self.prec) = entry[arg]
                 else:
-                    raise RuntimeError("Invalid %%p tuple length %d; length should be 1 or 2"
-                                       % length)
+                    raise RuntimeError(
+                        "Invalid %%p tuple length %d; length should be 1 or 2" % length
+                    )
 
                 self.preorder(node[index])
                 self.prec = p
                 arg += 1
-            elif typ == 'C':
+            elif typ == "C":
                 low, high, sep = entry[arg]
                 remaining = len(node[low:high])
                 for subnode in node[low:high]:
@@ -632,7 +647,7 @@ class Python2Formatter(GenericASTTraversal, object):
                     if remaining > 0:
                         self.write(sep)
                 arg += 1
-            elif typ == 'D':
+            elif typ == "D":
                 low, high, sep = entry[arg]
                 remaining = len(node[low:high])
                 for subnode in node[low:high]:
@@ -645,11 +660,11 @@ class Python2Formatter(GenericASTTraversal, object):
                         pass
                     pass
                 arg += 1
-            elif typ == 'x':
+            elif typ == "x":
                 # This code is only used in fragments
                 assert isinstance(entry[arg], tuple)
                 arg += 1
-            elif typ == 'P':
+            elif typ == "P":
                 p = self.prec
                 low, high, sep, self.prec = entry[arg]
                 remaining = len(node[low:high])
@@ -661,9 +676,9 @@ class Python2Formatter(GenericASTTraversal, object):
                         self.write(sep)
                 self.prec = p
                 arg += 1
-            elif typ == '{':
+            elif typ == "{":
                 d = node.__dict__
-                expr = m.group('expr')
+                expr = m.group("expr")
                 try:
                     self.write(eval(expr, d, d))
                 except:
@@ -683,18 +698,30 @@ class Python2Formatter(GenericASTTraversal, object):
             self.template_engine(table[key.kind], node)
             self.prune()
 
-def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
-                         showgrammar=False, compile_mode='exec'):
+
+def format_python2_stmts(
+    python_stmts,
+    show_tokens=False,
+    showast=False,
+    showgrammar=False,
+    compile_mode="exec",
+):
     """
     formats python2 statements
     """
 
-    parser_debug = {'rules': False, 'transition': False,
-                    'reduce': showgrammar,
-                    'errorstack': True, 'context': True, 'dups': True }
-    parsed = parse_python2(python_stmts, show_tokens=show_tokens,
-                           parser_debug=parser_debug)
-    assert parsed == 'file_input', 'Should have parsed grammar start'
+    parser_debug = {
+        "rules": False,
+        "transition": False,
+        "reduce": showgrammar,
+        "errorstack": True,
+        "context": True,
+        "dups": True,
+    }
+    parsed = parse_python2(
+        python_stmts, show_tokens=show_tokens, parser_debug=parser_debug
+    )
+    assert parsed == "file_input", "Should have parsed grammar start"
 
     formatter = Python2Formatter()
 
@@ -706,37 +733,43 @@ def format_python2_stmts(python_stmts, show_tokens=False, showast=False,
 
     return python2_formatted_str
 
+
 def main(string, show_tokens=True, show_ast=True, show_grammar=True):
     from py2_scan import ENDMARKER
-    formatted = format_python2_stmts(string + ENDMARKER, show_tokens, show_ast, show_grammar)
-    print('=' * 30)
+
+    formatted = format_python2_stmts(
+        string + ENDMARKER, show_tokens, show_ast, show_grammar
+    )
+    print("=" * 30)
     print(formatted)
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) == 1:
         # main("from os import path")
         # format_test("pass")
         main(
-"""
+            """
 x = 1 + 2
 y = 3 // 4
 z += 4
-""")
-        main(
 """
+        )
+        main(
+            """
 if True:
     pass
-""")
-#         main(
-# """
-# if True:
-#     if True:
-#         pass
-#     pass
-# pass
-# """)
+"""
+        )
+    #         main(
+    # """
+    # if True:
+    #     if True:
+    #         pass
+    #     pass
+    # pass
+    # """)
     else:
         string = open(sys.argv[1]).read()
         main(string)

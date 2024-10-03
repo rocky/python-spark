@@ -6,14 +6,20 @@ More complex expression parsing
 # from __future__ import print_function
 
 import sys
+
+from example.python2.py2_scan import ENDMARKER, Python2Scanner
+from spark_parser import GenericASTBuilder
 from spark_parser.ast import AST
 
-from py2_scan import Python2Scanner, ENDMARKER
+DEFAULT_DEBUG = {
+    "rules": False,
+    "transition": False,
+    "reduce": False,
+    "errorstack": "full",
+    "context": True,
+    "dups": True,
+}
 
-from spark_parser import GenericASTBuilder
-
-DEFAULT_DEBUG = {'rules': False, 'transition': False, 'reduce' : False,
-                 'errorstack': 'full', 'context': True, 'dups': True}
 
 class PythonParser(GenericASTBuilder):
     """A more complete spark example: a Python 2 Parser.
@@ -21,7 +27,7 @@ class PythonParser(GenericASTBuilder):
     Note: function parse() comes from GenericASTBuilder
     """
 
-    def __init__(self, start='file_input', debug=DEFAULT_DEBUG):
+    def __init__(self, start="file_input", debug=DEFAULT_DEBUG):
         super(PythonParser, self).__init__(AST, start, debug=debug)
         self.start = start
         self.debug = debug
@@ -29,30 +35,37 @@ class PythonParser(GenericASTBuilder):
         # Put left-recursive list non-terminals:
         # x ::= x y
         # x ::=
-        self.collect = frozenset(('stmts', 'comments', 'dot_names', 'dots',
-                        'comp_op_exprs', 'newline_or_stmts',
-                        'comma_names', 'comma_fpdef_opt_eqtests',)
+        self.collect = frozenset(
+            (
+                "stmts",
+                "comments",
+                "dot_names",
+                "dots",
+                "comp_op_exprs",
+                "newline_or_stmts",
+                "comma_names",
+                "comma_fpdef_opt_eqtests",
+            )
         )
-
 
     def debug_reduce(self, rule, tokens, parent, i):
         """Customized format and print for our kind of tokens
         which gets called in debugging grammar reduce rules
         """
-        prefix = '           '
+        prefix = "           "
         if parent and tokens:
             p_token = tokens[parent]
-            if hasattr(p_token, 'line'):
-                prefix = 'L.%3d.%03d: ' % (p_token.line, p_token.column)
+            if hasattr(p_token, "line"):
+                prefix = "L.%3d.%03d: " % (p_token.line, p_token.column)
                 pass
             pass
-        print("%s%s ::= %s" % (prefix, rule[0], ' '.join(rule[1])))
+        print("%s%s ::= %s" % (prefix, rule[0], " ".join(rule[1])))
 
     def nonterminal(self, nt, args):
         # nonterminal with a (reserved) single word derivation
-        no_skip = ('pass_stmt', 'continue_stmt', 'break_stmt', 'return_stmt')
+        no_skip = ("pass_stmt", "continue_stmt", "break_stmt", "return_stmt")
 
-        has_len = hasattr(args, '__len__')
+        has_len = hasattr(args, "__len__")
 
         if nt in self.collect and len(args) > 1:
             #
@@ -61,22 +74,30 @@ class PythonParser(GenericASTBuilder):
             rv = args[0]
             for arg in args[1:]:
                 rv.append(arg)
-        elif (has_len and len(args) == 1 and
-              hasattr(args[0], '__len__') and args[0] not in no_skip and
-              len(args[0]) == 1):
+        elif (
+            has_len
+            and len(args) == 1
+            and hasattr(args[0], "__len__")
+            and args[0] not in no_skip
+            and len(args[0]) == 1
+        ):
             # Remove singleton derivations
             rv = GenericASTBuilder.nonterminal(self, nt, args[0])
-            del args[0] # save memory
-        elif (has_len and len(args) == 2 and
-              hasattr(args[1], '__len__') and len(args[1]) == 0):
+            del args[0]  # save memory
+        elif (
+            has_len
+            and len(args) == 2
+            and hasattr(args[1], "__len__")
+            and len(args[1]) == 0
+        ):
             # Remove trailing epsilon rules, but only when there
             # are two items.
-            if hasattr(args[0], '__len__') and len(args[0]) == 1:
+            if hasattr(args[0], "__len__") and len(args[0]) == 1:
                 # Remove singleton derivation
                 rv = args[0]
             else:
                 rv = GenericASTBuilder.nonterminal(self, nt, args[:1])
-            del args[1] # save memory
+            del args[1]  # save memory
         else:
             rv = GenericASTBuilder.nonterminal(self, nt, args)
         return rv
@@ -86,7 +107,7 @@ class PythonParser(GenericASTBuilder):
     # start with the name p_ and are collected automatically
     ##########################################################
     def p_python_grammar(self, args):
-        '''
+        """
         ### Note: comment rules that start ## are rules from python26.gr
         ##  We use them to assist checking translation to a SPARK-format grammar.
 
@@ -489,7 +510,7 @@ class PythonParser(GenericASTBuilder):
 
         comment ::= COMMENT
         comment ::= COMMENT NEWLINE
-        '''
+        """
 
     # Import-related grammar
     def p_import(self, args):
@@ -594,8 +615,13 @@ class PythonParser(GenericASTBuilder):
         """
 
 
-def parse_python2(python_stmts, start='file_input',
-                  show_tokens=False, parser_debug=DEFAULT_DEBUG, check=False):
+def parse_python2(
+    python_stmts,
+    start="file_input",
+    show_tokens=False,
+    parser_debug=DEFAULT_DEBUG,
+    check=False,
+):
     assert isinstance(python_stmts, str)
     tokens = Python2Scanner().tokenize(python_stmts)
     if show_tokens:
@@ -614,25 +640,28 @@ def parse_python2(python_stmts, start='file_input',
     return parser.parse(tokens)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) == 1:
         for python2_stmts in (
-#                 # "if True: pass",
-#                 """
-# while True:
-#     if False:
-#         continue
-
-# """,
-                # "if True: pass",
-                """return f()""",
-                ):
+            #                 # "if True: pass",
+            #                 """
+            # while True:
+            #     if False:
+            #         continue
+            # """,
+            # "if True: pass",
+            """return f()""",
+        ):
             print(python2_stmts)
-            print('-' * 30)
-            ast = parse_python2(python2_stmts + ENDMARKER,
-                                start='file_input', show_tokens=False, check=True)
+            print("-" * 30)
+            ast = parse_python2(
+                python2_stmts + ENDMARKER,
+                start="file_input",
+                show_tokens=False,
+                check=True,
+            )
             print(ast)
-            print('=' * 30)
+            print("=" * 30)
     else:
         python2_stmts = " ".join(sys.argv[1:])
         parse_python2(python2_stmts, show_tokens=False, check=True)
