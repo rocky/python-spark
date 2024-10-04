@@ -8,6 +8,7 @@ PHONY=check check-full clean dist distclean test
 GIT2CL ?= git2cl
 PYTHON ?= python
 PYTHON3 ?= python3
+PYTEST_OPTIONS ?=
 
 #: the default target - same as running "check"
 all: check
@@ -20,7 +21,7 @@ check-full: check
 
 #: Run tests (one version of Python)
 check:
-	(cd test && nosetests -v *.py)
+	$(PYTHON3) -m pytest $(PYTEST_OPTIONS) test
 	$(MAKE) -C example/python2 check
 #	$(MAKE) -C example/gdb-loc check
 
