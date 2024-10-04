@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
+import sys
 import unittest
 
 from helper import helper_init, run_tests_unit
 
 format_dir = helper_init(__file__, "format")
-from example.python2.py2_format import format_python2_stmts
+
+if sys.version_info[:2] < (3, 9):
+    from py2_format import format_python2_stmts
+else:
+    from example.python2.py2_format import format_python2_stmts
 
 
 def run_format(python2_stmts):

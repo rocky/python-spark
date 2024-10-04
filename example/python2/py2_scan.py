@@ -6,7 +6,7 @@ Copyright (c) 2016, 2024 Rocky Bernstein
 import re
 from sys import version_info
 
-if version_info[:2] < (3, 10):
+if version_info[:2] < (3, 9):
     from py2_token import PythonToken
 else:
     from example.python2.py2_token import PythonToken

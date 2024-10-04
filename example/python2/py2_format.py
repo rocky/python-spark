@@ -101,7 +101,7 @@ from sys import version_info
 
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
-if version_info[:2] < (3, 10):
+if version_info[:2] < (3, 9):
     from py2_parser import parse_python2
 else:
     from example.python2.py2_parser import parse_python2

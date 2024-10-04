@@ -12,7 +12,7 @@ def helper_init(file, subdir):
 
 
 def compare_one(func, python_file, verbose=True):
-    if sys.version_info[:2] < (3, 10):
+    if sys.version_info[:2] < (3, 9):
         from py2_scan import ENDMARKER
     else:
         from example.python2.py2_scan import ENDMARKER

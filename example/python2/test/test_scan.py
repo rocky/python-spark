@@ -5,13 +5,12 @@ from sys import version_info
 
 from helper import helper_init, run_tests_unit
 
-if version_info[:2] < (3, 10):
+scan_dir = helper_init(__file__, "scan")
+
+if version_info[:2] < (3, 9):
     from py2_scan import Python2Scanner
 else:
     from example.python2.py2_scan import Python2Scanner
-
-
-scan_dir = helper_init(__file__, "scan")
 
 
 def run_scan(python_file):
