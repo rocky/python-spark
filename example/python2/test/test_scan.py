@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
 import unittest
+from sys import version_info
 
 from helper import helper_init, run_tests_unit
 
+if version_info[:2] < (3, 10):
+    from py2_scan import Python2Scanner
+else:
+    from example.python2.py2_scan import Python2Scanner
+
+
 scan_dir = helper_init(__file__, "scan")
-from example.python2.py2_scan import Python2Scanner
 
 
 def run_scan(python_file):

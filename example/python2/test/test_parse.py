@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
+import sys
 import unittest
 
 from helper import helper_init, run_tests_unit
 
 parse_dir = helper_init(__file__, "parse")
-from example.python2.py2_parser import parse_python2
+
+if sys.version_info[:2] < (3, 11):
+    from example.python2.py2_parser import parse_python2
+else:
+    from py2_parser import parse_python2
 
 
 def run_parse(python2_stmts):

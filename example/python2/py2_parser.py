@@ -3,13 +3,16 @@
 More complex expression parsing
 """
 
-# from __future__ import print_function
-
 import sys
+from sys import version_info
 
-from example.python2.py2_scan import ENDMARKER, Python2Scanner
 from spark_parser import GenericASTBuilder
 from spark_parser.ast import AST
+
+if version_info[:2] < (3, 10):
+    from py2_scan import ENDMARKER, Python2Scanner
+else:
+    from example.python2.py2_scan import ENDMARKER, Python2Scanner
 
 DEFAULT_DEBUG = {
     "rules": False,

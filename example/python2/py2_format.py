@@ -96,22 +96,19 @@ evaluating the escape code.
 
 import re
 import sys
+from io import StringIO
+from sys import version_info
 
-from example.python2.py2_parser import parse_python2
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
-PYTHON3 = sys.version_info >= (3, 0)
-
-if PYTHON3:
-    from io import StringIO
-
-    minint = -sys.maxsize - 1
-    maxint = sys.maxsize
+if version_info[:2] < (3, 10):
+    from py2_parser import parse_python2
 else:
-    from StringIO import StringIO
+    from example.python2.py2_parser import parse_python2
 
-    minint = -sys.maxint - 1
-    maxint = sys.maxint
+
+minint = -sys.maxsize - 1
+maxint = sys.maxsize
 
 TAB = " " * 4  # is less spacy than "\t"
 INDENT_PER_LEVEL = " "  # additional intent per pretty-print level
