@@ -514,7 +514,7 @@ class PythonParser(GenericASTBuilder):
 
     # Import-related grammar
     def p_import(self, args):
-        """
+        r"""
         ## import_stmt ::= import_name | import_from
         import_stmt ::= import_name
         import_stmt ::= import_from
