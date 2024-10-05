@@ -2,7 +2,7 @@
 #  Based on decompyle.py
 #  Copyright (c) 1999 John Aycock
 
-"""Formats Python source an abstract syntax tree created by AST builder.
+r"""Formats Python source an abstract syntax tree created by AST builder.
 
 The below is a bit long, but still it is somehwat abbreviated.
 See https://github.com/rocky/python-uncompyle6/wiki/Table-driven-semantic-actions.

@@ -14,7 +14,7 @@ else:
 from spark_parser.scanner import GenericScanner
 
 RESERVED_WORDS = re.split(
-    "\s+",
+    r"\s+",
     """and as assert break class continue def del eval exec else elif for from global
 if in import lambda or pass print return while with yield None""",
 )
@@ -195,7 +195,7 @@ class Python2Scanner(GenericScanner):
         r"([ \t]*[#].*[^\x04][\n]?)|([ \t]+)"
         if "#" in s:
             # We have a comment
-            matches = re.match("(\s+)(.*[\n]?)", s)
+            matches = re.match(r"(\s+)(.*[\n]?)", s)
             if matches and self.is_newline:
                 self.handle_indent_dedent(matches.group(1))
                 s = matches.group(2)
