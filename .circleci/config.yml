@@ -1,69 +1,36 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
-
-# For a detailed guide to building and testing with Python, read the docs:
-# https://circleci.com/docs/language-python/ for more details
 version: 2.1
-
-# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
-# See: https://circleci.com/docs/orb-intro/
-orbs:
-  # See the Python orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
-  python: circleci/python@2.1.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  build-and-test:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
+  build:
+    working_directory: ~/rocky/python-spark
+    parallelism: 1
     docker:
-      # Specify the version you desire here
-      # See:https://circleci.com/developer/images/image/cimg/python
-      - image: cimg/python:3.12
+    - image: cimg/python:3.12
 
-    # Add steps to the job
-    # See: https://circleci.com/docs/jobs-steps/#steps-overview & https://circleci.com/docs/configuration-reference/#steps
     steps:
       # Checkout the code as the first step.
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
-          # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
-      - run:
-          name: Run tests
-          # This assumes pytest is installed via the install-package step above
-          command: pytest
+      - run: pip install --upgrade setuptools
+      - run: pip install -e .[dev]
+      - run: make check
 
-    # This is based on your 1.0 configuration file or project settings
-    - run: pip install --upgrade setuptools
-    - run: pip install -e .[dev]
+      - restore_cache:
+          keys:
+            # This branch if available
+            - v2-dependencies-{{ .Branch }}-
+            # Default branch if not
+            - v2-dependencies-master-
+            # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
+            - v2-dependencies-
 
-    # Save dependency cache
-    - save_cache:
-        key: v2-dependencies-{{ .Branch }}-{{ epoch }}
-        paths:
-        # This is a broad list of cache paths to include many possible development environments
-        # You can probably delete some of these entries
-        - vendor/bundle
-        - ~/virtualenvs
-        - ~/.m2
-        - ~/.ivy2
-        - ~/.bundle
-        - ~/.cache/bower
-
-    # Test
-    #   This would typically be a build job when using workflows, possibly combined with build
-    # This is based on your 1.0 configuration file or project settings
-    - run: make check
-    # Teardown
-    #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
-    # Save test results
-    - store_test_results:
-        path: /tmp/circleci-test-results
-    # Save artifacts
-    - store_artifacts:
-        path: /tmp/circleci-artifacts
-    - store_artifacts:
-        path: /tmp/circleci-test-results
+      # Save dependency cache
+      - save_cache:
+          key: v2-dependencies-{{ .Branch }}-{{ epoch }}
+          paths:
+          # This is a broad list of cache paths to include many possible development environments
+          # You can probably delete some of these entries
+          - vendor/bundle
+          - ~/virtualenvs
+          - ~/.m2
+          - ~/.ivy2
+          - ~/.bundle
+          - ~/.cache/bower
