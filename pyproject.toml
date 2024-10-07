@@ -1,0 +1,66 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+]
+[project]
+name = "spark-parser"
+authors = [
+	{name = "John Aycock"},
+      	{name = "Rocky Bernstein", email="rocky@gnu.org"}
+]
+
+description = "An Earley-Algorithm Context-free grammar Parser Toolkit"
+dependencies = [
+    "click",
+]
+readme = "README.rst"
+license = {text = "GPL"}
+maintainers = [
+    {name = "Rocky Bernstein"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 2.4",
+    "Programming Language :: Python :: 2.5",
+    "Programming Language :: Python :: 2.6",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3.0",
+    "Programming Language :: Python :: 3.1",
+    "Programming Language :: Python :: 3.2",
+    "Programming Language :: Python :: 3.3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/rocky/python-spark"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pre-commit",
+]
+
+[tool.setuptools]
+packages = [
+    "spark_parser",
+]
+
+py-modules = [
+    "example",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "spark_parser.version.__version__"}

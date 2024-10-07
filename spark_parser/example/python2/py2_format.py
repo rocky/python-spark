@@ -99,6 +99,10 @@ import sys
 from io import StringIO
 from sys import version_info
 
+<<<<<<< HEAD:example/python2/py2_format.py
+=======
+from spark_parser.example.python2.py2_parser import parse_python2
+>>>>>>> master:spark_parser/example/python2/py2_format.py
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG
 
 if version_info[:2] < (3, 9):
