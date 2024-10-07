@@ -10,7 +10,7 @@ scan_dir = helper_init(__file__, "scan")
 if version_info[:2] < (3, 9):
     from py2_scan import Python2Scanner
 else:
-    from example.python2.py2_scan import Python2Scanner
+    from spark_parser.example.python2.py2_scan import Python2Scanner
 
 
 def run_scan(python_file):

@@ -10,7 +10,7 @@ parse_dir = helper_init(__file__, "parse")
 if sys.version_info[:2] < (3, 9):
     from py2_parser import parse_python2
 else:
-    from example.python2.py2_parser import parse_python2
+    from spark_parser.example.python2.py2_parser import parse_python2
 
 
 def run_parse(python2_stmts):

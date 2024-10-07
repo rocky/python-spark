@@ -10,7 +10,7 @@ format_dir = helper_init(__file__, "format")
 if sys.version_info[:2] < (3, 9):
     from py2_format import format_python2_stmts
 else:
-    from example.python2.py2_format import format_python2_stmts
+    from spark_parser.example.python2.py2_format import format_python2_stmts
 
 
 def run_format(python2_stmts):
