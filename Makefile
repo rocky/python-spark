@@ -17,13 +17,13 @@ all: check
 check-full: check
 	flake8 spark_parser && flake8 test \
 	&& flake8 example \
-	--exclude example/python2/test \
+	--exclude spark_parser/example/python2/test \
 
 #: Run tests (one version of Python)
 check:
 	$(PYTHON3) -m pytest $(PYTEST_OPTIONS) test
-	$(MAKE) -C example/python2 check
-#	$(MAKE) -C example/gdb-loc check
+	$(MAKE) -C spark_parser/example/python2 check
+#	$(MAKE) -C spark_parser/example/gdb-loc check
 
 CLEAN_FILES= *.pyc *.so */*.pyc __pycache__ rm  */__pycache__/ */*/__pycache__ *~ */*~
 #: Clean up temporary files

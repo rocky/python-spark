@@ -7,7 +7,7 @@ More complex expression parsing
 
 import sys
 
-from example.python2.py2_scan import ENDMARKER, Python2Scanner
+from spark_parser.example.python2.py2_scan import ENDMARKER, Python2Scanner
 from spark_parser import GenericASTBuilder
 from spark_parser.ast import AST
 
