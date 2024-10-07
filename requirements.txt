@@ -1,2 +1,0 @@
-# Pick up stuff from setup.py
--e .

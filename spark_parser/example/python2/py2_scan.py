@@ -5,7 +5,7 @@ Copyright (c) 2016 Rocky Bernstein
 
 import re
 
-from example.python2.py2_token import PythonToken
+from spark_parser.example.python2.py2_token import PythonToken
 
 # from __future__ import print_function
 from spark_parser.scanner import GenericScanner
