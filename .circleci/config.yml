@@ -38,7 +38,6 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run: pip install --upgrade setuptools
     - run: pip install -e .
-    - run: pip install -r requirements-dev.txt
 
     # Save dependency cache
     - save_cache:
@@ -56,7 +55,7 @@ jobs:
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # This is based on your 1.0 configuration file or project settings
-    - run: python ./setup.py develop && make check
+    - run: make check
     # Teardown
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save test results
