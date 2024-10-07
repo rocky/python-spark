@@ -22,6 +22,8 @@
     $ echo $VERSION
     $ git commit -m"Get ready for release $VERSION" .
 
+# Look over how the last release displays and change README.rst
+
 # Update ChangeLog:
 
     $ make ChangeLog
