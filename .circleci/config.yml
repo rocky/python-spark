@@ -38,7 +38,7 @@ jobs:
 
     # This is based on your 1.0 configuration file or project settings
     - run: pip install --upgrade setuptools
-    - run: pip install -e .
+    - run: pip install -e .[dev]
 
     # Save dependency cache
     - save_cache:
