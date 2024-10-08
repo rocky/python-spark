@@ -1,17 +1,16 @@
 1.9.0 2024-10-8 Has it been that long?
 ======================================
 
-Revamp for more modern Python style in the 3.12 era:
+Revamp for a more modern Python style in the 3.12 era:
   - start adding type annotations to code.
   - use pyproject.toml
   - remove illegal escape sequences
 
-BuildTree now builds trees iteratively rather than recursively. With this we can handle larger trees which are needed in the decompielrs.
+`BuildTree` now builds trees iteratively rather than recursively. With this we can handle larger trees which are needed in the decompilers.
 
-Revise README.rst for above and go over spelling and grammar
+Revise `README.rst` for the above and go over spelling and grammar
 
-Internally, more git branches have been created to supoprt older Python.
-
+Internally, more git branches have been created to support older Python.
 
 1.8.9 2018-07-28 S
 ======================================
