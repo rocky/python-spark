@@ -3,6 +3,7 @@ include NEW-FEATURES.rst
 include ChangeLog
 include LICENSE
 include Makefile
+include THANKS
 include TODO.rst
 recursive-include spark_parser *.py
 recursive-include test *
