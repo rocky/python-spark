@@ -62,5 +62,8 @@ py-modules = [
     "example",
 ]
 
+[project.scripts]
+spark-parser-coverage = "spark_parser.bin.parser_coverage:run"
+
 [tool.setuptools.dynamic]
 version = {attr = "spark_parser.version.__version__"}
