@@ -1,0 +1,155 @@
+--- ChangeLog	2024-10-08 07:34:12.955418050 -0400
++++ ChangeLog-spell-corrected	2024-10-08 07:35:49.302374064 -0400
+@@ -156,7 +156,7 @@
+ 	* admin-tools/{check-older-versions.sh =>
+ 	check-2.4-2.7-versions.sh}, admin-tools/check-3.3-3.5-versions.sh,
+ 	admin-tools/check-3.6-3.10-versions.sh,
+-	admin-tools/{check-newer-versions.sh => check-newest-versions.sh}: 
++	admin-tools/{check-newer-versions.sh => check-newest-versions.sh}:
+ 	Administrivia: Add check programs
+ 
+ 2024-10-04  rocky <rb@dustyfeet.com>
+@@ -188,7 +188,7 @@
+ 	admin-tools/pyenv-3.3-3.5-versions,
+ 	admin-tools/pyenv-3.6-3.10-versions, admin-tools/setup-master.sh,
+ 	admin-tools/setup-python-3.0.sh, admin-tools/setup-python-3.3.sh,
+-	admin-tools/setup-python-3.6.sh: Start separting code into verison
++	admin-tools/setup-python-3.6.sh: Start separating code into version
+ 	branches
+ 
+ 2024-10-02  gdesmar <75089569+gdesmar@users.noreply.github.com>
+@@ -215,11 +215,11 @@
+ 
+ 2023-05-29  rocky <rb@dustyfeet.com>
+ 
+-	* spark_parser/spark.py: lint a litle bit
++	* spark_parser/spark.py: lint a little bit
+ 
+ 2022-03-09  rocky <rb@dustyfeet.com>
+ 
+-	* spark_parser/__init__.py, test/test_grammar.py, test/test_misc.py: 
++	* spark_parser/__init__.py, test/test_grammar.py, test/test_misc.py:
+ 	__init__.py lint
+ 
+ 2022-02-11  rocky <rb@dustyfeet.com>
+@@ -290,7 +290,7 @@
+ 
+ 2019-11-16  rocky <rocky@gnu.org>
+ 
+-	* admin-tools/pyenv-newer-versions, admin-tools/setup-master.sh: 
++	* admin-tools/pyenv-newer-versions, admin-tools/setup-master.sh:
+ 	Administriva - bump testing versions
+ 
+ 2019-11-16  rocky <rocky@gnu.org>
+@@ -404,7 +404,7 @@
+ 2018-03-28  rocky <rb@dustyfeet.com>
+ 
+ 	* bin/spark-parser-coverage: Canonicalize to reduce false-positive
+-	unused rules Specifically we remove the epsilon transition marks.  Note we don't bother doing this for all rules, just the unsed ones
++	unused rules Specifically we remove the epsilon transition marks.  Note we don't bother doing this for all rules, just the unused ones
+ 
+ 2018-02-18  rocky <rb@dustyfeet.com>
+ 
+@@ -428,7 +428,7 @@
+ 
+ 2017-12-07  rocky <rb@dustyfeet.com>
+ 
+-	* test/test_misc.py: Python 2.6 compatability
++	* test/test_misc.py: Python 2.6 compatibility
+ 
+ 2017-12-07  rocky <rb@dustyfeet.com>
+ 
+@@ -491,7 +491,7 @@
+ 
+ 	* example/gdb-loc/gdbloc/semantics.py,
+ 	example/python2/py2_format.py, spark_parser/spark.py,
+-	test/test_checker.py, test/test_grammar.py, test/test_spark.py: 
++	test/test_checker.py, test/test_grammar.py, test/test_spark.py:
+ 	Check for rules with the same non-nul RHS
+ 
+ 2017-11-16  rocky <rb@dustyfeet.com>
+@@ -546,7 +546,7 @@
+ 2017-10-24  rocky <rb@dustyfeet.com>
+ 
+ 	* ChangeLog, NEWS, example/gdb-loc/gdbloc/semantics.py,
+-	example/gdb-loc/pytest/test_semantics.py, spark_parser/version.py: 
++	example/gdb-loc/pytest/test_semantics.py, spark_parser/version.py:
+ 	Get ready for release 1.7.1
+ 
+ 2017-10-24  rocky <rb@dustyfeet.com>
+@@ -559,14 +559,14 @@
+ 	example/gdb-loc/gdbloc/scanner.py,
+ 	example/gdb-loc/gdbloc/semantics.py,
+ 	example/gdb-loc/pytest/test_parser.py,
+-	example/gdb-loc/pytest/test_semantics.py, spark_parser/spark.py: 
++	example/gdb-loc/pytest/test_semantics.py, spark_parser/spark.py:
+ 	parser: handle errorstack better; better gdbloc
+ 
+ 2017-10-12  rocky <rb@dustyfeet.com>
+ 
+ 	* example/README.md, example/expr2/eval.py,
+ 	example/expr2/{parser.py => expr_parser.py},
+-	example/expr2/test_grammar.py, example/python2/py2_format.py: 
++	example/expr2/test_grammar.py, example/python2/py2_format.py:
+ 	Improve examples.
+ 
+ 2017-10-12  rocky <rb@dustyfeet.com>
+@@ -615,7 +615,7 @@
+ 
+ 	* example/gdb-loc/README.md, example/gdb-loc/gdbloc/parser.py,
+ 	example/gdb-loc/gdbloc/scanner.py,
+-	example/gdb-loc/gdbloc/semantics.py: Pretty much coplete the gdbloc
++	example/gdb-loc/gdbloc/semantics.py: Pretty much complete the gdbloc
+ 	example Now I just need to add it to trepan2 and trepan3k...
+ 
+ 2017-10-08  rocky <rb@dustyfeet.com>
+@@ -801,7 +801,7 @@
+ 
+ 2017-01-28  rocky <rb@dustyfeet.com>
+ 
+-	* spark_parser/spark.py, test/test_spark.py: Banc on coverage a
++	* spark_parser/spark.py, test/test_spark.py: Bang on coverage a
+ 	little more
+ 
+ 2017-01-28  rocky <rb@dustyfeet.com>
+@@ -957,7 +957,7 @@
+ 2016-11-22  rocky <rb@dustyfeet.com>
+ 
+ 	* example/python2/test/helper.py, spark_parser/spark.py: Fix bug
+-	introdoced in last release...  guard agains self.debug == None Reinstate "with ..." will handle 2.4-2.5 in a branch
++	introdoced in last release...  guard against self.debug == None Reinstate "with ..." will handle 2.4-2.5 in a branch
+ 
+ 2016-11-21  rocky <rb@dustyfeet.com>
+ 
+@@ -1043,7 +1043,7 @@
+ 	example/python2/test/parse/exec.right,
+ 	example/python2/test/parse/if.right,
+ 	example/python2/test/parse/imports.right,
+-	example/python2/test/parse/while.right: Python 2 start Handlin '=='
++	example/python2/test/parse/while.right: Python 2 start Handling '=='
+ 	and subscripts
+ 
+ 2016-06-12  rocky <rb@dustyfeet.com>
+@@ -1090,7 +1090,7 @@
+ 2016-06-10  rocky <rb@dustyfeet.com>
+ 
+ 	* example/python2/py2_format.py, example/python2/py2_parser.py,
+-	example/python2/py2_scan.py, example/python2/test/format/expr.right: 
++	example/python2/py2_scan.py, example/python2/test/format/expr.right:
+ 	Almost all of the grammar added.  py2_scan.py: add "and" and "or" reserved words
+ 
+ 2016-06-10  rocky <rb@dustyfeet.com>
+@@ -1447,7 +1447,7 @@
+ 2016-04-28  rocky <rb@dustyfeet.com>
+ 
+ 	* NEWS, example/expr/expr.py, setup.py, spark/__init__.py,
+-	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py: 
++	spark/ast.py, spark/scanner.py, spark/spark.py, test/test_spark.py:
+ 	Get ready for release 1.0.2
+ 
+ 2016-04-27  rocky <rb@dustyfeet.com>
+@@ -1539,4 +1539,3 @@
+ 2016-04-20  rocky <rb@dustyfeet.com>
+ 
+ 	* Initial guess at Spark package
+-
