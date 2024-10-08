@@ -5,9 +5,9 @@
 An Earley Algorithm Parser toolkit.
 ===========================================
 
-This package uses Jay Earley's algorithm for parsing context free
+This package uses Jay Earley's algorithm for parsing context-free
 grammars, and comes with some generic Abstract Syntax Tree
-routines. There is also a prototype scanner which does its job by
+routines. There is also a prototype scanner that does its job by
 combining Python regular expressions.
 
 (SPARK stands for Scanning, Parsing, and Rewriting Kit. It is a poor
@@ -21,7 +21,7 @@ current incarnation of this code is maintained (or not) by Rocky
 Bernstein.
 
 Note: Earley algorithm parsers are almost linear when given an LR grammar.
-These are grammars which are left-recursive.
+These are grammars that are left-recursive.
 
 Installation
 ------------
@@ -42,15 +42,15 @@ To run from the source tree::
 Features
 --------
 
-Many of the features added were in direct response to using it in the Python decompiler _uncompyle6_.
+Many of the added features are directly related to using it in the Python decompiler uncompyle6_.
 
-One unique features of this code is the ability to have it profile
+One unique feature of this code is the ability to have it profile
 which grammar rules have been used over a series of parses. This can
 inform which grammar rules are not needed.
 
 Another unusual feature is to be able to remove grammar rules after a
-rule as been added. This is used in uncompyle6_ where grammar rules
-inherited one version of Python to another.
+rule has been added. This is used in uncompyle6_ where grammar rules
+inherited from one version of Python to another.
 
 The non-standard grammar generator system feature is the ability to
 perform a callback check just before a reduction rule occurs. This
@@ -59,13 +59,13 @@ other than through the grammar language.
 
 `NEW-FEATURES
 <https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rst>`_
-desribes thse features and others in more detail.
+describes these features and others in more detail.
 
 
 Example
 -------
 
-The github `example directory <https://github.com/rocky/python-spark/tree/master/example>`_ has a worked-out examples; The PyPI package uncompyle6_ uses this and contains a much larger example.
+The github `example directory <https://github.com/rocky/python-spark/tree/master/example>`_ has worked-out examples; The PyPI package uncompyle6_ uses this and contains a much larger example.
 
 See Also
 --------
