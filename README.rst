@@ -67,6 +67,18 @@ Example
 
 The github `example directory <https://github.com/rocky/python-spark/tree/master/example>`_ has worked-out examples; The PyPI package uncompyle6_ uses this and contains a much larger example.
 
+Support of older versions of Python
+-----------------------------------
+
+We support running this from older versions of Python in various git branches:
+
+* ``python-2.4-to-2.7`` has code for Python 2.4 to 2.7
+* ``python-3.0-to-3.2`` has code for Python 3.0 to 3.2
+* ``python-3.3-to-3.5`` has code for Python 3.3 to 3.5
+* ``python-3.6-to-3.10`` has code for Python 3.6 to 3.10
+* ``master`` has code for Python 3.11 to the current version of Python
+
+
 See Also
 --------
 

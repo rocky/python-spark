@@ -62,7 +62,7 @@ over 600 rules for each of the 13 or so versions of Python.
 It is very easy to create nonsensical grammar rules, so we need to
 have a way to check the grammar.  Particularly useful is the ability to
 find unused left-hand-side nonterminals that are not either the start
-symbol or used on the right-hand side.  Likewise, the code has the abitly 
+symbol or used on the right-hand side.  Likewise, the code has the abitly
 to report unused nonterminals (lower-case symbols) that appear on the right-hand
 side that are not defined as a rule. Of course, tokens or upper-case symbols are ok.
 
@@ -211,7 +211,7 @@ Removing Grammar Rules
 ======================
 
 This may sound like a weird thing to want. But in a program like
-`uncompyle6 <https://pypi.python.org/pypi/uncompyle6/>_ where there is
+`uncompyle6 <https://pypi.python.org/pypi/uncompyle6/>`_ where there is
 a lot of grammar sharing via inheritance sometimes the grammar
 inherited is too large. This gives me a way to prune the grammar back
 down.

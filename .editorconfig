@@ -1,0 +1,30 @@
+# This is an EditorConfig file
+# https://EditorConfig.org
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+indent_size = 4
+insert_final_newline = true
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[*.py]
+indent_style = space
+
+# Tab indentation (no size specified)
+[Makefile]
+indent_style = tab
+
+# # Ignore paths
+# [pytest/testdata/**]
+# charset = unset
+# end_of_line = unset
+# insert_final_newline = unset
+# trim_trailing_whitespace = unset
+# indent_style = unset
+# indent_size = unset
