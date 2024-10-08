@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import unittest
 
 from helper import helper_init, run_tests_unit

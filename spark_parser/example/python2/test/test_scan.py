@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+from sys import version_info
 
 from helper import helper_init, run_tests_unit
 

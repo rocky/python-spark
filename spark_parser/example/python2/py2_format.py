@@ -96,6 +96,8 @@ evaluating the escape code.
 
 import re
 import sys
+from StringIO import StringIO
+from sys import version_info
 
 from py2_parser import parse_python2
 from spark_parser import GenericASTTraversal  # , DEFAULT_DEBUG as PARSER_DEFAULT_DEBUG

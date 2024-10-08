@@ -1,5 +1,4 @@
 #!/bin/bash
-
 check_spark_24_owd=$(pwd)
 
 cd $(dirname ${BASH_SOURCE[0]})

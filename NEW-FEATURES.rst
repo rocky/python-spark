@@ -5,16 +5,16 @@ The original version of this Earley parser, circa 2000, was pretty awesome at
 that time.  It was remarkably fast, and small: one Python file. Some care
 was put into making it run fast.
 
-That made it easy to embed in a project. In fact at one time it was
+That made it easy to embed in a project. In fact, at one time it was
 added to the Python distribution before it was removed in a later version.
 
 But embedding the code was the only option for over a decade.  Nor
-were there any automated tests for the program. And simple usuable
+were there any automated tests for the program. And simple usable
 examples were lacking. (I'm not sure I have been totally successful at
 addressing this, but what's here now is a much better start.)
 
 Many of the changes I've added come from using the program and add to
-the usuability of the parsing system. I list features below aside from
+the usability of the parsing system. I list features below aside from
 the packaging, tests, and examples mentioned above.
 
 Comments in Grammar
@@ -60,11 +60,11 @@ In a large project like uncompyle6_ there are lots of grammar rules:
 over 600 rules for each of the 13 or so versions of Python.
 
 It is very easy to create nonsensical grammar rules, so we need to
-have a way to check the grammar.  Partcularly useful is the ability to
+have a way to check the grammar.  Particularly useful is the ability to
 find unused left-hand-side nonterminals that are not either the start
-symbol or used on the right-hand side.  Likewise unused nonterminals
-(lower-case symbols) that appear on the right-hand side that are not
-defined as a rule. Of course, tokens or upper-case symbols are ok.
+symbol or used on the right-hand side.  Likewise, the code has the abitly
+to report unused nonterminals (lower-case symbols) that appear on the right-hand
+side that are not defined as a rule. Of course, tokens or upper-case symbols are ok.
 
 Checking for duplicate rules is also handy. Also finding immediate
 recursion rules. e.g. ``expr ::= expr``.
@@ -72,8 +72,8 @@ recursion rules. e.g. ``expr ::= expr``.
 Parser Error State
 ==================
 
-The original code showed you the how far you had parsed and that was
-useful. But in production code you often want more. So I added the
+The original code showed you how far you had parsed and that was
+useful. But in production code, you often want more. So I added the
 list of rule states of the current state. I won't show that here.
 
 Reduce Rule Tracing
@@ -133,14 +133,14 @@ and other things like that.
 Custom Additional Reduction Rule Checks
 =======================================
 
-More recently, I the ability to callback before each reduction so
-additional checks can be peformed before a reduction. In an ambiguous
-grammar useful as it helps distinguish which rule should be used among
+More recently, I added the ability to run a callback function *before* each reduction, so
+additional checks can be performed before the reduction. In an ambiguous
+grammar, this is useful because it helps distinguish which rule should be used among
 many.
 
 Here are some little examples from the project *uncompyle6* which
 deparses Python bytecode. There is a rule in the grammar for a keyword
-argument that's used in a parameter list of a function.
+argument that is used in a parameter list of a function.
 for example the ``path=`` in ``os.path.exists(path='/etc/hosts')``
 
 This grammar rule is:
@@ -150,19 +150,19 @@ This grammar rule is:
    kwarg ::= LOAD_CONST expr
 
 
-But there is an additional restriction that the value in the
+However there is an additional restriction that the value of the
 ``LOAD_CONST`` can't be any old value; it must be a "string" (which
 would have the value "path") in the previous example.
 
-The reduction rule checking can work at a strickly token level, or it
-can work on and AST tree that would be generated if the reduction were done.
+The reduction rule checking can work at a strictly token level, or it
+can work on an AST tree that would be generated if the reduction were done.
 
 
 Limited Grammar Shorthands: \+, \*, ?
 =====================================
 
 I also added a little syntactic sugar for the Kleene closure
-operators ``+``, ``*`` and optional suffix ``?``. It is limited to only one
+operators ``+``, ``*``, and optional suffix ``?``. It is limited to only one
 nonterminal on the right-hand side, but that does come up often and
 helps a little. So you can now do things like:
 
@@ -204,15 +204,14 @@ easy to have dead grammar rules that never get used. And
 grammar constructs from one version of Python can easily bleed into
 another version. By looking at grammar coverage over a large set of
 parses, I can prune grammar rules or segregate them. I can also craft
-smaller parse tests which cover more of the grammar in fewer Python
+smaller parse tests that cover more of the grammar in fewer Python
 statements
 
 Removing Grammar Rules
 ======================
 
 This may sound like a weird thing to want. But in a program like
-*uncompyle6* where there is a lot of grammar sharing via inheritance
-sometimes the grammar inherited is too large. This gives me a way
-to prune the grammar back down.
-
-.. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
+`uncompyle6 <https://pypi.python.org/pypi/uncompyle6/>`_ where there is
+a lot of grammar sharing via inheritance sometimes the grammar
+inherited is too large. This gives me a way to prune the grammar back
+down.
