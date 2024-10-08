@@ -1,4 +1,4 @@
-|buildstatus| |Pypi Installs| |Latest Version| |Supported Python Versions|
+|CircleCI| |Pypi Installs| |Latest Version| |Supported Python Versions|
 
 |packagestatus|
 
@@ -26,28 +26,55 @@ These are grammars which are left-recursive.
 Installation
 ------------
 
-This uses `setup.py`, so it follows the standard Python routine:
+This package is available from PyPI::
 
-::
+    $ pip install spark-parser
+
+However if you want to install from the github source::
+
+    $ pip install       # creates wheel and install
+
+To run from the source tree::
 
     $ pip install -e .  # set up to run from source tree
-                        # Or if you want to install instead
-    $ python setup.py develop
+
+
+Features
+--------
+
+Many of the features added were in direct response to using it in the Python decompiler _uncompyle6_.
+
+One unique features of this code is the ability to have it profile
+which grammar rules have been used over a series of parses. This can
+inform which grammar rules are not needed.
+
+Another unusual feature is to be able to remove grammar rules after a
+rule as been added. This is used in uncompyle6_ where grammar rules
+inherited one version of Python to another.
+
+The non-standard grammar generator system feature is the ability to
+perform a callback check just before a reduction rule occurs. This
+allows for checking a token stream or partial parse tree by means
+other than through the grammar language.
+
+`NEW-FEATURES
+<https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rst>`_
+desribes thse features and others in more detail.
+
 
 Example
 -------
 
-The github `example` directory_ has a worked-out examples; Package uncompyle6_
-uses this and contains a much larger example.
+The github `example directory <https://github.com/rocky/python-spark/tree/master/example>`_ has a worked-out examples; The PyPI package uncompyle6_ uses this and contains a much larger example.
 
 See Also
 --------
 
-* features_
 * http://pages.cpsc.ucalgary.ca/~aycock/spark/ (Old and not very well maintained)
 * https://pypi.python.org/pypi/uncompyle6/
 
-.. _features: https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rst
+.. |CircleCI| image:: https://circleci.com/gh/rocky/python-spark.svg?style=svg
+.. _features: https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rstxo
 .. _directory: https://github.com/rocky/python-spark/tree/master/example
 .. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg

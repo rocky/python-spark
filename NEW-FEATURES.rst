@@ -9,12 +9,12 @@ That made it easy to embed in a project. In fact at one time it was
 added to the Python distribution before it was removed in a later version.
 
 But embedding the code was the only option for over a decade.  Nor
-were there any automated tests for the program. And simple usuable
+were there any automated tests for the program. And simple usable
 examples were lacking. (I'm not sure I have been totally successful at
 addressing this, but what's here now is a much better start.)
 
 Many of the changes I've added come from using the program and add to
-the usuability of the parsing system. I list features below aside from
+the usability of the parsing system. I list features below aside from
 the packaging, tests, and examples mentioned above.
 
 Comments in Grammar
@@ -60,7 +60,7 @@ In a large project like uncompyle6_ there are lots of grammar rules:
 over 600 rules for each of the 13 or so versions of Python.
 
 It is very easy to create nonsensical grammar rules, so we need to
-have a way to check the grammar.  Partcularly useful is the ability to
+have a way to check the grammar.  Particularly useful is the ability to
 find unused left-hand-side nonterminals that are not either the start
 symbol or used on the right-hand side.  Likewise unused nonterminals
 (lower-case symbols) that appear on the right-hand side that are not
@@ -134,7 +134,7 @@ Custom Additional Reduction Rule Checks
 =======================================
 
 More recently, I the ability to callback before each reduction so
-additional checks can be peformed before a reduction. In an ambiguous
+additional checks can be performed before a reduction. In an ambiguous
 grammar useful as it helps distinguish which rule should be used among
 many.
 
@@ -211,8 +211,7 @@ Removing Grammar Rules
 ======================
 
 This may sound like a weird thing to want. But in a program like
-*uncompyle6* where there is a lot of grammar sharing via inheritance
-sometimes the grammar inherited is too large. This gives me a way
-to prune the grammar back down.
-
-.. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
+`uncompyle6 <https://pypi.python.org/pypi/uncompyle6/>_ where there is
+a lot of grammar sharing via inheritance sometimes the grammar
+inherited is too large. This gives me a way to prune the grammar back
+down.
