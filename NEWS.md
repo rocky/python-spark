@@ -1,3 +1,18 @@
+1.9.0 2024-10-8 Has it been that long?
+======================================
+
+Revamp for more modern Python style in the 3.12 era:
+  - start adding type annotations to code.
+  - use pyproject.toml
+  - remove illegal escape sequences
+
+BuildTree now builds trees iteratively rather than recursively. With this we can handle larger trees which are needed in the decompielrs.
+
+Revise README.rst for above and go over spelling and grammar
+
+Internally, more git branches have been created to supoprt older Python.
+
+
 1.8.9 2018-07-28 S
 ======================================
 
@@ -16,9 +31,7 @@
 1.8.6 2018-04-06
 ================
 
-* spark-parser-coverage: Canonicalize to reduce false-positive
-  unused rules. Specifically we remove epsilon
-  transition marks
+* spark-parser-coverage: Canonicalize to reduce false-positive unused rules. Specifically we remove epsilon transition marks
 
 
 1.8.5 2017-12-10 Dr Gecko
@@ -28,7 +41,7 @@
   Those are nonterminals used in *, +, and ? rules
 * example/python2/py2_parser.py: Pull constant out of nonterminal
 	function
-* test/test_misc.py: Python 2.6 compatability
+* test/test_misc.py: Python 2.6 compatibility
 * example/gdb-loc/README.md, example/python2/README.md,
   example/python2/format-python.py, spark_parser/spark.py,
   test/test_misc.py: Create set of list-like nonterminals

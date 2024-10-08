@@ -1,8 +1,11 @@
 *.pyc
 *~
+.cache
 /.eggs
 /.python-version
 /.tox
+/ChangeLog
+/ChangeLog-spell-corrected
 /build
 /dist
 /how-to-make-a-release.txt
@@ -10,5 +13,3 @@
 /spark3_parser.egg-info
 /spark_parser.egg-info
 /tmp
-.cache
-/ChangeLog
