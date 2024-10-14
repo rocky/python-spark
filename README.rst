@@ -86,7 +86,7 @@ See Also
 * https://pypi.python.org/pypi/uncompyle6/
 
 .. |CircleCI| image:: https://circleci.com/gh/rocky/python-spark.svg?style=svg
-.. _features: https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rstxo
+.. _features: https://github.com/rocky/python-spark/blob/master/NEW-FEATURES.rst
 .. _directory: https://github.com/rocky/python-spark/tree/master/example
 .. _uncompyle6: https://pypi.python.org/pypi/uncompyle6/
 .. |downloads| image:: https://img.shields.io/pypi/dd/spark.svg
