@@ -60,7 +60,7 @@ packages = [
 ]
 
 py-modules = [
-    "example",
+    "spark_parser.example",
 ]
 
 [project.scripts]
